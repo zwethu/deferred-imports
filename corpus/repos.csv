@@ -1,0 +1,50 @@
+name,url,kind,domain,pinned_sha,pinned_date,first_parent_commits,years,python_packages,agent_commits,revert_commits,used_for,notes
+saleor,https://github.com/saleor/saleor,application,Web/e-commerce,782a751f622c4a047798ce7084b7c66c0877ec6f,2026-10-09,7030,13,160,72,26,,screened 2026-10-11
+netbox,https://github.com/netbox-community/netbox,application,Infrastructure,3c6fce65200e468b2edc3b3f0bb1ba553994564c,2026-10-10,2167,10,116,22,6,,screened 2026-10-11
+readthedocs.org,https://github.com/readthedocs/readthedocs.org,application,Developer tools,01c933ef544963a3ad7100b9ad7d4e91b0d5177d,2026-10-08,9330,16,68,133,79,,screened 2026-10-11
+synapse,https://github.com/element-hq/synapse,application,Web/communication,c0805eabb1bda3b1ffc370fec35a73d524674d60,2026-10-09,11111,12,61,21,96,,screened 2026-10-11
+django,https://github.com/django/django,library,Web,dab0a5c47f159eb58472110dcbc10bd4a9b01adb,2026-10-09,34038,21,190,0,61,,screened 2026-10-11
+celery,https://github.com/celery/celery,library,Infrastructure,ed354d9100dbdaf7b867f103593b4dea4148670a,2026-10-10,8129,17,39,8,59,,screened 2026-10-11
+scrapy,https://github.com/scrapy/scrapy,library,Web/data,be7bdc4cd16644018fa56ef3503dce86744fa6d5,2026-10-09,5697,17,22,5,9,,screened 2026-10-11
+pandas,https://github.com/pandas-dev/pandas,library,Data,278f090c4f8e8b00f07e4be105608e4fc4778f13,2026-10-10,34516,17,57,1301,167,,screened 2026-10-11
+scikit-learn,https://github.com/scikit-learn/scikit-learn,library,ML,102e5daf66759cf896beeee229d1bf7c80ab2ba4,2026-10-10,19529,16,59,6,56,,screened 2026-10-11
+pip,https://github.com/pypa/pip,tool,Developer tools,a7002c9771a6c3f0317a4e6b9fbdcd22e643f7b6,2026-09-23,5360,17,23,0,13,,screened 2026-10-11
+pylint,https://github.com/pylint-dev/pylint,tool,Developer tools,360ed2326bfd70b1802a95477ab15d75b6fa48ce,2026-10-11,8518,20,20,12,32,,screened 2026-10-11
+poetry,https://github.com/python-poetry/poetry,tool,Developer tools,63bba274f8ea6bc9a064f5328fa6c67bce617cc1,2026-10-06,3313,8,36,19,11,,screened 2026-10-11
+sympy,https://github.com/sympy/sympy,library,Science,5b767ff11a9eff1bd3478fb701f35444e7c9308a,2026-10-11,13980,19,98,5,19,,screened 2026-10-11
+twisted,https://github.com/twisted/twisted,library,Networking,662a7fce8a09e0102c6b589d24d0838e686370cc,2026-10-08,19043,25,40,0,265,,screened 2026-10-11
+certbot,https://github.com/certbot/certbot,tool,Security,0201ba5ce70ba8b7545380064abddd4bc3a10c15,2026-10-07,4395,14,52,1,28,,screened 2026-10-11
+ckan,https://github.com/ckan/ckan,application,Web/data portal,0905a544488fec8201a8d313711acb582020a0f3,2026-10-08,5404,19,93,0,17,,screened 2026-10-11
+kitsune,https://github.com/mozilla/kitsune,application,Web/support,2b32c019966199de12515db943829cd0ec67bd99,2026-10-08,8102,16,81,2,90,,screened 2026-10-11
+qutebrowser,https://github.com/qutebrowser/qutebrowser,application,Desktop,2bd75916a372f24d24cfc8fc26b5f8461332d470,2026-09-07,15050,12,23,0,220,,screened 2026-10-11
+pulpcore,https://github.com/pulp/pulpcore,application,Infrastructure,7724392caa16a48a069402edcffac1673d75632f,2026-10-09,12473,18,32,48,73,,screened 2026-10-11
+ArchiveBox,https://github.com/archivebox/ArchiveBox,application,Web/archiving,90e78d0a66ea6af6c4c90918c5614b0f45a678db,2026-10-10,5696,9,27,24,14,,screened 2026-10-11
+networkx,https://github.com/networkx/networkx,library,Science,6da4704cbf32ba6f50f6d9c46cc0a071e3a87985,2026-10-06,5946,21,26,1,21,,screened 2026-10-11; reputation High
+statsmodels,https://github.com/statsmodels/statsmodels,library,Data,9bf43a292c6e906754744fef3b1a77c5e549410f,2026-10-08,4787,20,93,1,1,,screened 2026-10-11; reputation High
+astropy,https://github.com/astropy/astropy,library,Science,cad3b90e104cdb5ccb86772066eb50268026d87c,2026-10-10,10183,15,69,9,6,,screened 2026-10-11; reputation High
+nova,https://github.com/openstack/nova,application,Infrastructure/cloud,2b5fedace12dba41600bec10ca73476dbcfc7d10,2026-10-10,28136,16,56,1,14,,screened 2026-10-11; reputation Medium
+neutron,https://github.com/openstack/neutron,application,Infrastructure/cloud,dd92e47ab193ea1eda3f31463098e9e4e1375e48,2026-10-10,15700,15,194,0,13,,screened 2026-10-11; reputation Medium
+mne-python,https://github.com/mne-tools/mne-python,library,Science,995ee6255b04e45eba4e196fe95957d93539ee95,2026-10-10,10812,15,90,4,19,,screened 2026-10-11; reputation Medium
+gramps,https://github.com/gramps-project/gramps,application,Desktop/genealogy,63c1f13e87187159df58ab512c6556dc6c904966,2026-10-05,20438,25,82,16,73,,screened 2026-10-11; reputation Medium
+transformers,https://github.com/huggingface/transformers,library,ML,536ecc007387a50e77603bb5d92100e9b07514cc,2026-10-09,22200,7,549,240,118,,screened 2026-10-11; reputation High
+keras,https://github.com/keras-team/keras,library,ML,63e75ba1ccc0126ae252e1307b7d1c8ab7646160,2026-10-10,9664,11,196,4,40,,screened 2026-10-11; reputation High
+aws-cli,https://github.com/aws/aws-cli,tool,Infrastructure/cloud,098ce0d9647e0550c31183a21aff8152a833b2f2,2026-10-09,5496,13,45,0,21,,screened 2026-10-11; reputation High
+scikit-image,https://github.com/scikit-image/scikit-image,library,Science,b700edc8005e4ee9e74fc83259f09e8df3213f15,2026-10-09,3838,17,62,0,12,,screened 2026-10-11; reputation High
+pymc,https://github.com/pymc-devs/pymc,library,ML,2394fd441ae5f79597dc6012bd771e2ea28b01a6,2026-10-07,6499,20,21,5,50,,screened 2026-10-11; reputation High
+conda,https://github.com/conda/conda,tool,Developer tools,66d82122dc634f9015ebf7f2b0f039933d4f5721,2026-10-08,6589,13,38,1,23,,screened 2026-10-11; reputation High
+great_expectations,https://github.com/fivetran/great_expectations,library,Data,b8bf1fd898ec3ffce2f9f37e605406e306ffd85f,2026-10-08,7735,9,98,39,11,,screened 2026-10-11; reputation High
+cinder,https://github.com/openstack/cinder,application,Infrastructure/cloud,666cbad52cf1bd9b2ca88a90daa14bcd62a6fa1a,2026-10-10,11431,14,103,2,9,,screened 2026-10-11; reputation Low
+heat,https://github.com/openstack/heat,application,Infrastructure/cloud,8f9a56c2dec0154a3909ec417b79d73d6986fe4f,2026-10-06,9393,14,68,0,6,,screened 2026-10-11; reputation Low
+glance,https://github.com/openstack/glance,application,Infrastructure/cloud,2b987bfb3caafdf09fe30115fa65df5f563962fe,2026-10-06,4454,16,29,0,6,,screened 2026-10-11; reputation Low
+ironic,https://github.com/openstack/ironic,application,Infrastructure/cloud,0a0e8c4b61aa756bfa552e4ca39cd1a641296505,2026-10-09,8273,16,43,0,6,,screened 2026-10-11; reputation Low
+dipy,https://github.com/dipy/dipy,library,Science,a252adb68dd7ea245f214314649e53ed67bbe743,2026-10-07,3100,17,26,1,5,,screened 2026-10-11; reputation Low
+psychopy,https://github.com/psychopy/psychopy,application,Science/desktop,9535622fbcaa020b683820df732b2617265ef9f1,2026-10-07,5935,18,128,2,11,,screened 2026-10-11; reputation Medium
+Megatron-LM,https://github.com/NVIDIA/Megatron-LM,library,ML training,ce852bfb93f364f64a556602fc71a5d9ed2c377e,2026-10-18,5306,7,117,331,79,,screened 2026-10-19; python; agent-heavy pick; agent commits incl. PR commits: 331
+kornia,https://github.com/kornia/kornia,library,Computer vision,2343c4212b1b1d5a6da29f6abc038d0afa0cfecf,2026-10-19,3582,8,80,320,2,,screened 2026-10-19; python; agent-heavy pick; agent commits incl. PR commits: 323
+haystack,https://github.com/deepset-ai/haystack,library,AI/LLM framework,38cc7a67897b0462f9d2799b86066e9470c6317c,2026-10-19,6434,6,60,194,23,,screened 2026-10-19; python; agent-heavy pick; agent commits incl. PR commits: 213
+awx,https://github.com/ansible/awx,application,Infrastructure automation,6fc51b6d25b5bf3ad7efa66cc4e62bdb27177027,2026-10-15,12157,13,35,105,41,,screened 2026-10-19; python; agent-heavy pick; agent commits incl. PR commits: 105
+DeepSpeed,https://github.com/deepspeedai/DeepSpeed,library,ML training,91694726fef08b260ad72626f3ae5b8f72c81e30,2026-10-19,3564,6,130,83,23,,screened 2026-10-19; python; agent-heavy pick; agent commits incl. PR commits: 83
+cartography,https://github.com/cartography-cncf/cartography,tool,Security/infrastructure,d9944394187c405182145f982b3d26433e8cfd76,2026-10-16,2215,7,282,339,18,,screened 2026-10-19; python; agent-heavy pick; agent commits incl. PR commits: 339
+lutris,https://github.com/lutris/lutris,application,Games/desktop,3307967c2fb0f015daf420444f0726f851b75131,2026-10-17,8748,16,24,192,78,,screened 2026-10-19; python; agent-heavy pick; agent commits incl. PR commits: 205
+autogluon,https://github.com/autogluon/autogluon,library,AutoML,82550be9d148212161cedb7bd73d3b69a7e085fe,2026-10-18,3046,7,138,130,8,,screened 2026-10-19; python; agent-heavy pick; agent commits incl. PR commits: 130
+zenml,https://github.com/zenml-io/zenml,application,MLOps platform,f3824dfebc4b45e6eebc17fe1f535382070df05f,2026-10-14,4586,5,323,73,14,,screened 2026-10-19; python; agent-heavy pick (replaces pipenv); agent commits incl. PR commits: 113

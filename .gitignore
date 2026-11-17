@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.venv/
+.pytest_cache/
+.ruff_cache/
+
+# Mined data and clones (large, may hold personal data)
+index/
+work/
+out/
+clones/
+*.sqlite
+*.sqlite-*
+.salt
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
