@@ -41,6 +41,27 @@ import warnings
 from collections import Counter, defaultdict
 from datetime import date
 
+
+def never_runs(cond: str) -> str | None:
+    """Which part of `if <cond>:` never runs at runtime (kept separate from mine.py on purpose).
+    "body" for TYPE_CHECKING / x.TYPE_CHECKING / False, "else" for `not` of those, else None.
+    Other conditions that mention TYPE_CHECKING without `not` count as "body" (old rule)."""
+    c = " ".join(cond.split())
+    while c.startswith("(") and c.endswith(")") and c.count("(") == 1:
+        c = c[1:-1].strip()
+    neg = c.startswith("not ")
+    if neg:
+        c = c[4:].strip()
+        while c.startswith("(") and c.endswith(")") and c.count("(") == 1:
+            c = c[1:-1].strip()
+    simple = c == "False" or (c.split(".")[-1] == "TYPE_CHECKING"
+                              and all(p.isidentifier() for p in c.split(".")))
+    if simple:
+        return "else" if neg else "body"
+    if not neg and "TYPE_CHECKING" in c and "not" not in c.split():
+        return "body"
+    return None
+
 EXCLUDE = {"tests", "test", "testing", "docs", "doc", "docs_src", "examples", "example",
            "samples", "sample", "migrations", "vendor", "vendored", "third_party", "_vendor",
            "node_modules", "site-packages", "build", "dist"}
@@ -135,11 +156,14 @@ def run(args):
                     elif isinstance(ch, (ast.Try, getattr(ast, "TryStar", ast.Try))):
                         t = t | {"try_except"}
                     elif (isinstance(ch, ast.If) and not getattr(ch, "is_elif", False)
-                          and "TYPE_CHECKING" in ast.unparse(ch.test)):
+                          and (side := never_runs(ast.unparse(ch.test)))):
+                        # `if TYPE_CHECKING:` / `if False:` -> body never runs;
+                        # `if not TYPE_CHECKING:` -> body runs, else/elif part never runs
+                        tb = t | {"type_checking"}
                         for b in ch.body:
-                            walk_one(b, t | {"type_checking"})
+                            walk_one(b, tb if side == "body" else t)
                         for b in ch.orelse:
-                            walk_one(b, t)
+                            walk_one(b, tb if side == "else" else t)
                         continue
                     walk(ch, t)
 
@@ -249,8 +273,10 @@ def run(args):
     touch_rows = grouped("SELECT i, module_id, n_files FROM module_touches")
     fp_open = grouped("SELECT from_i, path, file_id FROM file_paths")
     fp_close = grouped("SELECT to_i, path, file_id FROM file_paths WHERE to_i IS NOT NULL")
+    # churn tables come from SENSO-Lens' context/churn.py, which this repo does not include
+    has_cc = bool(q("SELECT 1 FROM sqlite_master WHERE type='table' AND name='commit_churn'"))
     cc_rows = {r[0]: r[1:] for r in q("SELECT i, n_files, added, deleted, lines, is_large "
-                                      "FROM commit_churn")}
+                                      "FROM commit_churn")} if has_cc else {}
     have_churn = bool(cc_rows)
 
     # checkpoints

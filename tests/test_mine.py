@@ -1,6 +1,8 @@
 import sqlite3
 import subprocess
 
+import pytest
+
 from deferred_imports.mining import check, mine
 
 TABLES = ["commits", "files", "file_paths", "file_changes", "raw_imports", "problems"]
@@ -77,6 +79,44 @@ def test_extract_imports_kinds():
         ("import ujson", "try_except"): 1, ("from . import q", "in_function"): 1,
         ("from a.b.c import D", "top_level"): 1,
     }
+
+
+def test_extract_imports_never_running_branches():
+    # 15 Nov fix: `if False:` was tagged eager, `if not TYPE_CHECKING:` was tagged type-only
+    src = (b"import typing\n"
+           b"if False:\n    from a import A\n"
+           b"if not TYPE_CHECKING:\n    from b import B\nelse:\n    from c import C\n"
+           b"if typing.TYPE_CHECKING:\n    from d import D\nelse:\n    from e import E\n"
+           b"if (TYPE_CHECKING):\n    from f import F\n"
+           b"if not TYPE_CHECKING:\n    pass\nelif x:\n    from g import G\n"
+           b"if sys.version_info >= (3, 11):\n    from h import H\n"
+           b"if TYPE_CHECKING and x:\n    from i import I\n"
+           b"if not TYPE_CHECKING and x:\n    from j import J\n"
+           b"def f():\n    if False:\n        from k import K\n")
+    imps, err = mine.extract_imports(src)
+    assert not err
+    assert dict(imps) == {
+        ("import typing", "top_level"): 1,
+        ("from a import A", "type_checking"): 1,
+        ("from b import B", "top_level"): 1, ("from c import C", "type_checking"): 1,
+        ("from d import D", "type_checking"): 1, ("from e import E", "top_level"): 1,
+        ("from f import F", "type_checking"): 1,
+        ("from g import G", "type_checking"): 1,
+        ("from h import H", "top_level"): 1,
+        ("from i import I", "type_checking"): 1,
+        ("from j import J", "top_level"): 1,
+        ("from k import K", "in_function+type_checking"): 1,
+    }
+
+
+@pytest.mark.parametrize("cond, side", [
+    ("TYPE_CHECKING", "body"), ("typing.TYPE_CHECKING", "body"), ("False", "body"),
+    ("( TYPE_CHECKING )", "body"), ("not TYPE_CHECKING", "else"), ("not False", "else"),
+    ("not (typing.TYPE_CHECKING)", "else"), ("TYPE_CHECKING and x", "body"),
+    ("not TYPE_CHECKING and x", None), ("x", None), ("sys.platform == 'win32'", None),
+])
+def test_never_runs(cond, side):
+    assert mine.never_runs(cond) == side
 
 
 def test_split_stmt():
