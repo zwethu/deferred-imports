@@ -104,10 +104,19 @@ def main(argv=None) -> None:
     ap.add_argument("--csv", type=Path)
     a = ap.parse_args(argv)
     rows = [summary(db, a.level) for db in a.dbs]
-    out = open(a.csv, "w", newline="") if a.csv else sys.stdout
-    w = csv.DictWriter(out, fieldnames=list(rows[0]))
-    w.writeheader()
-    w.writerows(rows)
+    write_csv(rows, a.csv)
+
+
+def write_csv(rows: list[dict], path: Path | None) -> None:
+    if path is None:
+        w = csv.DictWriter(sys.stdout, fieldnames=list(rows[0]))
+        w.writeheader()
+        w.writerows(rows)
+        return
+    with open(path, "w", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=list(rows[0]))
+        w.writeheader()
+        w.writerows(rows)
 
 
 if __name__ == "__main__":
