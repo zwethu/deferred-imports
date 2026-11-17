@@ -1,25 +1,25 @@
-name,group,kind,years,first_parent_commits,agent_commits,pinned_sha,url
-django,well-known,library,21,34038,0,dab0a5c47f159eb58472110dcbc10bd4a9b01adb,https://github.com/django/django
-saleor,well-known,application,13,7030,72,782a751f622c4a047798ce7084b7c66c0877ec6f,https://github.com/saleor/saleor
-netbox,well-known,application,10,2167,22,3c6fce65200e468b2edc3b3f0bb1ba553994564c,https://github.com/netbox-community/netbox
-celery,well-known,library,17,8129,8,ed354d9100dbdaf7b867f103593b4dea4148670a,https://github.com/celery/celery
-scrapy,well-known,library,17,5697,5,be7bdc4cd16644018fa56ef3503dce86744fa6d5,https://github.com/scrapy/scrapy
-pip,well-known,tool,17,5360,0,a7002c9771a6c3f0317a4e6b9fbdcd22e643f7b6,https://github.com/pypa/pip
-poetry,well-known,tool,8,3313,19,63bba274f8ea6bc9a064f5328fa6c67bce617cc1,https://github.com/python-poetry/poetry
-certbot,well-known,tool,14,4395,1,0201ba5ce70ba8b7545380064abddd4bc3a10c15,https://github.com/certbot/certbot
-pylint,well-known,tool,20,8518,12,360ed2326bfd70b1802a95477ab15d75b6fa48ce,https://github.com/pylint-dev/pylint
-networkx,well-known,library,21,5946,1,6da4704cbf32ba6f50f6d9c46cc0a071e3a87985,https://github.com/networkx/networkx
-ckan,less-known,application,19,5404,0,0905a544488fec8201a8d313711acb582020a0f3,https://github.com/ckan/ckan
-kitsune,less-known,application,16,8102,2,2b32c019966199de12515db943829cd0ec67bd99,https://github.com/mozilla/kitsune
-pulpcore,less-known,application,18,12473,48,7724392caa16a48a069402edcffac1673d75632f,https://github.com/pulp/pulpcore
-mne-python,less-known,library,15,10812,4,995ee6255b04e45eba4e196fe95957d93539ee95,https://github.com/mne-tools/mne-python
-gramps,less-known,application,25,20438,16,63c1f13e87187159df58ab512c6556dc6c904966,https://github.com/gramps-project/gramps
-dipy,less-known,library,17,3100,1,a252adb68dd7ea245f214314649e53ed67bbe743,https://github.com/dipy/dipy
-psychopy,less-known,application,18,5935,2,9535622fbcaa020b683820df732b2617265ef9f1,https://github.com/psychopy/psychopy
-glance,less-known,application,16,4454,0,2b987bfb3caafdf09fe30115fa65df5f563962fe,https://github.com/openstack/glance
-heat,less-known,application,14,9393,0,8f9a56c2dec0154a3909ec417b79d73d6986fe4f,https://github.com/openstack/heat
-ironic,less-known,application,16,8273,0,0a0e8c4b61aa756bfa552e4ca39cd1a641296505,https://github.com/openstack/ironic
-lutris,ai-heavy,application,16,8748,192,3307967c2fb0f015daf420444f0726f851b75131,https://github.com/lutris/lutris
-awx,ai-heavy,application,13,12157,105,6fc51b6d25b5bf3ad7efa66cc4e62bdb27177027,https://github.com/ansible/awx
-haystack,ai-heavy,library,6,6434,194,38cc7a67897b0462f9d2799b86066e9470c6317c,https://github.com/deepset-ai/haystack
-kornia,ai-heavy,library,8,3582,320,2343c4212b1b1d5a6da29f6abc038d0afa0cfecf,https://github.com/kornia/kornia
+name,group,url,kind,pinned_sha,pinned_date,first_parent_commits,years,stars,first_parent_merge_pct,authors,top_author_pct,agent_commits,source,notes
+django,well-known,https://github.com/django/django,library,dab0a5c47f159eb58472110dcbc10bd4a9b01adb,2026-10-09,34038,21,,,,,0,corpus/repos.csv,
+numpy,well-known,https://github.com/numpy/numpy,library,c20f5fd1be37a2dc1b5198789b20fd748debe793,2026-11-17,20543,25,,48,924,27,,new 2026-11-18,new; needs py2 cut-off
+saleor,well-known,https://github.com/saleor/saleor,application,782a751f622c4a047798ce7084b7c66c0877ec6f,2026-10-09,7030,13,,,,,72,corpus/repos.csv,
+netbox,well-known,https://github.com/netbox-community/netbox,application,3c6fce65200e468b2edc3b3f0bb1ba553994564c,2026-10-10,2167,10,,,,,22,corpus/repos.csv,
+celery,well-known,https://github.com/celery/celery,library,ed354d9100dbdaf7b867f103593b4dea4148670a,2026-10-10,8129,17,,,,,8,corpus/repos.csv,
+scrapy,well-known,https://github.com/scrapy/scrapy,library,be7bdc4cd16644018fa56ef3503dce86744fa6d5,2026-10-09,5697,17,,,,,5,corpus/repos.csv,
+pip,well-known,https://github.com/pypa/pip,tool,a7002c9771a6c3f0317a4e6b9fbdcd22e643f7b6,2026-09-23,5360,17,,,,,0,corpus/repos.csv,
+poetry,well-known,https://github.com/python-poetry/poetry,tool,63bba274f8ea6bc9a064f5328fa6c67bce617cc1,2026-10-06,3313,8,,,,,19,corpus/repos.csv,
+pylint,well-known,https://github.com/pylint-dev/pylint,tool,360ed2326bfd70b1802a95477ab15d75b6fa48ce,2026-10-11,8518,20,,,,,12,corpus/repos.csv,
+certbot,well-known,https://github.com/certbot/certbot,tool,0201ba5ce70ba8b7545380064abddd4bc3a10c15,2026-10-07,4395,14,,,,,1,corpus/repos.csv,
+relate,less-known,https://github.com/inducer/relate,application,18e51ddd37a1edd00223b71f5a840ec13b88cac7,2026-11-17,2702,12,437,15,14,81,,new 2026-11-18,new; one main maintainer
+opendrift,less-known,https://github.com/OpenDrift/opendrift,library,7173c92e0e55119c30066d72e246a6ca7ede9da4,2026-11-17,3355,13,337,30,31,60,,new 2026-11-18,new; small science team
+oq-engine,less-known,https://github.com/gem/oq-engine,application,88a8657bba8245635a8ad083970783f3f37198bd,2026-11-17,14938,16,472,58,51,76,,new 2026-11-18,new; needs py2 cut-off
+osf.io,less-known,https://github.com/CenterForOpenScience/osf.io,application,84dbb4344e84e006984224c734c155dbebc86f70,2026-11-16,4793,13,733,74,56,54,,new 2026-11-18,new; branch develop; needs py2 cut-off
+the-blue-alliance,less-known,https://github.com/the-blue-alliance/the-blue-alliance,application,750f8b0bcc9471a0d9358e07b743380cf6357e7b,2026-11-17,11236,16,455,4,119,38,,new 2026-11-18,new; needs py2 cut-off
+kpi,less-known,https://github.com/kobotoolbox/kpi,application,ab6233b5db8f7943628c91c47dd9526388dea44d,2026-11-17,3769,11,191,55,48,14,,new 2026-11-18,new
+Sefaria-Project,less-known,https://github.com/Sefaria/Sefaria-Project,application,7347309c264c8ca36a91c381716b1f21c1549045,2026-11-17,5517,9,774,35,60,29,,new 2026-11-18,new; needs py2 cut-off
+archivematica,less-known,https://github.com/artefactual/archivematica,application,d1805644d321c95c6a80323d2b288ada19e08b04,2026-11-17,3663,14,527,2,84,16,,new 2026-11-18,new; default branch qa/1.x
+landlab,less-known,https://github.com/landlab/landlab,library,5c2049547ba8639bde3fac0c15ffd476a3a7568e,2026-11-17,2176,13,452,35,48,24,,new 2026-11-18,new
+dipy,less-known,https://github.com/dipy/dipy,library,a252adb68dd7ea245f214314649e53ed67bbe743,2026-10-07,3100,17,,,,,1,corpus/repos.csv,
+lutris,ai-heavy,https://github.com/lutris/lutris,application,3307967c2fb0f015daf420444f0726f851b75131,2026-10-17,8748,16,,,,,192,corpus/repos.csv,
+awx,ai-heavy,https://github.com/ansible/awx,application,6fc51b6d25b5bf3ad7efa66cc4e62bdb27177027,2026-10-15,12157,13,,,,,105,corpus/repos.csv,
+haystack,ai-heavy,https://github.com/deepset-ai/haystack,library,38cc7a67897b0462f9d2799b86066e9470c6317c,2026-10-19,6434,6,,,,,194,corpus/repos.csv,
+kornia,ai-heavy,https://github.com/kornia/kornia,library,2343c4212b1b1d5a6da29f6abc038d0afa0cfecf,2026-10-19,3582,8,,,,,320,corpus/repos.csv,
