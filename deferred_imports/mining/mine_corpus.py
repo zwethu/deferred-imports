@@ -1,9 +1,11 @@
-"""Mine every repo in corpus/repos.csv at its pinned SHA, smallest first, N at a time.
+"""Mine every repo in corpus/paper-corpus.csv at its pinned SHA, smallest first, N at a time.
 
-    uv run python -m deferred_imports.mining.mine_corpus --clones ~/senso-clones --jobs 4
+    uv run python -m deferred_imports.mining.mine_corpus --jobs 4 --check
 
-A repo whose index/<name>.sqlite is complete is skipped, and an incomplete one continues
-where it stopped, so a stopped run can simply be started again. Each repo's log goes to
+Clones are read from ../clones (as scripts/clone_corpus.sh makes them). A repo whose
+index/<name>.sqlite is complete is skipped, and an incomplete one continues where it stopped,
+so a stopped run can simply be started again. A database from another miner version is not
+skipped: it is reported as FAILED, so move the old index/ away before mining again. Each repo's log goes to
 index/<name>.log. Repos that fail are listed at the end; nothing else is retried.
 """
 
@@ -16,23 +18,29 @@ import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
+from deferred_imports.mining.mine import MINER_VERSION, load_salt
 
-def is_complete(db: Path) -> bool:
+
+def run_info(db: Path) -> dict:
     if not db.exists():
-        return False
+        return {}
     try:
         con = sqlite3.connect(f"file:{db}?mode=ro", uri=True)
-        done = con.execute("SELECT 1 FROM run_info WHERE key = 'finished'").fetchone()
+        info = dict(con.execute("SELECT key, value FROM run_info"))
         con.close()
-        return done is not None
+        return info
     except sqlite3.Error:
-        return False
+        return {}
 
 
 def run_one(row: dict, clones: Path, out: Path, salt: Path, check: bool) -> tuple[str, str]:
     name = row["name"]
     db = out / f"{name}.sqlite"
-    if is_complete(db):
+    info = run_info(db)
+    if info and info.get("miner_version") != MINER_VERSION:
+        return name, (f"FAILED: {db} is from miner {info.get('miner_version')}, this is "
+                      f"{MINER_VERSION}; move it away and start again")
+    if "finished" in info:
         return name, "skipped (already mined)"
     repo = clones / name
     if not repo.is_dir():
@@ -56,8 +64,8 @@ def run_one(row: dict, clones: Path, out: Path, salt: Path, check: bool) -> tupl
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--repos", type=Path, default=Path("corpus/repos.csv"))
-    ap.add_argument("--clones", type=Path, default=Path.home() / "senso-clones")
+    ap.add_argument("--repos", type=Path, default=Path("corpus/paper-corpus.csv"))
+    ap.add_argument("--clones", type=Path, default=Path("../clones"))
     ap.add_argument("--out", type=Path, default=Path("index"))
     ap.add_argument("--salt-file", type=Path, default=Path(".salt"))
     ap.add_argument("--jobs", type=int, default=4)
@@ -72,7 +80,6 @@ def main(argv=None) -> int:
     rows.sort(key=lambda r: int(r["first_parent_commits"] or 0))
     a.out.mkdir(parents=True, exist_ok=True)
     if not a.salt_file.exists():  # create once here, not in 4 processes at the same time
-        from deferred_imports.mining.mine import load_salt
         load_salt(a.salt_file)
 
     print(f"{len(rows)} repos, {a.jobs} at a time", flush=True)

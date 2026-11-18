@@ -74,13 +74,40 @@ def reachable(edges, start) -> set:
     return seen
 
 
+def closing_pairs(full_sccs: list[set], dfo) -> list[tuple]:
+    """Deferred-only pairs A -> B that close a cycle: A and B sit in the same SCC of the full
+    graph, so B can reach A again."""
+    comp_of = {n: k for k, c in enumerate(full_sccs) for n in c}
+    return sorted(((a, b) for a, b in dfo if a in comp_of and comp_of.get(a) == comp_of.get(b)),
+                  key=str)
+
+
+def shortest_path(edges, start, goal) -> list | None:
+    """Shortest list of nodes start, ..., goal following `edges` (breadth-first), or None."""
+    adj = defaultdict(list)
+    for a, b in edges:
+        adj[a].append(b)
+    prev, todo = {start: None}, [start]
+    for node in todo:
+        if node == goal:
+            path = []
+            while node is not None:
+                path.append(node)
+                node = prev[node]
+            return path[::-1]
+        for n in sorted(adj[node], key=str):
+            if n not in prev:
+                prev[n] = node
+                todo.append(n)
+    return None
+
+
 def summary(db: Path, level: str) -> dict:
     con = sqlite3.connect(f"file:{db}?mode=ro", uri=True)
     eager, dfo = split_pairs(pair_weights(con, level))
     full = eager | dfo
     c_e, c_f = sccs(eager), sccs(full)
-    comp_of = {n: k for k, c in enumerate(c_f) for n in c}
-    closing = sum(1 for a, b in dfo if a in comp_of and comp_of.get(a) == comp_of.get(b))
+    closing = len(closing_pairs(c_f, dfo))
     return {
         "repo": db.stem, "level": level,
         "sccs_eager": len(c_e), "sccs_full": len(c_f),

@@ -32,8 +32,9 @@ top-level imports does not see it. Deferred imports can hide import cycles.
 ```
 deferred_imports/
   mining/      miner (from SENSO-Lens): git history -> SQLite event log, import kinds
-  analysis/    graphs.py (E1), cycles.py (E3), fate.py (E2)  -- not written yet
-corpus/        repos.csv (pinned repositories), resolver.csv (source roots, py2 cut-offs)
+  analysis/    graphs.py (E1), cycles.py (E3), fate.py (E2), handcheck.py (R3 lists)
+corpus/        paper-corpus.csv (the 24 repositories), repos.csv (older screened list),
+               resolver.csv (source roots, py2 cut-offs)
 tests/
 ```
 
@@ -57,10 +58,25 @@ Use the `pinned_sha` from `corpus/repos.csv`. Output goes to `index/` (ignored b
 Each import is tagged by where it sits: `top_level`, `in_function`, `type_checking`,
 `try_except` (or a mix, like `in_function+try_except`).
 
-## Known TODO
+Imports in a branch that never runs are tagged `type_checking` too: the body of
+`if TYPE_CHECKING:` / `if False:`, and the `elif`/`else` parts of `if not TYPE_CHECKING:`.
+This rule came in miner 0.4.0 (18 Nov); databases from 0.3.0 must be mined again.
 
-- Miner fix (found 15 Nov): imports under `if False:` are tagged eager, and imports under
-  `if not TYPE_CHECKING:` are tagged type-only. Fix before mining new repositories.
+## Mine the whole corpus
+
+```bash
+bash scripts/clone_corpus.sh                                    # into ../clones
+uv run python -m deferred_imports.mining.mine_corpus --jobs 4 --check
+```
+
+## Hand-check lists (R3)
+
+```bash
+uv run python -m deferred_imports.analysis.handcheck index/*.sqlite --out handcheck --n 30
+```
+
+Writes `handcheck/promotions.csv` and `handcheck/cycle_edges.csv`: random samples with package
+names, the exact import lines, commit SHAs and GitHub links, and empty columns for the checkers.
 
 ## Origin
 

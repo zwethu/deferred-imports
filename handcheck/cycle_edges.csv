@@ -1,0 +1,225 @@
+id,repo,from_package,to_package,deferred_imports,cycle,cycle_length,way_back_all_eager,way_back_imports,deferred_since,deferred_since_url,pinned_tree_url,last_commit,checker_a_ok (yes/no),checker_b_ok (yes/no),note
+1,netbox,circuits,netbox.models,netbox/circuits/apps.py: from netbox.models.features import register_models  [in_function],circuits -> netbox.models -> netbox.plugins -> netbox.graphql -> circuits.graphql -> circuits,5,1,"netbox.models -> netbox.plugins (eager):
+    netbox/netbox/models/features.py: from netbox.plugins import PluginConfig  [top_level]
+netbox.plugins -> netbox.graphql (eager):
+    netbox/netbox/plugins/registration.py: from netbox.graphql.utils import get_model_label  [top_level]
+netbox.graphql -> circuits.graphql (eager):
+    netbox/netbox/graphql/schema.py: from circuits.graphql.schema import CircuitsQuery  [top_level]
+circuits.graphql -> circuits (eager):
+    netbox/circuits/graphql/enums.py: from circuits.choices import *  [top_level]",91f156de33 (2024-05-06),https://github.com/netbox-community/netbox/commit/91f156de33c557cda3dc3969b5dbb15228a0a776,https://github.com/netbox-community/netbox/tree/3c6fce65200e468b2edc3b3f0bb1ba553994564c,3c6fce6520,,,
+2,netbox,circuits.graphql,core.graphql,netbox/circuits/graphql/filters.py: from core.graphql.filters import ContentTypeFilter  [type_checking],circuits.graphql -> core.graphql -> netbox.graphql -> circuits.graphql,3,1,"core.graphql -> netbox.graphql (eager):
+    netbox/core/graphql/filters.py: from netbox.graphql.filter_lookups import IntegerLookup  [type_checking]
+    netbox/core/graphql/filters.py: from netbox.graphql.filter_lookups import JSONFilter  [type_checking]
+    netbox/core/graphql/filters.py: from netbox.graphql.filters import BaseModelFilter  [top_level]
+    netbox/core/graphql/filters.py: from netbox.graphql.filters import PrimaryModelFilter  [top_level]
+    netbox/core/graphql/filters.py: from netbox.graphql.filters import register_filter  [top_level]
+    netbox/core/graphql/types.py: from netbox.graphql.types import BaseObjectType  [top_level]
+    ... and 2 more
+netbox.graphql -> circuits.graphql (eager):
+    netbox/netbox/graphql/schema.py: from circuits.graphql.schema import CircuitsQuery  [top_level]",e73db97d46 (2026-01-06),https://github.com/netbox-community/netbox/commit/e73db97d467f484ce10e65483937d129b38df934,https://github.com/netbox-community/netbox/tree/3c6fce65200e468b2edc3b3f0bb1ba553994564c,3c6fce6520,,,
+3,netbox,circuits.graphql,ipam.graphql,"netbox/circuits/graphql/filters.py: from ipam.graphql.filters import ASNFilter  [type_checking]
+netbox/circuits/graphql/types.py: from ipam.graphql.types import ASNType  [type_checking]",circuits.graphql -> ipam.graphql -> circuits.graphql,2,1,"ipam.graphql -> circuits.graphql (eager):
+    netbox/ipam/graphql/filters.py: from circuits.graphql.filters import ProviderFilter  [type_checking]
+    netbox/ipam/graphql/types.py: from circuits.graphql.types import ProviderType  [top_level]",c95098c4f0 (2025-05-01),https://github.com/netbox-community/netbox/commit/c95098c4f02ed9199d184fd79e50ff5bcf917513,https://github.com/netbox-community/netbox/tree/3c6fce65200e468b2edc3b3f0bb1ba553994564c,3c6fce6520,,,
+4,netbox,core,core.api,netbox/core/apps.py: from core.api import schema  [in_function],core -> core.api -> core,2,1,"core.api -> core (eager):
+    netbox/core/api/views.py: from core import filtersets  [top_level]
+    netbox/core/api/views.py: from core.jobs import SyncDataSourceJob  [top_level]
+    netbox/core/api/views.py: from core.utils import delete_rq_job  [top_level]
+    netbox/core/api/views.py: from core.utils import enqueue_rq_job  [top_level]
+    netbox/core/api/views.py: from core.utils import get_rq_jobs  [top_level]
+    netbox/core/api/views.py: from core.utils import requeue_rq_job  [top_level]
+    ... and 1 more",eac7d01977 (2023-04-27),https://github.com/netbox-community/netbox/commit/eac7d01977d7c23768f651904bbab50d271d10d9,https://github.com/netbox-community/netbox/tree/3c6fce65200e468b2edc3b3f0bb1ba553994564c,3c6fce6520,,,
+5,netbox,core.graphql,users.graphql,netbox/core/graphql/filters.py: from users.graphql.filters import UserFilter  [type_checking],core.graphql -> users.graphql -> netbox.graphql -> core.graphql,3,1,"users.graphql -> netbox.graphql (eager):
+    netbox/users/graphql/filters.py: from netbox.graphql.filters import BaseModelFilter  [top_level]
+    netbox/users/graphql/filters.py: from netbox.graphql.filters import register_filter  [top_level]
+    netbox/users/graphql/types.py: from netbox.graphql.types import BaseObjectType  [top_level]
+    netbox/users/graphql/types.py: from netbox.graphql.types import register_type  [top_level]
+netbox.graphql -> core.graphql (eager):
+    netbox/netbox/graphql/filter_mixins.py: from core.graphql.filters import *  [type_checking]
+    netbox/netbox/graphql/filters.py: from core.graphql.filter_mixins import ChangeLoggingMixin  [top_level]
+    netbox/netbox/graphql/schema.py: from core.graphql.schema import CoreQuery  [top_level]
+    netbox/netbox/graphql/types.py: from core.graphql.mixins import ChangelogMixin  [top_level]",c95098c4f0 (2025-05-01),https://github.com/netbox-community/netbox/commit/c95098c4f02ed9199d184fd79e50ff5bcf917513,https://github.com/netbox-community/netbox/tree/3c6fce65200e468b2edc3b3f0bb1ba553994564c,3c6fce6520,,,
+6,netbox,dcim,netbox.models,netbox/dcim/apps.py: from netbox.models.features import register_models  [in_function],dcim -> netbox.models -> utilities -> dcim,3,1,"netbox.models -> utilities (eager):
+    netbox/netbox/models/__init__.py: from utilities.mptt import TreeManager  [top_level]
+    netbox/netbox/models/__init__.py: from utilities.querysets import RestrictedQuerySet  [top_level]
+    netbox/netbox/models/__init__.py: from utilities.views import get_viewname  [in_function]
+    netbox/netbox/models/features.py: from utilities.json import CustomFieldJSONEncoder  [top_level]
+    netbox/netbox/models/features.py: from utilities.permissions import ModelAction  [top_level]
+    netbox/netbox/models/features.py: from utilities.permissions import register_model_actions  [top_level]
+    ... and 6 more
+utilities -> dcim (eager):
+    netbox/utilities/conversion.py: from dcim.choices import CableLengthUnitChoices  [top_level]",91f156de33 (2024-05-06),https://github.com/netbox-community/netbox/commit/91f156de33c557cda3dc3969b5dbb15228a0a776,https://github.com/netbox-community/netbox/tree/3c6fce65200e468b2edc3b3f0bb1ba553994564c,3c6fce6520,,,
+7,netbox,dcim.graphql,vpn.graphql,"netbox/dcim/graphql/filters.py: from vpn.graphql.filters import L2VPNFilter  [type_checking]
+netbox/dcim/graphql/filters.py: from vpn.graphql.filters import TunnelTerminationFilter  [type_checking]
+netbox/dcim/graphql/types.py: from vpn.graphql.types import L2VPNTerminationType  [type_checking]",dcim.graphql -> vpn.graphql -> dcim.graphql,2,0,"vpn.graphql -> dcim.graphql (deferred):
+    netbox/vpn/graphql/types.py: from dcim.graphql.types import InterfaceType  [type_checking]",c95098c4f0 (2025-05-01),https://github.com/netbox-community/netbox/commit/c95098c4f02ed9199d184fd79e50ff5bcf917513,https://github.com/netbox-community/netbox/tree/3c6fce65200e468b2edc3b3f0bb1ba553994564c,3c6fce6520,,,
+8,netbox,dcim.graphql,wireless.graphql,"netbox/dcim/graphql/filters.py: from wireless.graphql.enums import WirelessChannelEnum  [type_checking]
+netbox/dcim/graphql/filters.py: from wireless.graphql.enums import WirelessRoleEnum  [type_checking]
+netbox/dcim/graphql/filters.py: from wireless.graphql.filters import WirelessLANFilter  [type_checking]
+netbox/dcim/graphql/filters.py: from wireless.graphql.filters import WirelessLinkFilter  [type_checking]
+netbox/dcim/graphql/types.py: from wireless.graphql.types import WirelessLANType  [type_checking]
+netbox/dcim/graphql/types.py: from wireless.graphql.types import WirelessLinkType  [type_checking]",dcim.graphql -> wireless.graphql -> dcim.graphql,2,1,"wireless.graphql -> dcim.graphql (eager):
+    netbox/wireless/graphql/filters.py: from dcim.graphql.filter_mixins import ScopedFilterMixin  [top_level]
+    netbox/wireless/graphql/filters.py: from dcim.graphql.filters import InterfaceFilter  [type_checking]
+    netbox/wireless/graphql/types.py: from dcim.graphql.types import DeviceType  [type_checking]
+    netbox/wireless/graphql/types.py: from dcim.graphql.types import InterfaceType  [type_checking]
+    netbox/wireless/graphql/types.py: from dcim.graphql.types import LocationType  [type_checking]
+    netbox/wireless/graphql/types.py: from dcim.graphql.types import RegionType  [type_checking]
+    ... and 2 more",c95098c4f0 (2025-05-01),https://github.com/netbox-community/netbox/commit/c95098c4f02ed9199d184fd79e50ff5bcf917513,https://github.com/netbox-community/netbox/tree/3c6fce65200e468b2edc3b3f0bb1ba553994564c,3c6fce6520,,,
+9,netbox,dcim.svg,dcim.models,netbox/dcim/svg/cables.py: from dcim.models import Cable  [in_function],dcim.svg -> dcim.models -> dcim.svg,2,1,"dcim.models -> dcim.svg (eager):
+    netbox/dcim/models/racks.py: from dcim.svg import RackElevationSVG  [top_level]",306e98a81e (2022-08-17),https://github.com/netbox-community/netbox/commit/306e98a81ed80ce17b993269fc8d0da9855d8339,https://github.com/netbox-community/netbox/tree/3c6fce65200e468b2edc3b3f0bb1ba553994564c,3c6fce6520,,,
+10,netbox,dcim.ui,dcim.models,"netbox/dcim/ui/panels.py: from dcim.models import Module  [in_function]
+netbox/dcim/ui/panels.py: from dcim.models import Module  [in_function]
+netbox/dcim/ui/panels.py: from dcim.models import ModuleBay  [in_function]",dcim.ui -> dcim.models -> dcim -> dcim.ui,3,1,"dcim.models -> dcim (eager):
+    netbox/dcim/models/base.py: from dcim.constants import PORT_POSITION_MAX  [top_level]
+    netbox/dcim/models/base.py: from dcim.constants import PORT_POSITION_MIN  [top_level]
+    netbox/dcim/models/cables.py: from dcim import cable_profiles  [in_function]
+    netbox/dcim/models/cables.py: from dcim.choices import *  [top_level]
+    netbox/dcim/models/cables.py: from dcim.constants import *  [top_level]
+    netbox/dcim/models/cables.py: from dcim.exceptions import UnsupportedCablePath  [top_level]
+    ... and 36 more
+dcim -> dcim.ui (eager):
+    netbox/dcim/views.py: from .ui import panels  [top_level]",8cc4548e1f (2026-09-02),https://github.com/netbox-community/netbox/commit/8cc4548e1f51fcd4cb63299339b55e5ef179e28a,https://github.com/netbox-community/netbox/tree/3c6fce65200e468b2edc3b3f0bb1ba553994564c,3c6fce6520,,,
+11,netbox,extras.graphql,dcim.graphql,"netbox/extras/graphql/filters.py: from dcim.graphql.filters import DeviceRoleFilter  [type_checking]
+netbox/extras/graphql/filters.py: from dcim.graphql.filters import DeviceTypeFilter  [type_checking]
+netbox/extras/graphql/filters.py: from dcim.graphql.filters import LocationFilter  [type_checking]
+netbox/extras/graphql/filters.py: from dcim.graphql.filters import PlatformFilter  [type_checking]
+netbox/extras/graphql/filters.py: from dcim.graphql.filters import RegionFilter  [type_checking]
+netbox/extras/graphql/filters.py: from dcim.graphql.filters import SiteFilter  [type_checking]
+... and 9 more",extras.graphql -> dcim.graphql -> extras.graphql,2,1,"dcim.graphql -> extras.graphql (eager):
+    netbox/dcim/graphql/filter_mixins.py: from extras.graphql.filters import ConfigTemplateFilter  [type_checking]
+    netbox/dcim/graphql/filters.py: from extras.graphql.filter_mixins import ConfigContextFilterMixin  [top_level]
+    netbox/dcim/graphql/filters.py: from extras.graphql.filters import ConfigTemplateFilter  [type_checking]
+    netbox/dcim/graphql/filters.py: from extras.graphql.filters import ImageAttachmentFilter  [type_checking]
+    netbox/dcim/graphql/types.py: from extras.graphql.mixins import ConfigContextMixin  [top_level]
+    netbox/dcim/graphql/types.py: from extras.graphql.mixins import ContactsMixin  [top_level]
+    ... and 2 more",c95098c4f0 (2025-05-01),https://github.com/netbox-community/netbox/commit/c95098c4f02ed9199d184fd79e50ff5bcf917513,https://github.com/netbox-community/netbox/tree/3c6fce65200e468b2edc3b3f0bb1ba553994564c,3c6fce6520,,,
+12,netbox,extras.graphql,tenancy.graphql,"netbox/extras/graphql/filters.py: from tenancy.graphql.filters import TenantFilter  [type_checking]
+netbox/extras/graphql/filters.py: from tenancy.graphql.filters import TenantGroupFilter  [type_checking]
+netbox/extras/graphql/mixins.py: from tenancy.graphql.types import ContactAssignmentType  [type_checking]
+netbox/extras/graphql/types.py: from tenancy.graphql.types import TenantGroupType  [type_checking]
+netbox/extras/graphql/types.py: from tenancy.graphql.types import TenantType  [type_checking]",extras.graphql -> tenancy.graphql -> extras.graphql,2,1,"tenancy.graphql -> extras.graphql (eager):
+    netbox/tenancy/graphql/filters.py: from extras.graphql.filter_mixins import CustomFieldsFilterMixin  [top_level]
+    netbox/tenancy/graphql/filters.py: from extras.graphql.filter_mixins import TagsFilterMixin  [top_level]
+    netbox/tenancy/graphql/types.py: from extras.graphql.mixins import ContactsMixin  [top_level]
+    netbox/tenancy/graphql/types.py: from extras.graphql.mixins import CustomFieldsMixin  [top_level]
+    netbox/tenancy/graphql/types.py: from extras.graphql.mixins import TagsMixin  [top_level]",91f156de33 (2024-05-06),https://github.com/netbox-community/netbox/commit/91f156de33c557cda3dc3969b5dbb15228a0a776,https://github.com/netbox-community/netbox/tree/3c6fce65200e468b2edc3b3f0bb1ba553994564c,3c6fce6520,,,
+13,netbox,extras.graphql,virtualization.graphql,"netbox/extras/graphql/filters.py: from virtualization.graphql.filters import ClusterFilter  [type_checking]
+netbox/extras/graphql/filters.py: from virtualization.graphql.filters import ClusterGroupFilter  [type_checking]
+netbox/extras/graphql/filters.py: from virtualization.graphql.filters import ClusterTypeFilter  [type_checking]
+netbox/extras/graphql/types.py: from virtualization.graphql.types import ClusterGroupType  [type_checking]
+netbox/extras/graphql/types.py: from virtualization.graphql.types import ClusterType  [type_checking]
+netbox/extras/graphql/types.py: from virtualization.graphql.types import ClusterTypeType  [type_checking]
+... and 1 more",extras.graphql -> virtualization.graphql -> extras.graphql,2,1,"virtualization.graphql -> extras.graphql (eager):
+    netbox/virtualization/graphql/filters.py: from extras.graphql.filter_mixins import ConfigContextFilterMixin  [top_level]
+    netbox/virtualization/graphql/types.py: from extras.graphql.mixins import ConfigContextMixin  [top_level]
+    netbox/virtualization/graphql/types.py: from extras.graphql.mixins import ContactsMixin  [top_level]
+    netbox/virtualization/graphql/types.py: from extras.graphql.types import ConfigTemplateType  [type_checking]",c95098c4f0 (2025-05-01),https://github.com/netbox-community/netbox/commit/c95098c4f02ed9199d184fd79e50ff5bcf917513,https://github.com/netbox-community/netbox/tree/3c6fce65200e468b2edc3b3f0bb1ba553994564c,3c6fce6520,,,
+14,netbox,extras.models,dcim.models,netbox/extras/models/configs.py: from dcim.models import Device  [in_function],extras.models -> dcim.models -> extras.models,2,1,"dcim.models -> extras.models (eager):
+    netbox/dcim/models/devices.py: from extras.models import ConfigContextModel  [top_level]
+    netbox/dcim/models/devices.py: from extras.models import CustomField  [top_level]
+    netbox/dcim/models/modules.py: from extras.models import CustomField  [top_level]",8cc4548e1f (2026-09-02),https://github.com/netbox-community/netbox/commit/8cc4548e1f51fcd4cb63299339b55e5ef179e28a,https://github.com/netbox-community/netbox/tree/3c6fce65200e468b2edc3b3f0bb1ba553994564c,3c6fce6520,,,
+15,netbox,ipam,utilities.forms,netbox/ipam/utils.py: from utilities.forms.utils import parse_numeric_range  [in_function],ipam -> utilities.forms -> core.forms -> users.models -> ipam,4,1,"utilities.forms -> core.forms (eager):
+    netbox/utilities/forms/bulk_import.py: from core.forms.mixins import SyncedDataMixin  [top_level]
+core.forms -> users.models (eager):
+    netbox/core/forms/filtersets.py: from users.models import User  [top_level]
+users.models -> ipam (eager):
+    netbox/users/models/tokens.py: from ipam.fields import IPNetworkField  [top_level]",8cc4548e1f (2026-09-02),https://github.com/netbox-community/netbox/commit/8cc4548e1f51fcd4cb63299339b55e5ef179e28a,https://github.com/netbox-community/netbox/tree/3c6fce65200e468b2edc3b3f0bb1ba553994564c,3c6fce6520,,,
+16,netbox,ipam.graphql,core.graphql,netbox/ipam/graphql/filters.py: from core.graphql.filters import ContentTypeFilter  [type_checking],ipam.graphql -> core.graphql -> netbox.graphql -> ipam.graphql,3,1,"core.graphql -> netbox.graphql (eager):
+    netbox/core/graphql/filters.py: from netbox.graphql.filter_lookups import IntegerLookup  [type_checking]
+    netbox/core/graphql/filters.py: from netbox.graphql.filter_lookups import JSONFilter  [type_checking]
+    netbox/core/graphql/filters.py: from netbox.graphql.filters import BaseModelFilter  [top_level]
+    netbox/core/graphql/filters.py: from netbox.graphql.filters import PrimaryModelFilter  [top_level]
+    netbox/core/graphql/filters.py: from netbox.graphql.filters import register_filter  [top_level]
+    netbox/core/graphql/types.py: from netbox.graphql.types import BaseObjectType  [top_level]
+    ... and 2 more
+netbox.graphql -> ipam.graphql (eager):
+    netbox/netbox/graphql/schema.py: from ipam.graphql.schema import IPAMQuery  [top_level]",e73db97d46 (2026-01-06),https://github.com/netbox-community/netbox/commit/e73db97d467f484ce10e65483937d129b38df934,https://github.com/netbox-community/netbox/tree/3c6fce65200e468b2edc3b3f0bb1ba553994564c,3c6fce6520,,,
+17,netbox,ipam.graphql,virtualization.graphql,"netbox/ipam/graphql/types.py: from virtualization.graphql.types import ClusterGroupType  [type_checking]
+netbox/ipam/graphql/types.py: from virtualization.graphql.types import ClusterType  [type_checking]
+netbox/ipam/graphql/types.py: from virtualization.graphql.types import VMInterfaceType  [type_checking]
+netbox/ipam/graphql/types.py: from virtualization.graphql.types import VirtualMachineType  [type_checking]",ipam.graphql -> virtualization.graphql -> ipam.graphql,2,1,"virtualization.graphql -> ipam.graphql (eager):
+    netbox/virtualization/graphql/filters.py: from ipam.graphql.filters import FHRPGroupAssignmentFilter  [type_checking]
+    netbox/virtualization/graphql/filters.py: from ipam.graphql.filters import IPAddressFilter  [type_checking]
+    netbox/virtualization/graphql/filters.py: from ipam.graphql.filters import ServiceFilter  [type_checking]
+    netbox/virtualization/graphql/filters.py: from ipam.graphql.filters import VLANGroupFilter  [type_checking]
+    netbox/virtualization/graphql/filters.py: from ipam.graphql.filters import VRFFilter  [type_checking]
+    netbox/virtualization/graphql/types.py: from ipam.graphql.mixins import IPAddressesMixin  [top_level]
+    ... and 6 more",c95098c4f0 (2025-05-01),https://github.com/netbox-community/netbox/commit/c95098c4f02ed9199d184fd79e50ff5bcf917513,https://github.com/netbox-community/netbox/tree/3c6fce65200e468b2edc3b3f0bb1ba553994564c,3c6fce6520,,,
+18,netbox,netbox,netbox.api.viewsets,netbox/netbox/jobs.py: from netbox.api.viewsets import HTTP_ACTIONS  [in_function],netbox -> netbox.api.viewsets -> netbox,2,1,"netbox.api.viewsets -> netbox (eager):
+    netbox/netbox/api/viewsets/mixins.py: from netbox.jobs import AsyncAPIJob  [top_level]",8cc4548e1f (2026-09-02),https://github.com/netbox-community/netbox/commit/8cc4548e1f51fcd4cb63299339b55e5ef179e28a,https://github.com/netbox-community/netbox/tree/3c6fce65200e468b2edc3b3f0bb1ba553994564c,3c6fce6520,,,
+19,netbox,netbox.api,netbox.authentication,netbox/netbox/api/authentication.py: from netbox.authentication import LDAPBackend  [in_function],netbox.api -> netbox.authentication -> netbox -> netbox.api,3,1,"netbox.authentication -> netbox (eager):
+    netbox/netbox/authentication/__init__.py: from netbox.settings_utils import load_ldap_config  [top_level]
+netbox -> netbox.api (eager):
+    netbox/netbox/urls.py: from netbox.api.views import APIRootView  [top_level]
+    netbox/netbox/urls.py: from netbox.api.views import AuthenticationCheckView  [top_level]
+    netbox/netbox/urls.py: from netbox.api.views import StatusView  [top_level]",91f156de33 (2024-05-06),https://github.com/netbox-community/netbox/commit/91f156de33c557cda3dc3969b5dbb15228a0a776,https://github.com/netbox-community/netbox/tree/3c6fce65200e468b2edc3b3f0bb1ba553994564c,3c6fce6520,,,
+20,netbox,netbox.plugins,netbox.models,netbox/netbox/plugins/__init__.py: from netbox.models.features import register_models  [in_function],netbox.plugins -> netbox.models -> netbox.plugins,2,1,"netbox.models -> netbox.plugins (eager):
+    netbox/netbox/models/features.py: from netbox.plugins import PluginConfig  [top_level]",91f156de33 (2024-05-06),https://github.com/netbox-community/netbox/commit/91f156de33c557cda3dc3969b5dbb15228a0a776,https://github.com/netbox-community/netbox/tree/3c6fce65200e468b2edc3b3f0bb1ba553994564c,3c6fce6520,,,
+21,netbox,tenancy,netbox.models,netbox/tenancy/apps.py: from netbox.models.features import register_models  [in_function],tenancy -> netbox.models -> tenancy.models -> tenancy,3,0,"netbox.models -> tenancy.models (deferred):
+    netbox/netbox/models/features.py: from tenancy.models import ContactAssignment  [in_function]
+tenancy.models -> tenancy (eager):
+    netbox/tenancy/models/contacts.py: from tenancy.choices import *  [top_level]",91f156de33 (2024-05-06),https://github.com/netbox-community/netbox/commit/91f156de33c557cda3dc3969b5dbb15228a0a776,https://github.com/netbox-community/netbox/tree/3c6fce65200e468b2edc3b3f0bb1ba553994564c,3c6fce6520,,,
+22,netbox,tenancy.graphql,dcim.graphql,"netbox/tenancy/graphql/filters.py: from dcim.graphql.filters import CableFilter  [type_checking]
+netbox/tenancy/graphql/filters.py: from dcim.graphql.filters import DeviceFilter  [type_checking]
+netbox/tenancy/graphql/filters.py: from dcim.graphql.filters import LocationFilter  [type_checking]
+netbox/tenancy/graphql/filters.py: from dcim.graphql.filters import PowerFeedFilter  [type_checking]
+netbox/tenancy/graphql/filters.py: from dcim.graphql.filters import RackFilter  [type_checking]
+netbox/tenancy/graphql/filters.py: from dcim.graphql.filters import RackReservationFilter  [type_checking]
+... and 10 more",tenancy.graphql -> dcim.graphql -> tenancy.graphql,2,1,"dcim.graphql -> tenancy.graphql (eager):
+    netbox/dcim/graphql/filters.py: from tenancy.graphql.filter_mixins import ContactFilterMixin  [top_level]
+    netbox/dcim/graphql/filters.py: from tenancy.graphql.filter_mixins import TenancyFilterMixin  [top_level]
+    netbox/dcim/graphql/types.py: from tenancy.graphql.types import TenantType  [type_checking]",c95098c4f0 (2025-05-01),https://github.com/netbox-community/netbox/commit/c95098c4f02ed9199d184fd79e50ff5bcf917513,https://github.com/netbox-community/netbox/tree/3c6fce65200e468b2edc3b3f0bb1ba553994564c,3c6fce6520,,,
+23,netbox,tenancy.graphql,ipam.graphql,"netbox/tenancy/graphql/filters.py: from ipam.graphql.filters import ASNFilter  [type_checking]
+netbox/tenancy/graphql/filters.py: from ipam.graphql.filters import ASNRangeFilter  [type_checking]
+netbox/tenancy/graphql/filters.py: from ipam.graphql.filters import AggregateFilter  [type_checking]
+netbox/tenancy/graphql/filters.py: from ipam.graphql.filters import IPAddressFilter  [type_checking]
+netbox/tenancy/graphql/filters.py: from ipam.graphql.filters import IPRangeFilter  [type_checking]
+netbox/tenancy/graphql/filters.py: from ipam.graphql.filters import PrefixFilter  [type_checking]
+... and 13 more",tenancy.graphql -> ipam.graphql -> tenancy.graphql,2,1,"ipam.graphql -> tenancy.graphql (eager):
+    netbox/ipam/graphql/filters.py: from tenancy.graphql.filter_mixins import ContactFilterMixin  [top_level]
+    netbox/ipam/graphql/filters.py: from tenancy.graphql.filter_mixins import TenancyFilterMixin  [top_level]
+    netbox/ipam/graphql/types.py: from tenancy.graphql.types import TenantType  [type_checking]",c95098c4f0 (2025-05-01),https://github.com/netbox-community/netbox/commit/c95098c4f02ed9199d184fd79e50ff5bcf917513,https://github.com/netbox-community/netbox/tree/3c6fce65200e468b2edc3b3f0bb1ba553994564c,3c6fce6520,,,
+24,netbox,tenancy.graphql,wireless.graphql,"netbox/tenancy/graphql/filters.py: from wireless.graphql.filters import WirelessLANFilter  [type_checking]
+netbox/tenancy/graphql/filters.py: from wireless.graphql.filters import WirelessLinkFilter  [type_checking]
+netbox/tenancy/graphql/types.py: from wireless.graphql.types import WirelessLANType  [type_checking]
+netbox/tenancy/graphql/types.py: from wireless.graphql.types import WirelessLinkType  [type_checking]",tenancy.graphql -> wireless.graphql -> tenancy.graphql,2,1,"wireless.graphql -> tenancy.graphql (eager):
+    netbox/wireless/graphql/filters.py: from tenancy.graphql.filter_mixins import TenancyFilterMixin  [top_level]
+    netbox/wireless/graphql/types.py: from tenancy.graphql.types import TenantType  [type_checking]",c95098c4f0 (2025-05-01),https://github.com/netbox-community/netbox/commit/c95098c4f02ed9199d184fd79e50ff5bcf917513,https://github.com/netbox-community/netbox/tree/3c6fce65200e468b2edc3b3f0bb1ba553994564c,3c6fce6520,,,
+25,netbox,users,netbox.models,netbox/users/apps.py: from netbox.models.features import register_models  [in_function],users -> netbox.models -> netbox -> users,3,1,"netbox.models -> netbox (eager):
+    netbox/netbox/models/features.py: from netbox.constants import CORE_APPS  [top_level]
+    netbox/netbox/models/features.py: from netbox.constants import JOB_DELETE_BATCH_SIZE  [top_level]
+    netbox/netbox/models/features.py: from netbox.registry import registry  [top_level]
+    netbox/netbox/models/features.py: from netbox.signals import post_clean  [top_level]
+    netbox/netbox/models/features.py: from netbox.utils import register_model_feature  [top_level]
+    netbox/netbox/models/mixins.py: from netbox.choices import *  [top_level]
+netbox -> users (eager):
+    netbox/netbox/filtersets.py: from users.filterset_mixins import OwnerFilterMixin  [top_level]
+    netbox/netbox/preferences.py: from users.preferences import UserPreference  [top_level]",91f156de33 (2024-05-06),https://github.com/netbox-community/netbox/commit/91f156de33c557cda3dc3969b5dbb15228a0a776,https://github.com/netbox-community/netbox/tree/3c6fce65200e468b2edc3b3f0bb1ba553994564c,3c6fce6520,,,
+26,netbox,virtualization.graphql,vpn.graphql,"netbox/virtualization/graphql/filters.py: from vpn.graphql.filters import L2VPNFilter  [type_checking]
+netbox/virtualization/graphql/filters.py: from vpn.graphql.filters import TunnelTerminationFilter  [type_checking]",virtualization.graphql -> vpn.graphql -> virtualization.graphql,2,0,"vpn.graphql -> virtualization.graphql (deferred):
+    netbox/vpn/graphql/types.py: from virtualization.graphql.types import VMInterfaceType  [type_checking]",c95098c4f0 (2025-05-01),https://github.com/netbox-community/netbox/commit/c95098c4f02ed9199d184fd79e50ff5bcf917513,https://github.com/netbox-community/netbox/tree/3c6fce65200e468b2edc3b3f0bb1ba553994564c,3c6fce6520,,,
+27,netbox,vpn,netbox.models,netbox/vpn/apps.py: from netbox.models.features import register_models  [in_function],vpn -> netbox.models -> netbox.plugins -> netbox.graphql -> vpn.graphql -> vpn,5,1,"netbox.models -> netbox.plugins (eager):
+    netbox/netbox/models/features.py: from netbox.plugins import PluginConfig  [top_level]
+netbox.plugins -> netbox.graphql (eager):
+    netbox/netbox/plugins/registration.py: from netbox.graphql.utils import get_model_label  [top_level]
+netbox.graphql -> vpn.graphql (eager):
+    netbox/netbox/graphql/schema.py: from vpn.graphql.schema import VPNQuery  [top_level]
+vpn.graphql -> vpn (eager):
+    netbox/vpn/graphql/enums.py: from vpn.choices import *  [top_level]",91f156de33 (2024-05-06),https://github.com/netbox-community/netbox/commit/91f156de33c557cda3dc3969b5dbb15228a0a776,https://github.com/netbox-community/netbox/tree/3c6fce65200e468b2edc3b3f0bb1ba553994564c,3c6fce6520,,,
+28,netbox,vpn.graphql,core.graphql,netbox/vpn/graphql/filters.py: from core.graphql.filters import ContentTypeFilter  [type_checking],vpn.graphql -> core.graphql -> netbox.graphql -> vpn.graphql,3,1,"core.graphql -> netbox.graphql (eager):
+    netbox/core/graphql/filters.py: from netbox.graphql.filter_lookups import IntegerLookup  [type_checking]
+    netbox/core/graphql/filters.py: from netbox.graphql.filter_lookups import JSONFilter  [type_checking]
+    netbox/core/graphql/filters.py: from netbox.graphql.filters import BaseModelFilter  [top_level]
+    netbox/core/graphql/filters.py: from netbox.graphql.filters import PrimaryModelFilter  [top_level]
+    netbox/core/graphql/filters.py: from netbox.graphql.filters import register_filter  [top_level]
+    netbox/core/graphql/types.py: from netbox.graphql.types import BaseObjectType  [top_level]
+    ... and 2 more
+netbox.graphql -> vpn.graphql (eager):
+    netbox/netbox/graphql/schema.py: from vpn.graphql.schema import VPNQuery  [top_level]",e73db97d46 (2026-01-06),https://github.com/netbox-community/netbox/commit/e73db97d467f484ce10e65483937d129b38df934,https://github.com/netbox-community/netbox/tree/3c6fce65200e468b2edc3b3f0bb1ba553994564c,3c6fce6520,,,
+29,netbox,vpn.graphql,virtualization.graphql,netbox/vpn/graphql/types.py: from virtualization.graphql.types import VMInterfaceType  [type_checking],vpn.graphql -> virtualization.graphql -> vpn.graphql,2,0,"virtualization.graphql -> vpn.graphql (deferred):
+    netbox/virtualization/graphql/filters.py: from vpn.graphql.filters import L2VPNFilter  [type_checking]
+    netbox/virtualization/graphql/filters.py: from vpn.graphql.filters import TunnelTerminationFilter  [type_checking]",c95098c4f0 (2025-05-01),https://github.com/netbox-community/netbox/commit/c95098c4f02ed9199d184fd79e50ff5bcf917513,https://github.com/netbox-community/netbox/tree/3c6fce65200e468b2edc3b3f0bb1ba553994564c,3c6fce6520,,,
+30,netbox,wireless.graphql,ipam.graphql,"netbox/wireless/graphql/filters.py: from ipam.graphql.filters import VLANFilter  [type_checking]
+netbox/wireless/graphql/types.py: from ipam.graphql.types import VLANType  [type_checking]",wireless.graphql -> ipam.graphql -> wireless.graphql,2,0,"ipam.graphql -> wireless.graphql (deferred):
+    netbox/ipam/graphql/types.py: from wireless.graphql.types import WirelessLANType  [type_checking]",c95098c4f0 (2025-05-01),https://github.com/netbox-community/netbox/commit/c95098c4f02ed9199d184fd79e50ff5bcf917513,https://github.com/netbox-community/netbox/tree/3c6fce65200e468b2edc3b3f0bb1ba553994564c,3c6fce6520,,,

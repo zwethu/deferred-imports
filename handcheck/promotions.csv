@@ -1,0 +1,32 @@
+id,repo,from_package,to_package,deferred_since,promoted_at,commits,active_commits,days,hoisted,type_only,from_state,imports_at_start,imports_after_promotion,start_commit_url,promotion_commit_url,checker,ok (yes/no),note
+1,netbox,core,netbox.models,91f156de33 (2024-05-06),7bc0d34196 (2024-09-03),46,7,119.99,0,0,none,netbox/core/apps.py: from netbox.models.features import register_models  [in_function],"netbox/core/apps.py: from netbox.models.features import register_models  [in_function]
+netbox/core/signals.py: from netbox.models.features import ChangeLoggingMixin  [top_level]",https://github.com/netbox-community/netbox/commit/91f156de33c557cda3dc3969b5dbb15228a0a776,https://github.com/netbox-community/netbox/commit/7bc0d34196323ac992d7ec80b1caa48e6094d88d,,,
+2,netbox,dcim.graphql,users.graphql,c95098c4f0 (2025-05-01),e73db97d46 (2026-01-06),455,8,250.19,0,1,none,"netbox/dcim/graphql/filters.py: from users.graphql.filters import UserFilter  [type_checking]
+netbox/dcim/graphql/types.py: from users.graphql.types import UserType  [type_checking]","netbox/dcim/graphql/filters.py: from users.graphql.filters import UserFilter  [type_checking]
+netbox/dcim/graphql/types.py: from users.graphql.mixins import OwnerMixin  [top_level]
+netbox/dcim/graphql/types.py: from users.graphql.types import UserType  [type_checking]",https://github.com/netbox-community/netbox/commit/c95098c4f02ed9199d184fd79e50ff5bcf917513,https://github.com/netbox-community/netbox/commit/e73db97d467f484ce10e65483937d129b38df934,,,
+3,netbox,extras,netbox.models,7bc0d34196 (2024-09-03),d8822c8bca (2025-09-02),504,33,363.91,0,0,eager,netbox/extras/apps.py: from netbox.models.features import register_models  [in_function],"netbox/extras/apps.py: from netbox.models.features import register_models  [in_function]
+netbox/extras/events.py: from netbox.models.features import has_feature  [top_level]
+netbox/extras/signals.py: from netbox.models.features import has_feature  [top_level]",https://github.com/netbox-community/netbox/commit/7bc0d34196323ac992d7ec80b1caa48e6094d88d,https://github.com/netbox-community/netbox/commit/d8822c8bca10bc3d9b1556e1602d7765fc0763d6,,,
+4,netbox,extras.graphql,users.graphql,c95098c4f0 (2025-05-01),e73db97d46 (2026-01-06),455,6,250.19,0,1,none,"netbox/extras/graphql/filters.py: from users.graphql.filters import GroupFilter  [type_checking]
+netbox/extras/graphql/filters.py: from users.graphql.filters import UserFilter  [type_checking]
+netbox/extras/graphql/types.py: from users.graphql.types import GroupType  [type_checking]
+netbox/extras/graphql/types.py: from users.graphql.types import UserType  [type_checking]","netbox/extras/graphql/filters.py: from users.graphql.filters import GroupFilter  [type_checking]
+netbox/extras/graphql/filters.py: from users.graphql.filters import UserFilter  [type_checking]
+netbox/extras/graphql/types.py: from users.graphql.mixins import OwnerMixin  [top_level]
+netbox/extras/graphql/types.py: from users.graphql.types import GroupType  [type_checking]
+netbox/extras/graphql/types.py: from users.graphql.types import UserType  [type_checking]",https://github.com/netbox-community/netbox/commit/c95098c4f02ed9199d184fd79e50ff5bcf917513,https://github.com/netbox-community/netbox/commit/e73db97d467f484ce10e65483937d129b38df934,,,
+5,netbox,netbox,extras.models,f26227ecec (2021-04-16),c855570b55 (2021-05-07),3,3,21.02,0,0,none,"netbox/netbox/models.py: from extras.models import CustomField  [in_function]
+netbox/netbox/models.py: from extras.models import CustomField  [in_function]
+netbox/netbox/models.py: from extras.models import ObjectChange  [in_function]","netbox/netbox/filtersets.py: from extras.models import CustomField  [top_level]
+netbox/netbox/models.py: from extras.models import CustomField  [in_function]
+netbox/netbox/models.py: from extras.models import CustomField  [in_function]
+netbox/netbox/models.py: from extras.models import ObjectChange  [in_function]",https://github.com/netbox-community/netbox/commit/f26227ecec9a5a92333f4c9f48bdd4d371b0b2f2,https://github.com/netbox-community/netbox/commit/c855570b55a9c463b471fdf23cf3010f184c2110,,,
+6,netbox,netbox.authentication,netbox,91f156de33 (2024-05-06),48ecc712bc (2026-07-13),1397,12,797.8,1,0,none,netbox/netbox/authentication/__init__.py: from netbox import ldap_config  [in_function+try_except],netbox/netbox/authentication/__init__.py: from netbox.settings_utils import load_ldap_config  [top_level],https://github.com/netbox-community/netbox/commit/91f156de33c557cda3dc3969b5dbb15228a0a776,https://github.com/netbox-community/netbox/commit/48ecc712bc94d7cd3693441175bb8299915c1317,,,
+7,netbox,netbox.models,core.models,eac7d01977 (2023-04-27),7b90481fc9 (2023-12-29),21,6,245.85,0,0,none,"netbox/netbox/models/features.py: from core.models import AutoSyncRecord  [in_function]
+netbox/netbox/models/features.py: from core.models import DataFile  [in_function]","netbox/netbox/models/features.py: from core.models import AutoSyncRecord  [in_function]
+netbox/netbox/models/features.py: from core.models import AutoSyncRecord  [in_function]
+netbox/netbox/models/features.py: from core.models import ContentType  [top_level]
+netbox/netbox/models/features.py: from core.models import DataFile  [in_function]",https://github.com/netbox-community/netbox/commit/eac7d01977d7c23768f651904bbab50d271d10d9,https://github.com/netbox-community/netbox/commit/7b90481fc9bc7cf30da5b2027877a2d5cb63a919,,,
+8,netbox,utilities,core.models,91f156de33 (2024-05-06),c95098c4f0 (2025-05-01),363,26,359.89,0,0,none,netbox/utilities/permissions.py: from core.models import ObjectType  [in_function],"netbox/utilities/permissions.py: from core.models import ObjectType  [in_function]
+netbox/utilities/tables.py: from core.models import ObjectType  [top_level]",https://github.com/netbox-community/netbox/commit/91f156de33c557cda3dc3969b5dbb15228a0a776,https://github.com/netbox-community/netbox/commit/c95098c4f02ed9199d184fd79e50ff5bcf917513,,,

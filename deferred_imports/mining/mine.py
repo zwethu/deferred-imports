@@ -47,7 +47,7 @@ from tree_sitter import Language, Parser
 
 from deferred_imports.mining import edges, schema
 
-MINER_VERSION = "0.3.0"
+MINER_VERSION = "0.4.0"  # 0.4.0: if False: / if not TYPE_CHECKING: fix (15 Nov)
 BATCH = 500  # commits per transaction
 # A commit changing more files than this is flagged is_oversized (provisional; agree with the
 # team). One such commit would otherwise give every module pair an opportunity.
@@ -136,6 +136,30 @@ def _kind(stack: tuple) -> str:
     return "+".join(tags) or "top_level"
 
 
+def never_runs(cond: str) -> str | None:
+    """Which part of `if <cond>:` never runs at runtime, so its imports are tagged type_checking.
+
+    "body" for TYPE_CHECKING / x.TYPE_CHECKING / False, "else" (every elif and else part) for
+    `not` of those, None otherwise. Other conditions that mention TYPE_CHECKING without `not`
+    (`TYPE_CHECKING and x`) count as "body", as before. Only the `if` condition is read, not an
+    `elif` one. verify.py has its own copy of this rule on purpose: keep the two the same."""
+    c = " ".join(cond.split())
+    while c.startswith("(") and c.endswith(")") and c.count("(") == 1:
+        c = c[1:-1].strip()
+    neg = c.startswith("not ")
+    if neg:
+        c = c[4:].strip()
+        while c.startswith("(") and c.endswith(")") and c.count("(") == 1:
+            c = c[1:-1].strip()
+    simple = c == "False" or (c.split(".")[-1] == "TYPE_CHECKING"
+                              and all(p.isidentifier() for p in c.split(".")))
+    if simple:
+        return "else" if neg else "body"
+    if not neg and "TYPE_CHECKING" in c and "not" not in c.split():
+        return "body"
+    return None
+
+
 def extract_imports(src: bytes) -> tuple[Counter, bool]:
     """Return (Counter of (import, kind), has_parse_error). One entry per imported name:
     `from a import b, c` -> "from a import b", "from a import c"."""
@@ -158,11 +182,14 @@ def extract_imports(src: bytes) -> tuple[Counter, bool]:
         elif t in WALK_INTO:
             if t == "if_statement":
                 cond = node.child_by_field_name("condition")
-                if cond is not None and b"TYPE_CHECKING" in cond.text:
-                    # only the `if` body is type-checking only, not elif/else
+                side = never_runs(cond.text.decode("utf-8", "replace")) if cond else None
+                if side:
+                    # "body": the `if` body never runs; "else": every elif/else part never runs
                     body = node.child_by_field_name("consequence")
                     for c in node.children:
-                        todo.append((c, ctx + ("type_checking",) if c == body else ctx))
+                        dead = (c == body) if side == "body" else \
+                            c.type in ("elif_clause", "else_clause")
+                        todo.append((c, ctx + ("type_checking",) if dead else ctx))
                     continue
             sub = ctx + (t,) if t in ("function_definition", "try_statement") else ctx
             for c in node.children:
