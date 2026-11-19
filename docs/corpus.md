@@ -3,12 +3,12 @@
 The full list with pinned commits is in [`corpus/paper-corpus.csv`](../corpus/paper-corpus.csv).
 We mine each repository at its pinned commit, so results can be repeated.
 
-**23 repositories, about 174,124 first-parent commits in total.**
+**24 repositories, about 185,360 first-parent commits in total.**
 
 | Group | Count | Why it is in the study |
 |---|---|---|
 | Well-known | 10 | Popular, heavily reviewed projects. The baseline. |
-| Less-scrutinized | 9 | Long-lived projects with fewer outside reviewers, where architectural mistakes are more likely to stay. |
+| Less-scrutinized | 10 | Long-lived projects with fewer outside reviewers, where architectural mistakes are more likely to stay. |
 | AI-heavy | 4 | Many coding-agent commits. Only for variety; agents are one sentence in the paper. |
 
 ## Selection rules (all groups)
@@ -37,7 +37,7 @@ We mine each repository at its pinned commit, so results can be repeated.
 | [pylint](https://github.com/pylint-dev/pylint) | tool | 20 | 8,518 | `360ed2326b` (2026-10-11) | corpus/repos.csv |
 | [certbot](https://github.com/certbot/certbot) | tool | 14 | 4,395 | `0201ba5ce7` (2026-10-07) | corpus/repos.csv |
 
-## Less-scrutinized (9)
+## Less-scrutinized (10)
 
 "Less-scrutinized" does not mean bad code. It means fewer people review the code, so mistakes
 can stay longer than in a popular project. We use two signals that anyone can measure:
@@ -51,6 +51,7 @@ can stay longer than in a popular project. We use two signals that anyone can me
 | [opendrift](https://github.com/OpenDrift/opendrift) | library | 13 | 3,355 | `7173c92e0e` (2026-11-17) | new 2026-11-18 |
 | [oq-engine](https://github.com/gem/oq-engine) | application | 16 | 14,938 | `88a8657bba` (2026-11-17) | new 2026-11-18 |
 | [osf.io](https://github.com/CenterForOpenScience/osf.io) | application | 13 | 4,793 | `84dbb4344e` (2026-11-16) | new 2026-11-18 |
+| [the-blue-alliance](https://github.com/the-blue-alliance/the-blue-alliance) | application | 16 | 11,236 | `750f8b0bcc` (2026-11-17) | new 2026-11-18 |
 | [kpi](https://github.com/kobotoolbox/kpi) | application | 11 | 3,769 | `ab6233b5db` (2026-11-17) | new 2026-11-18 |
 | [Sefaria-Project](https://github.com/Sefaria/Sefaria-Project) | application | 9 | 5,517 | `7347309c26` (2026-11-17) | new 2026-11-18 |
 | [archivematica](https://github.com/artefactual/archivematica) | application | 14 | 3,663 | `d1805644d3` (2026-11-17) | new 2026-11-18 |
@@ -65,6 +66,7 @@ Measured on 17 Nov 2026 from a clone of the default branch (stars from the GitHu
 | opendrift | 337 | 31 | 60% | 30% |
 | oq-engine | 472 | 51 | 76% | 58% |
 | osf.io | 733 | 56 | 54% | 74% |
+| the-blue-alliance | 455 | 119 | 38% | 4% |
 | kpi | 191 | 48 | 14% | 55% |
 | Sefaria-Project | 774 | 60 | 29% | 35% |
 | archivematica | 527 | 84 | 16% | 2% |
@@ -72,11 +74,6 @@ Measured on 17 Nov 2026 from a clone of the default branch (stars from the GitHu
 
 Merge share is not used as a selection rule: a low value can mean squash or rebase merging,
 not missing review.
-
-**Dropped (19 Nov 2026): the-blue-alliance.** Its Python 3 rewrite (from 2020-05-27, `4b2adef79`)
-lives beside an `old_py2/` folder that still holds 209 Python 2 files at the pinned commit and was
-edited until 2025. The miner takes one Python 2 cut-off date per repository, so either part would
-be resolved wrongly.
 
 ## AI-heavy (4)
 
@@ -95,17 +92,30 @@ Several repositories have Python 2 code in their early history. Python 3's `ast`
 so `verify.py` skips those files. Before the cut-off date in `corpus/resolver.csv` (`py2_until`),
 the resolver also allows Python 2 implicit relative imports (`import models` inside a package).
 
-The date is the commit on the first-parent line after which the code runs on Python 3 only
-(as for django and saleor): Python 2 is gone from CI and from `setup.py`. Checked on 19 Nov 2026:
+The date is the first commit on the first-parent line after which the code has no Python 2
+implicit relative imports left, usually the Python 3 port commit. Before it, an import may also
+resolve to a file in the same folder. Checked on 19 Nov 2026:
 
 | Repo | `py2_until` | Evidence |
 |---|---|---|
-| numpy | 2018-12-08 | `f2dbb70b32` PR #12506 "prepare-for-1.17-development": 2.7 out of CI, `python_requires >= 3.5` |
-| relate | 2019-07-10 | `03d149b5` PR #662 "django-2-2": the Python 2.7 CI jobs are removed |
-| osf.io | 2020-01-15 | `e77ca44d89` "[ENG-492] Py3 Conversion (#9054)": CI 2.7 to 3.6, 164 files |
-| kpi | 2020-04-30 | `0775d3d20` PR #2315: the `python3-upgrade` branch (worked on from 2019-08) reaches the main line; CI 2.7 to 3.8 |
-| oq-engine | 2018-07-03 | `a0bf19cbea`: Python 2 removed from `setup.py`, `requirements-py27-*` deleted; changelog 3.0.0 "Removed support for Python 2" |
-| Sefaria-Project | 2019-11-14 | `7b36abfe72`: CI 2.7 to 3.7 on the main line; production image to python:3.7 in PR #508 (2019-12-24) |
+| numpy | 2013-04-02 | `a939f2aa83` PR #3178: the 2to3 import fixer turns implicit relative imports into explicit ones (370 in one commit) |
+| oq-engine | 2012-06-08 | `a0501ae685`: last implicit relative imports removed (haz-src-db-import refactor); later Python 2 code uses absolute imports |
+| osf.io | 2019-10-15 | `63e282efb0` "[Py3][ENG-491] Ultimate backwards compatible Python 3 (#9047)" |
+| the-blue-alliance | 2020-05-27 | `4b2adef79` "Starting fresh py3 migration. Move old files to old_py2." |
+| Sefaria-Project | 2019-11-12 | `4fba57b396` 2to3 run on sefaria, reader, scripts (224 relative imports added) |
+| kpi | 2020-04-30 | `0775d3d209` merge of PR #2315, which brings the Python 3 upgrade (#2460, #2504) to the main line |
+| django, saleor | 2017-01-18, 2017-12-14 | already in `resolver.csv` |
+
+relate needs no date. In snapshots from 2015, 2016, 2018 and 2019 the only same-folder-looking
+imports are `celery` in `relate/celery.py` (the celery library) and `code_feedback` in
+`course/page/code_runpy_backend.py` (on the path of the separate code-runner image).
+
+Later dates when Python 2 left CI (for example numpy 2018-12-08, oq-engine 2018-07-03) are not used:
+by then the code already ran on both versions, so implicit relative imports were gone.
+
+**Known limit: the-blue-alliance.** After 2020-05-27 an `old_py2/` folder with Python 2 code stays
+in the tree (209 files at the pinned commit). Its imports are resolved with Python 3 rules. Setting
+the cut-off changed 82 edge rows in this repository and none of its episode counts.
 
 ## Threats to note in the paper
 

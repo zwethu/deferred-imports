@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Run the whole experiment on the 23 repositories in corpus/paper-corpus.csv:
+# Run the whole experiment on the 24 repositories in corpus/paper-corpus.csv:
 #   0. preflight: miner 0.4.0, tests pass, Python 2 cut-off dates filled in
 #   1. clone (or fetch) every repository into ../clones
 #   2. mine each one at its pinned commit, with check.py after each
@@ -21,7 +21,7 @@ uv run pytest -q
 uv run python - <<'EOF'
 import csv, sys
 # Repositories with Python 2 code early in their history (docs/corpus.md).
-need = {"numpy", "oq-engine", "osf.io", "Sefaria-Project", "kpi", "relate"}
+need = {"numpy", "oq-engine", "osf.io", "Sefaria-Project", "kpi", "the-blue-alliance"}
 have = {r["name"] for r in csv.DictReader(open("corpus/resolver.csv")) if r["py2_until"]}
 missing = sorted(need - have)
 if missing:
