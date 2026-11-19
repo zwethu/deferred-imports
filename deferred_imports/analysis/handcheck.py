@@ -1,21 +1,25 @@
 """R3 hand-check lists: random samples of promotions (E2) and of deferred-only edges that close a
 cycle (E3), written so a person can check each row on GitHub.
 
-    uv run python -m deferred_imports.analysis.handcheck index/*.sqlite --out handcheck [--n 30]
+    uv run python -m deferred_imports.analysis.handcheck index/*.sqlite --out handcheck [--n 60]
 
 Writes two CSV files (they open in Excel or Google Sheets):
 
   promotions.csv   first-episode promotions: package A -> B was linked only by deferred imports,
                    then gained an eager import. Columns: the two packages, the commit where the
                    pair became deferred and the commit where it was promoted (SHA, date, GitHub
-                   link), lifetimes, and the exact import lines linking A to B after each of the
-                   two commits.
+                   link), lifetimes, the import lines linking A to B after each of the two
+                   commits, and the new eager import lines that make it a promotion.
   cycle_edges.csv  deferred-only pairs A -> B at the pinned commit where B can reach A again, so
                    the deferred import closes a cycle. Columns: the deferred import lines, the
-                   commit where the pair became deferred, and the shortest way back
-                   B -> ... -> A, with the import lines of each step.
+                   shortest way back B -> ... -> A with the import lines of each step, and the
+                   commit where the pair became deferred with its import lines then.
 
-Each file ends with empty columns for the checkers. What to decide for each row:
+Each file ends with empty columns for the checkers. Next to each, <name>_lines.csv has one row per
+import line of every case: its step (role), whether it is `deferred` or `normal` (runs when the
+file loads) and where it sits in plain words, the file, line and commit, a GitHub link in its own
+cell, an automatic second opinion from Python's own ast (`agrees`, `DIFFERS`, or `python 2 (not
+checked)`), and empty columns to mark each line. --n 0 writes every case instead of a sample. What to decide for each row:
   promotions   ok = yes if, at the start commit, A uses B only inside functions or under
                TYPE_CHECKING, and the promoting commit adds an import of B that runs when A loads.
   cycle edges  ok = yes if A really imports B only in a deferred way at the pinned commit, and
@@ -24,23 +28,35 @@ Each file ends with empty columns for the checkers. What to decide for each row:
 Both lists are at the package level (module pairs), as in the research plan. The samples are drawn
 from all given repositories pooled, with a fixed --seed, so the same command gives the same rows.
 The import lines are found by replaying the edge build (edges.Graph), so they are exactly the
-imports the miner counted.
+imports the miner counted. With the clones at hand (--clones, default ../clones), every import line
+also gets a GitHub link to that line in that file at that commit (the *_evidence columns).
 """
 
 from __future__ import annotations
 
 import argparse
+import ast
 import csv
 import random
+import re
 import sqlite3
-from collections import defaultdict
+import subprocess
+import warnings
+from collections import Counter, defaultdict
 from itertools import pairwise
 from pathlib import Path
+from urllib.parse import quote
 
 from deferred_imports.analysis.cycles import closing_pairs, sccs, shortest_path
 from deferred_imports.analysis.fate import episodes
-from deferred_imports.analysis.graphs import pair_weights, split_pairs
+from deferred_imports.analysis.graphs import is_deferred, pair_weights, split_pairs
 from deferred_imports.mining.edges import Graph, _by_commit, settings_of
+from deferred_imports.mining.mine import import_lines
+from deferred_imports.mining.verify import never_runs
+
+WHERE = {"in_function": "inside a function", "type_checking": "under if TYPE_CHECKING (never runs)",
+         "try_except": "inside try/except (still runs at load)", "top_level": "top of the file"}
+LINE_CHECK = ["checker_a (ok?)", "checker_b (ok?)", "line_note"]
 
 CORPUS = [Path("corpus/paper-corpus.csv"), Path("corpus/repos.csv")]
 MAX_LINES = 6  # import lines shown per package pair; the rest are counted
@@ -63,8 +79,9 @@ def stmt_text(module: str, name: str | None, level: int) -> str:
     return f"import {module}" if name is None else f"from {'.' * level}{module} import {name}"
 
 
-def links(g: Graph, sm: int, dm: int) -> list[str]:
-    """The import lines that link package sm to package dm in g's current state."""
+def links(g: Graph, sm: int, dm: int) -> list[tuple]:
+    """The imports that link package sm to package dm in g's current state, as
+    (path, module, name, level, kind), one per import."""
     out = []
     for fid, m in list(g.mod_of.items()):
         if m != sm or fid not in g.path:
@@ -74,14 +91,122 @@ def links(g: Graph, sm: int, dm: int) -> list[str]:
                 continue
             dst = g.resolve(fid, module, name, level)[0]
             if dst is not None and dst != fid and g.mod_of.get(dst) == dm:
-                line = f"{g.path[fid]}: {stmt_text(module, name, level)}  [{kind}]"
-                out += [line] * n
-    return sorted(out)
+                out += [(g.path[fid], module, name, level, kind)] * n
+    return sorted(out, key=str)
 
 
-def show(lines: list[str]) -> str:
-    extra = len(lines) - MAX_LINES
-    return "\n".join(lines[:MAX_LINES] + ([f"... and {extra} more"] if extra > 0 else []))
+def copies(items: list[tuple]) -> list[tuple[tuple, int]]:
+    """Each item with how many identical items came before it (the same import, twice)."""
+    seen: Counter = Counter()
+    out = []
+    for x in items:
+        out.append((x, seen[x]))
+        seen[x] += 1
+    return out
+
+
+def more(items: list, lines: list[str]) -> str:
+    extra = len(items) - MAX_LINES
+    return "\n".join(lines + ([f"... and {extra} more"] if extra > 0 else []))
+
+
+def show(items: list[tuple]) -> str:
+    return more(items, [f"{path}: {stmt_text(mod, name, lvl)}  [{kind}]"
+                        for path, mod, name, lvl, kind in items[:MAX_LINES]])
+
+
+def statement(lines: list[str], k: int) -> str:
+    """The whole import statement starting at line k: up to the closing ')' of a
+    parenthesized list, or over backslash continuations."""
+    text = lines[k]
+    if "(" in text.split("import", 1)[-1]:
+        j = k
+        while ")" not in lines[j] and j + 1 < len(lines):
+            j += 1
+            text += "\n" + lines[j]
+        return text.split(")")[0]
+    j = k
+    while lines[j].rstrip().endswith("\\") and j + 1 < len(lines):
+        j += 1
+        text += "\n" + lines[j]
+    return text
+
+
+def where(kind: str) -> str:
+    """The kind in plain words: "inside a function + inside try/except (still runs at load)"."""
+    return " + ".join(WHERE.get(t, t) for t in kind.split("+"))
+
+
+def ast_imports(src: bytes) -> dict[int, list[tuple[str, str]]] | None:
+    """{line: [(import, kind)]} from Python's own ast, with the context tagged by verify.py's
+    rule, so it shares no code with the tree-sitter miner. None if Python 3 cannot parse it."""
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        try:
+            tree = ast.parse(src)
+        except (SyntaxError, ValueError, RecursionError, MemoryError):
+            return None
+    out: dict = {}
+
+    def walk(node, tags):
+        for ch in ast.iter_child_nodes(node):
+            if isinstance(ch, (ast.Import, ast.ImportFrom)):
+                if isinstance(ch, ast.ImportFrom) and ch.level == 0 and ch.module == "__future__":
+                    continue
+                kind = "+".join(t for t in WHERE if t in tags) or "top_level"
+                for a in ch.names:
+                    text = f"import {a.name}" if isinstance(ch, ast.Import) else \
+                        f"from {'.' * ch.level}{ch.module or ''} import {a.name}"
+                    out.setdefault(ch.lineno, []).append((text, kind))
+                continue
+            if (isinstance(ch, ast.If) and len(ch.orelse) == 1 and isinstance(ch.orelse[0], ast.If)
+                    and ch.orelse[0].col_offset == ch.col_offset):
+                ch.orelse[0].is_elif = True  # the miner reads TYPE_CHECKING in `if` only
+            t = tags
+            if isinstance(ch, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                t = t | {"in_function"}
+            elif isinstance(ch, (ast.Try, getattr(ast, "TryStar", ast.Try))):
+                t = t | {"try_except"}
+            elif (isinstance(ch, ast.If) and not getattr(ch, "is_elif", False)
+                  and (side := never_runs(ast.unparse(ch.test)))):
+                for b in ch.body:
+                    walk(ast.Module(body=[b], type_ignores=[]),
+                         t | {"type_checking"} if side == "body" else t)
+                for b in ch.orelse:
+                    walk(ast.Module(body=[b], type_ignores=[]),
+                         t | {"type_checking"} if side == "else" else t)
+                continue
+            walk(ch, t)
+
+    walk(tree, frozenset())
+    return out
+
+
+def find_line(text: str, module: str, name: str | None, level: int, kind: str,
+              nth: int = 0) -> int | None:
+    """1-based line of an import in a file, or None. A deferred import prefers an indented
+    line, a top-level one an unindented line; `from a import (b, c)` may span lines.
+    nth = 1 for the second time the same import appears in the file (two functions that
+    each import it), and so on."""
+    lines = text.splitlines()
+    if name is None:
+        rx = re.compile(r"^\s*import\s.*(?<![\w.])" + re.escape(module) + r"(?![\w.])")
+    else:
+        rx = re.compile(r"^\s*from\s+" + re.escape("." * level + module) + r"\s+import\b")
+    word = re.compile(r"(?<![\w.])" + re.escape(name) + r"(?![\w.])") if name and name != "*" \
+        else None
+    hits = []
+    for k, line in enumerate(lines):
+        if not rx.search(line):
+            continue
+        if word and not word.search(statement(lines, k)):
+            continue
+        hits.append(k)
+    if not hits:
+        return None
+    indented = kind != "top_level"
+    best = [k for k in hits if (lines[k][:1] in " \t") == indented] or hits
+    return best[min(nth, len(best) - 1)] + 1
 
 
 def replay(con: sqlite3.Connection, at: dict[int, set]) -> tuple[dict, Graph]:
@@ -97,8 +222,11 @@ def replay(con: sqlite3.Connection, at: dict[int, set]) -> tuple[dict, Graph]:
 
 
 class Repo:
-    def __init__(self, db: Path, urls: dict[str, str]):
+    def __init__(self, db: Path, urls: dict[str, str], clones: Path | None = None):
         self.db, self.name = db, db.stem
+        clone = clones / self.name if clones else None
+        self.clone = clone if clone is not None and (clone / ".git").exists() else None
+        self._files: dict = {}
         self.con = sqlite3.connect(f"file:{db}?mode=ro", uri=True)
         self.url = urls.get(self.name, "")
         self.mod = dict(self.con.execute("SELECT module_id, name FROM modules"))
@@ -121,6 +249,62 @@ class Repo:
 
     def link(self, i: int) -> str:
         return f"{self.url}/commit/{self.commit[i][0]}" if self.url else ""
+
+    def file_at(self, sha: str, path: str) -> tuple[str, dict, dict | None] | None:
+        """(text, import_lines by tree-sitter, imports by Python's ast or None) of a file at a
+        commit, from the local clone; None without a clone."""
+        if self.clone is None:
+            return None
+        if (sha, path) not in self._files:
+            r = subprocess.run(["git", "-C", str(self.clone), "show", f"{sha}:{path}"],
+                               check=False, capture_output=True)
+            self._files[(sha, path)] = ((r.stdout.decode("utf-8", "replace"),
+                                         import_lines(r.stdout), ast_imports(r.stdout))
+                                        if r.returncode == 0 else None)
+        return self._files[(sha, path)]
+
+    def ast_check(self, sha: str, item: tuple, line: int | None) -> str:
+        """Python's ast, independent of the miner: does this line hold this import, this kind?"""
+        got = self.file_at(sha, item[0])
+        if got is None or line is None:
+            return "not checked (no clone)"
+        if got[2] is None:
+            return "python 2 (not checked)"
+        _, mod, name, lvl, kind = item
+        return "agrees" if (stmt_text(mod, name, lvl), kind) in got[2].get(line, []) \
+            else "DIFFERS"
+
+    def locate(self, sha: str, item: tuple, nth: int = 0) -> tuple[int | None, str]:
+        """(line number or None, GitHub link to the file at sha, to that line when found).
+        nth: this is the nth copy of the same import in the list (0 = the first)."""
+        path, mod, name, lvl, kind = item
+        n, got = None, self.file_at(sha, path)
+        if got is not None:
+            # the miner's own parse: the exact statement with this text and kind
+            lines = got[1].get((stmt_text(mod, name, lvl), kind))
+            n = lines[min(nth, len(lines) - 1)] if lines else \
+                find_line(got[0], mod, name, lvl, kind, nth)
+        url = f"{self.url}/blob/{sha}/{quote(path)}" + (f"#L{n}" if n else "") if self.url else ""
+        return n, url
+
+    def evidence(self, sha: str, items: list[tuple]) -> str:
+        """A GitHub link per import line shown by show(), to the line itself when found."""
+        if not self.url:
+            return ""
+        return more(items, [self.locate(sha, x, k)[1] for x, k in copies(items[:MAX_LINES])])
+
+    def line_rows(self, role: str, sha: str, items: list[tuple]) -> list[dict]:
+        """One row per import for the *_lines.csv file: every import, one link per cell."""
+        out = []
+        for item, k in copies(items):
+            n, url = self.locate(sha, item, k)
+            path, mod, name, lvl, kind = item
+            out.append({"role": role,
+                        "type": "deferred" if is_deferred(kind) else "normal",
+                        "where": where(kind), "import": stmt_text(mod, name, lvl),
+                        "file": path, "line": n or "", "commit": sha[:10], "link": url,
+                        "ast_check": self.ast_check(sha, item, n), "kind": kind})
+        return out
 
 
 def sample(items: list, n: int, seed: int) -> list:
@@ -146,6 +330,11 @@ def promotions(repos: list[Repo], n: int, seed: int) -> list[dict]:
         found, _ = replay(r.con, at)
         for _, e in items:
             s, t, p = e["start_i"], e["end_i"], (e["src"], e["dst"])
+            at_s, at_t = found.get((s, *p), []), found.get((t, *p), [])
+            # the proof of a promotion: eager imports of B that A has after it and not before
+            new = Counter(x for x in at_t if not is_deferred(x[4])) \
+                - Counter(x for x in at_s if not is_deferred(x[4]))
+            new_eager = sorted(new.elements(), key=str)
             rows.append({
                 "repo": r.name,
                 "from_package": r.name_of(e["src"]), "to_package": r.name_of(e["dst"]),
@@ -154,11 +343,17 @@ def promotions(repos: list[Repo], n: int, seed: int) -> list[dict]:
                 "commits": e["commits"], "active_commits": e["active_commits"],
                 "days": e["days"], "hoisted": e["hoisted"], "type_only": int(e["type_only"]),
                 "from_state": e["from_state"],
-                "imports_at_start": show(found.get((s, *p), [])),
-                "imports_after_promotion": show(found.get((t, *p), [])),
+                "imports_at_start": show(at_s),
+                "start_evidence": r.evidence(r.commit[s][0], at_s),
+                "new_eager_imports": show(new_eager),
+                "new_eager_evidence": r.evidence(r.commit[t][0], new_eager),
+                "imports_after_promotion": show(at_t),
+                "promotion_evidence": r.evidence(r.commit[t][0], at_t),
                 "start_commit_url": r.link(s), "promotion_commit_url": r.link(t),
+                "_lines": r.line_rows("step 1: deferred at start", r.commit[s][0], at_s)
+                + r.line_rows("step 2: new eager import", r.commit[t][0], new_eager),
             })
-    return finish(rows, ["checker", "ok (yes/no)", "note"])
+    return finish(rows, ["checker_a (yes/no)", "checker_b (yes/no)", "final (yes/no)", "note"])
 
 
 def cycle_edges(repos: list[Repo], n: int, seed: int) -> list[dict]:
@@ -175,32 +370,50 @@ def cycle_edges(repos: list[Repo], n: int, seed: int) -> list[dict]:
     rows = []
     for items in by_repo.values():
         r = items[0][0]
-        _, g = replay(r.con, {})
         since = {(e["src"], e["dst"]): e["start_i"] for e in r.episodes()
                  if e["outcome"] == "kept"}
+        at = defaultdict(set)
+        for _, a, b, _, _ in items:
+            if (a, b) in since:
+                at[since[(a, b)]].add((a, b))
+        found, g = replay(r.con, at)
         last = max(r.commit)
         for _, a, b, path, eager in items:
             hops = list(pairwise(path))
-            back = []
+            back, back_urls, back_lines = [], [], []
             for x, y in hops:
                 kind = "eager" if (x, y) in eager else "deferred"
+                hop = links(g, x, y)
                 back.append(f"{r.name_of(x)} -> {r.name_of(y)} ({kind}):")
-                back += ["    " + line for line in show(links(g, x, y)).split("\n")]
+                back += ["    " + line for line in show(hop).split("\n")]
+                back_urls.append(f"{r.name_of(x)} -> {r.name_of(y)}:")
+                back_urls += ["    " + u for u in r.evidence(r.pinned, hop).split("\n")]
+                back_lines += r.line_rows(f"step 2: way back {r.name_of(x)} -> {r.name_of(y)} ({kind})",
+                                          r.pinned, hop)
+            dfo_items = links(g, a, b)
             s = since.get((a, b))
+            at_s = found.get((s, a, b), []) if s is not None else []
             rows.append({
                 "repo": r.name,
                 "from_package": r.name_of(a), "to_package": r.name_of(b),
-                "deferred_imports": show(links(g, a, b)),
+                "deferred_imports": show(dfo_items),
+                "deferred_evidence": r.evidence(r.pinned, dfo_items),
                 "cycle": " -> ".join(r.name_of(x) for x in [a, *path]),
                 "cycle_length": len(path),
                 "way_back_all_eager": int(all((x, y) in eager for x, y in hops)),
                 "way_back_imports": "\n".join(back),
+                "way_back_evidence": "\n".join(back_urls),
                 "deferred_since": f"{r.sha(s)} ({r.commit[s][1]})" if s is not None else "",
+                "deferred_since_imports": show(at_s),
+                "deferred_since_evidence": r.evidence(r.commit[s][0], at_s) if s is not None
+                else "",
                 "deferred_since_url": r.link(s) if s is not None else "",
                 "pinned_tree_url": f"{r.url}/tree/{r.pinned}" if r.url else "",
                 "last_commit": r.sha(last),
+                "_lines": r.line_rows("step 1: deferred import", r.pinned, dfo_items) + back_lines
+                + (r.line_rows("step 3: deferred since", r.commit[s][0], at_s) if s is not None else []),
             })
-    return finish(rows, ["checker_a_ok (yes/no)", "checker_b_ok (yes/no)", "note"])
+    return finish(rows, ["checker_a (yes/no)", "checker_b (yes/no)", "final (yes/no)", "note"])
 
 
 def finish(rows: list[dict], blank: list[str]) -> list[dict]:
@@ -209,11 +422,21 @@ def finish(rows: list[dict], blank: list[str]) -> list[dict]:
 
 
 def write(rows: list[dict], path: Path) -> None:
+    """The list itself, and next to it <name>_lines.csv: one row per import line of each case,
+    with its own link, so every link is one click and nothing is cut at MAX_LINES."""
     with open(path, "w", newline="") as f:
         if rows:
-            w = csv.DictWriter(f, fieldnames=list(rows[0]))
+            w = csv.DictWriter(f, fieldnames=[k for k in rows[0] if k != "_lines"])
             w.writeheader()
-            w.writerows(rows)
+            w.writerows({k: v for k, v in row.items() if k != "_lines"} for row in rows)
+    lines = [{"id": row["id"], "repo": row["repo"], "from_package": row["from_package"],
+              "to_package": row["to_package"], **x, **{c: "" for c in LINE_CHECK}}
+             for row in rows for x in row["_lines"]]
+    with open(path.with_name(path.stem + "_lines.csv"), "w", newline="") as f:
+        if lines:
+            w = csv.DictWriter(f, fieldnames=list(lines[0]))
+            w.writeheader()
+            w.writerows(lines)
 
 
 def main(argv=None) -> None:
@@ -221,18 +444,26 @@ def main(argv=None) -> None:
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("dbs", nargs="+", type=Path)
     ap.add_argument("--out", type=Path, default=Path("handcheck"))
-    ap.add_argument("--n", type=int, default=30, help="rows per list; 0 = all (default 30)")
+    ap.add_argument("--n", type=int, default=60, help="rows per list; 0 = all (default 60)")
     ap.add_argument("--seed", type=int, default=1)
+    ap.add_argument("--clones", type=Path, default=Path("../clones"),
+                    help="local clones, for line numbers in the evidence links")
     a = ap.parse_args(argv)
     a.out.mkdir(parents=True, exist_ok=True)
     urls = repo_urls()
-    repos = [Repo(db, urls) for db in a.dbs]
+    repos = [Repo(db, urls, a.clones) for db in a.dbs]
     p = promotions(repos, a.n, a.seed)
     write(p, a.out / "promotions.csv")
     c = cycle_edges(repos, a.n, a.seed)
     write(c, a.out / "cycle_edges.csv")
-    print(f"{len(p)} promotions -> {a.out / 'promotions.csv'}")
-    print(f"{len(c)} cycle-closing edges -> {a.out / 'cycle_edges.csv'}")
+    print(f"{len(p)} promotions -> {a.out / 'promotions.csv'} (+ promotions_lines.csv)")
+    print(f"{len(c)} cycle-closing edges -> {a.out / 'cycle_edges.csv'} (+ cycle_edges_lines.csv)")
+    for name, rows in (("promotions_lines", p), ("cycle_edges_lines", c)):
+        lines = [x for row in rows for x in row["_lines"]]
+        types, checks = Counter(x["type"] for x in lines), Counter(x["ast_check"] for x in lines)
+        print(f"  {name}.csv: {len(lines)} import lines, {types['deferred']} deferred, "
+              f"{types['normal']} normal; ast check: "
+              + ", ".join(f"{v} {k}" for k, v in checks.most_common()))
 
 
 if __name__ == "__main__":

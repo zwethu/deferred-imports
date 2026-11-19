@@ -13,7 +13,6 @@ relate,less-known,https://github.com/inducer/relate,application,18e51ddd37a1edd0
 opendrift,less-known,https://github.com/OpenDrift/opendrift,library,7173c92e0e55119c30066d72e246a6ca7ede9da4,2026-11-17,3355,13,337,30,31,60,,new 2026-11-18,new; small science team
 oq-engine,less-known,https://github.com/gem/oq-engine,application,88a8657bba8245635a8ad083970783f3f37198bd,2026-11-17,14938,16,472,58,51,76,,new 2026-11-18,new; needs py2 cut-off
 osf.io,less-known,https://github.com/CenterForOpenScience/osf.io,application,84dbb4344e84e006984224c734c155dbebc86f70,2026-11-16,4793,13,733,74,56,54,,new 2026-11-18,new; branch develop; needs py2 cut-off
-the-blue-alliance,less-known,https://github.com/the-blue-alliance/the-blue-alliance,application,750f8b0bcc9471a0d9358e07b743380cf6357e7b,2026-11-17,11236,16,455,4,119,38,,new 2026-11-18,new; needs py2 cut-off
 kpi,less-known,https://github.com/kobotoolbox/kpi,application,ab6233b5db8f7943628c91c47dd9526388dea44d,2026-11-17,3769,11,191,55,48,14,,new 2026-11-18,new
 Sefaria-Project,less-known,https://github.com/Sefaria/Sefaria-Project,application,7347309c264c8ca36a91c381716b1f21c1549045,2026-11-17,5517,9,774,35,60,29,,new 2026-11-18,new; needs py2 cut-off
 archivematica,less-known,https://github.com/artefactual/archivematica,application,d1805644d321c95c6a80323d2b288ada19e08b04,2026-11-17,3663,14,527,2,84,16,,new 2026-11-18,new; default branch qa/1.x

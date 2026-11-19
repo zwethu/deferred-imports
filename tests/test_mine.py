@@ -119,6 +119,16 @@ def test_never_runs(cond, side):
     assert mine.never_runs(cond) == side
 
 
+def test_import_lines_match_extract_imports():
+    src = (b"from typing import TYPE_CHECKING\nif TYPE_CHECKING:\n    from p import A\n"
+           b"def f():\n    from p import A\n\ndef g():\n    from p import (\n        A,\n    )\n")
+    lines = mine.import_lines(src)
+    assert lines == {("from typing import TYPE_CHECKING", "top_level"): [1],
+                     ("from p import A", "type_checking"): [3],
+                     ("from p import A", "in_function"): [5, 8]}
+    assert {k: len(v) for k, v in lines.items()} == dict(mine.extract_imports(src)[0])
+
+
 def test_split_stmt():
     assert mine.split_stmt("import a.b") == ("a.b", None, 0)
     assert mine.split_stmt("from a.b import c") == ("a.b", "c", 0)

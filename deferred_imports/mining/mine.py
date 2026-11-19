@@ -160,25 +160,24 @@ def never_runs(cond: str) -> str | None:
     return None
 
 
-def extract_imports(src: bytes) -> tuple[Counter, bool]:
-    """Return (Counter of (import, kind), has_parse_error). One entry per imported name:
-    `from a import b, c` -> "from a import b", "from a import c"."""
-    tree = PARSER.parse(src)
-    out: Counter = Counter()
+def _walk_imports(tree):
+    """Yield (import, kind, line) for every imported name in a parsed file. One entry per
+    name: `from a import b, c` -> "from a import b", "from a import c"; line = the 1-based
+    line where the statement starts."""
     todo = [(tree.root_node, ())]
     while todo:
         node, ctx = todo.pop()
         t = node.type
         if t == "import_statement":
             for n in node.children_by_field_name("name"):
-                out[(f"import {_name(n)}", _kind(ctx))] += 1
+                yield f"import {_name(n)}", _kind(ctx), node.start_point[0] + 1
         elif t == "import_from_statement":
             mod = _clean(node.child_by_field_name("module_name"))
             names = node.children_by_field_name("name")
             if not names:  # wildcard
-                out[(f"from {mod} import *", _kind(ctx))] += 1
+                yield f"from {mod} import *", _kind(ctx), node.start_point[0] + 1
             for n in names:
-                out[(f"from {mod} import {_name(n)}", _kind(ctx))] += 1
+                yield f"from {mod} import {_name(n)}", _kind(ctx), node.start_point[0] + 1
         elif t in WALK_INTO:
             if t == "if_statement":
                 cond = node.child_by_field_name("condition")
@@ -194,7 +193,22 @@ def extract_imports(src: bytes) -> tuple[Counter, bool]:
             sub = ctx + (t,) if t in ("function_definition", "try_statement") else ctx
             for c in node.children:
                 todo.append((c, sub))
-    return out, tree.root_node.has_error
+
+
+def extract_imports(src: bytes) -> tuple[Counter, bool]:
+    """Return (Counter of (import, kind), has_parse_error). One entry per imported name:
+    `from a import b, c` -> "from a import b", "from a import c"."""
+    tree = PARSER.parse(src)
+    return Counter((stmt, kind) for stmt, kind, _ in _walk_imports(tree)), tree.root_node.has_error
+
+
+def import_lines(src: bytes) -> dict[tuple[str, str], list[int]]:
+    """{(import, kind): sorted 1-based lines}: where each import that extract_imports counts
+    sits in the file (a name imported twice in one place appears twice)."""
+    out: dict = {}
+    for stmt, kind, line in _walk_imports(PARSER.parse(src)):
+        out.setdefault((stmt, kind), []).append(line)
+    return {k: sorted(v) for k, v in out.items()}
 
 
 def split_stmt(stmt: str) -> tuple[str, str | None, int]:
