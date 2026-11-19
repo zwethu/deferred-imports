@@ -7,6 +7,7 @@ license = "MIT"
 requires-python = ">=3.11"
 dependencies = [
     "lifelines",
+    "matplotlib>=3.11.2",
     "numpy",
     "pandas",
     "scipy",
