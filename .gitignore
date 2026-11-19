@@ -21,3 +21,5 @@ clones/
 .vscode/
 .idea/
 .DS_Store
+index-*/
+out-*/
