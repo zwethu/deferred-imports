@@ -1,32 +1,221 @@
-id,repo,from_package,to_package,deferred_since,promoted_at,commits,active_commits,days,hoisted,type_only,from_state,imports_at_start,imports_after_promotion,start_commit_url,promotion_commit_url,checker,ok (yes/no),note
-1,netbox,core,netbox.models,91f156de33 (2024-05-06),7bc0d34196 (2024-09-03),46,7,119.99,0,0,none,netbox/core/apps.py: from netbox.models.features import register_models  [in_function],"netbox/core/apps.py: from netbox.models.features import register_models  [in_function]
-netbox/core/signals.py: from netbox.models.features import ChangeLoggingMixin  [top_level]",https://github.com/netbox-community/netbox/commit/91f156de33c557cda3dc3969b5dbb15228a0a776,https://github.com/netbox-community/netbox/commit/7bc0d34196323ac992d7ec80b1caa48e6094d88d,,,
-2,netbox,dcim.graphql,users.graphql,c95098c4f0 (2025-05-01),e73db97d46 (2026-01-06),455,8,250.19,0,1,none,"netbox/dcim/graphql/filters.py: from users.graphql.filters import UserFilter  [type_checking]
+id,repo,from_package,to_package,deferred_since,promoted_at,commits,active_commits,days,hoisted,type_only,from_state,imports_at_start,imports_after_promotion,start_commit_url,promotion_commit_url,Zwe_ok (yes/no),Zwe_note,Thaw_ok (yes/no),Thaw_note,Khant_ok (yes/no),Khant_note
+1,awx,awx.api,awx.main.tasks,bff49f2a5f (2022-01-14),d5e5ea3670 (2026-06-09),2301,205,1606.98,0,0,none,awx/api/generics.py: from awx.main.tasks.system import deep_copy_model_obj  [in_function],"awx/api/generics.py: from awx.main.tasks.system import deep_copy_model_obj  [in_function]
+awx/api/serializers.py: from awx.main.tasks.system import update_inventory_computed_fields  [top_level]",https://github.com/ansible/awx/commit/bff49f2a5fd8929808b2890bc2d16279c523cc53,https://github.com/ansible/awx/commit/d5e5ea3670b357e35bf3edd5d09b537a43dc192c,,,,,,
+2,awx,awx.main.utils,awx,ef87a58239 (2016-12-02),d7d496553e (2021-02-17),3886,185,1537.93,0,0,none,awx/main/utils/common.py: from awx import __version__  [in_function],"awx/main/utils/common.py: from awx import __version__  [in_function]
+awx/main/utils/filters.py: from awx import MODE  [top_level]",https://github.com/ansible/awx/commit/ef87a582391e5567781134a4863d171ab820631f,https://github.com/ansible/awx/commit/d7d496553e90dedfa0d318fd41398b3a3aaf2c7f,,,,,,
+3,awx,awx.main,awx,057e7bad59 (2013-08-04),cbc7f6ec36 (2014-10-20),2025,271,441.63,0,0,none,awx/main/utils.py: from awx import __version__  [in_function],"awx/main/middleware.py: from awx import __version__  [top_level]
+awx/main/utils.py: from awx import __version__  [in_function]",https://github.com/ansible/awx/commit/057e7bad59c848bc0992bce9420cdc06d5fd3aaa,https://github.com/ansible/awx/commit/cbc7f6ec36a3ff39e3515c61cde5d80c394cb04e,,,,,,
+4,celery,t.unit,celery.worker,293a56ecbf (2016-08-23),1fc305837a (2024-10-18),2643,25,2976.75,0,0,none,t/unit/conftest.py: from celery.worker import state  [in_function],"t/unit/conftest.py: from celery.worker import state  [in_function]
+t/unit/test_loops.py: from celery.worker.loops import synloop  [top_level]",https://github.com/celery/celery/commit/293a56ecbf43136f2bef6df2275e0aea211f50eb,https://github.com/celery/celery/commit/1fc305837a785dda8ed8cb196aec654427fe433e,,,,,,
+5,celery,celery.bin,celery.concurrency,72ab0930fa (2011-04-02),40d2302e53 (2012-06-02),890,95,427.38,1,0,none,celery/bin/celeryd.py: from celery import concurrency  [in_function],celery/bin/celeryd.py: from celery import concurrency  [top_level],https://github.com/celery/celery/commit/72ab0930fa66d38262c699a5cad3d0ba341d292c,https://github.com/celery/celery/commit/40d2302e53f7cefe76b46fd429887592024ab040,,,,,,
+6,celery,celery.app,celery.backends,72ab0930fa (2011-04-02),77ad54d669 (2012-03-28),619,88,361.17,1,0,none,celery/app/base.py: from celery.backends import get_backend_cls  [in_function],celery/app/base.py: from ..backends import get_backend_cls  [top_level],https://github.com/celery/celery/commit/72ab0930fa66d38262c699a5cad3d0ba341d292c,https://github.com/celery/celery/commit/77ad54d6691344a575d162ddb18779515d334df9,,,,,,
+7,dipy,dipy.workflows,dipy.sims,af8f2e2b01 (2026-07-24),589caf63f6 (2026-09-10),71,9,48.32,0,0,none,dipy/workflows/reconst.py: from dipy.sims.force import get_default_diffusivity_config  [in_function],"dipy/workflows/reconst.py: from dipy.sims.force import DEFAULT_FORCE_SEED  [top_level]
+dipy/workflows/reconst.py: from dipy.sims.force import get_default_diffusivity_config  [in_function]",https://github.com/dipy/dipy/commit/af8f2e2b01649e9eb2c408a7a4fe700913ed0784,https://github.com/dipy/dipy/commit/589caf63f6c7caf89594d30e8b9d5cde9821de03,,,,,,
+8,dipy,dipy.viz,dipy.data,b9722005ee (2013-07-30),45c67a7d9f (2014-07-30),140,7,365.06,0,0,none,dipy/viz/fvtk.py: from dipy.data import get_sphere  [in_function],"dipy/viz/fvtk.py: from dipy.data import get_cmap  [top_level]
+dipy/viz/fvtk.py: from dipy.data import get_sphere  [in_function]",https://github.com/dipy/dipy/commit/b9722005ee8a65718f2f37ba08a27e28de10a455,https://github.com/dipy/dipy/commit/45c67a7d9f8fe25b04af9560441dc0b3e87d6aa5,,,,,,
+9,django,django.db.models.fields,django.newforms,6001974e45 (2006-12-15),1c4ed6126b (2006-12-15),5,2,0.52,1,0,none,django/db/models/fields/__init__.py: from django.newforms import CharField  [in_function],django/db/models/fields/__init__.py: from django import newforms  [top_level],https://github.com/django/django/commit/6001974e4501d7d8a7fcdfb11776bfb81d024754,https://github.com/django/django/commit/1c4ed6126baa8856056867b1db09b52066627fe8,,,,,,
+10,django,django.core.checks,django.conf,d818e0c9b2 (2014-01-20),38b4adc696 (2014-02-09),139,2,20.33,0,0,none,django/core/checks/messages.py: from django.conf import settings  [in_function],"django/core/checks/messages.py: from django.conf import settings  [in_function]
+django/core/checks/migrations.py: from django.conf import settings  [top_level]",https://github.com/django/django/commit/d818e0c9b2b88276cc499974f9eee893170bf0a8,https://github.com/django/django/commit/38b4adc6960d28483124509aa363dadbe8cc17a6,,,,,,
+11,django,django.template,django.template.backends,6854998c8f (2014-12-28),4ea43ac915 (2014-12-28),1,1,0.0,0,0,none,django/template/engine.py: from django.template.backends.django import DjangoTemplates  [in_function],"django/template/engine.py: from django.template.backends.django import DjangoTemplates  [in_function]
+django/template/loader.py: from .backends.django import DjangoTemplates  [top_level]",https://github.com/django/django/commit/6854998c8f405248c304cf14ecc46617e8a9f206,https://github.com/django/django/commit/4ea43ac915e187fb0c283094504f488d5017d7ec,,,,,,
+12,haystack,haystack.nodes.retriever,haystack.utils,d470b9d0bd (2022-01-26),3ea57801ae (2022-08-23),459,31,208.8,0,0,none,haystack/nodes/retriever/_embedding_encoder.py: from haystack.utils.import_utils import _optional_component_not_installed  [in_function+try_except],"haystack/nodes/retriever/_embedding_encoder.py: from haystack.utils.import_utils import _optional_component_not_installed  [in_function+try_except]
+haystack/nodes/retriever/dense.py: from haystack.utils.early_stopping import EarlyStopping  [top_level]",https://github.com/deepset-ai/haystack/commit/d470b9d0bd7989d391bd0d8664fdf9d5b627dcf8,https://github.com/deepset-ai/haystack/commit/3ea57801ae31fd2962af3713acef158ebf9890ca,,,,,,
+13,haystack,haystack,haystack.core.pipeline,9546e69374 (2025-02-21),b0e7411205 (2025-03-17),54,1,24.29,1,1,eager,"haystack/__init__.py: from .core.pipeline import AsyncPipeline  [type_checking]
+haystack/__init__.py: from .core.pipeline import Pipeline  [type_checking]
+haystack/__init__.py: from .core.pipeline import PredefinedPipeline  [type_checking]","haystack/__init__.py: from haystack.core.pipeline import AsyncPipeline  [top_level]
+haystack/__init__.py: from haystack.core.pipeline import Pipeline  [top_level]
+haystack/__init__.py: from haystack.core.pipeline import PredefinedPipeline  [top_level]",https://github.com/deepset-ai/haystack/commit/9546e69374dfcd6b212b9fe420ce88adfbaf35e2,https://github.com/deepset-ai/haystack/commit/b0e74112050f8a85f741374877aa37b873fa051b,,,,,,
+14,haystack,haystack,haystack.tracing,fe0ac5c4a2 (2024-02-29),96cda5d3b6 (2024-06-18),273,6,109.88,0,0,eager,haystack/logging.py: import haystack.tracing.tracer  [in_function],"haystack/__init__.py: import haystack.tracing  [top_level]
+haystack/logging.py: import haystack.tracing.tracer  [in_function]",https://github.com/deepset-ai/haystack/commit/fe0ac5c4a280b6196fc984d580d3dd2675f893ae,https://github.com/deepset-ai/haystack/commit/96cda5d3b6dd978f11ccbeba40ccfabf3a369042,,,,,,
+15,kornia,kornia.utils,kornia.io,29750da093 (2026-08-07),b19ebcacd0 (2026-10-14),1077,2,67.7,1,0,none,kornia/utils/__init__.py: from kornia.io import get_sample_images  [in_function],"kornia/utils/__init__.py: from kornia.io.sample import _IMAGE_URLS  [top_level]
+kornia/utils/__init__.py: from kornia.io.sample import get_sample_images  [top_level]",https://github.com/kornia/kornia/commit/29750da093e1c6f63cca9f99d2e29115903c690a,https://github.com/kornia/kornia/commit/b19ebcacd02c25c1bee89ba35e5c3d8ebdcf4e98,,,,,,
+16,kpi,kobo.apps.superuser_stats,hub,bb77a2843b (2017-08-09),ab9b1238e7 (2021-07-05),606,6,1425.84,1,0,none,"kobo/apps/superuser_stats/tasks.py: from hub.models import ExtraUserDetail  [in_function]
+kobo/apps/superuser_stats/tasks.py: from hub.models import FormBuilderPreference  [in_function]",kobo/apps/superuser_stats/tasks.py: from hub.models import ExtraUserDetail  [top_level],https://github.com/kobotoolbox/kpi/commit/bb77a2843be880a8c41d16d79d2c6af74993a273,https://github.com/kobotoolbox/kpi/commit/ab9b1238e7c595e09c0d3dffa5916622fa087868,,,,,,
+17,kpi,kobo.apps.accounts,kobo.apps.accounts.mfa,2fbfc35d11 (2026-09-07),426e6b5b85 (2026-11-12),257,19,66.0,0,0,none,"kobo/apps/accounts/reauthentication.py: from kobo.apps.accounts.mfa.models import MfaMethodsWrapper  [in_function]
+kobo/apps/accounts/reauthentication.py: from kobo.apps.accounts.mfa.serializers import MfaCodeSerializer  [in_function]","kobo/apps/accounts/reauthentication.py: from kobo.apps.accounts.mfa.serializers import MfaCodeSerializer  [in_function]
+kobo/apps/accounts/reauthentication.py: from kobo.apps.accounts.mfa.utils import MFA_METHOD_NAME  [in_function]
+kobo/apps/accounts/reauthentication.py: from kobo.apps.accounts.mfa.utils import user_has_active_mfa  [in_function]
+kobo/apps/accounts/views.py: from .mfa.inputs import MfaAuthenticateInput  [top_level]
+kobo/apps/accounts/views.py: from .mfa.inputs import MfaReauthenticateInput  [top_level]
+kobo/apps/accounts/views.py: from .mfa.utils import has_hashed_migrated_codes  [top_level]",https://github.com/kobotoolbox/kpi/commit/2fbfc35d1164e8be679375ee9cd9296ca35f88e3,https://github.com/kobotoolbox/kpi/commit/426e6b5b85086571f74ee7f5893f72a859a0cfdc,,,,,,
+18,kpi,kobo.apps.superuser_stats,kpi.deployment_backends.kc_access,bb77a2843b (2017-08-09),ab9b1238e7 (2021-07-05),606,6,1425.84,1,0,none,kobo/apps/superuser_stats/tasks.py: from kpi.deployment_backends.kc_access.shadow_models import _models  [in_function],"kobo/apps/superuser_stats/admin.py: from kpi.deployment_backends.kc_access.shadow_models import KobocatSubmissionCounter  [top_level]
+kobo/apps/superuser_stats/admin.py: from kpi.deployment_backends.kc_access.shadow_models import KobocatXForm  [top_level]
+kobo/apps/superuser_stats/admin.py: from kpi.deployment_backends.kc_access.shadow_models import ReadOnlyKobocatInstance  [top_level]
+kobo/apps/superuser_stats/tasks.py: from kpi.deployment_backends.kc_access.shadow_models import KobocatUser  [top_level]
+kobo/apps/superuser_stats/tasks.py: from kpi.deployment_backends.kc_access.shadow_models import KobocatUserProfile  [top_level]
+kobo/apps/superuser_stats/tasks.py: from kpi.deployment_backends.kc_access.shadow_models import KobocatXForm  [top_level]
+... and 1 more",https://github.com/kobotoolbox/kpi/commit/bb77a2843be880a8c41d16d79d2c6af74993a273,https://github.com/kobotoolbox/kpi/commit/ab9b1238e7c595e09c0d3dffa5916622fa087868,,,,,,
+19,landlab,landlab.core,landlab,08cbec4053 (2016-09-16),c016e84c33 (2017-11-18),119,4,428.5,0,0,none,"landlab/core/utils.py: from landlab import HexModelGrid  [in_function]
+landlab/core/utils.py: from landlab import ModelGrid  [in_function]
+landlab/core/utils.py: from landlab import RadialModelGrid  [in_function]
+landlab/core/utils.py: from landlab import RasterModelGrid  [in_function]
+landlab/core/utils.py: from landlab import VoronoiDelaunayGrid  [in_function]","landlab/core/model_component.py: from .. import registry  [top_level]
+landlab/core/utils.py: from landlab import HexModelGrid  [in_function]
+landlab/core/utils.py: from landlab import ModelGrid  [in_function]
+landlab/core/utils.py: from landlab import RadialModelGrid  [in_function]
+landlab/core/utils.py: from landlab import RasterModelGrid  [in_function]
+landlab/core/utils.py: from landlab import VoronoiDelaunayGrid  [in_function]",https://github.com/landlab/landlab/commit/08cbec4053fadbef2be71ea8dabf8702643af1bb,https://github.com/landlab/landlab/commit/c016e84c33933bf03ae766e06fdfc457988858d2,,,,,,
+20,landlab,landlab.io,landlab.grid,367c3f94eb (2015-03-12),7c15e4a632 (2024-05-09),1019,32,3346.11,0,0,none,landlab/io/esri_ascii.py: from ..grid import RasterModelGrid  [in_function],"landlab/io/esri_ascii.py: from ..grid import RasterModelGrid  [in_function]
+landlab/io/shapefile.py: from landlab.grid.network import NetworkModelGrid  [top_level]",https://github.com/landlab/landlab/commit/367c3f94eb7ca93992e84ea02f877b0b801f9507,https://github.com/landlab/landlab/commit/7c15e4a6321d9052025455a988ed61760ed0b1a3,,,,,,
+21,landlab,landlab.grid,landlab.plot,b488a15056 (2013-09-11),9ec0cbe17e (2022-05-25),1406,326,3178.73,1,0,none,landlab/grid/raster.py: from landlab.plot import imshow_field  [in_function],landlab/grid/base.py: from ..plot.imshow import ModelGridPlotterMixIn  [top_level],https://github.com/landlab/landlab/commit/b488a1505626bfe7881cbce7da80b46eeb5a5c4d,https://github.com/landlab/landlab/commit/9ec0cbe17ee030b15b0e796c4d97548a289d0a6a,,,,,,
+22,lutris,lutris.gui.widgets,lutris.gui.dialogs,91397f58e7 (2019-01-18),2928b36044 (2019-01-21),33,5,3.03,0,0,none,lutris/gui/widgets/download_progress.py: from lutris.gui.dialogs import ErrorDialog  [in_function+try_except],"lutris/gui/widgets/download_progress.py: from lutris.gui.dialogs import ErrorDialog  [in_function+try_except]
+lutris/gui/widgets/sidebar.py: from lutris.gui.dialogs.runner_install import RunnerInstallDialog  [top_level]
+lutris/gui/widgets/sidebar.py: from lutris.gui.dialogs.runners import RunnersDialog  [top_level]",https://github.com/lutris/lutris/commit/91397f58e7c12ad9f1171f9d980b744cedd4f0c4,https://github.com/lutris/lutris/commit/2928b360448bc2a2c69212fb71b85d9a8a40ff79,,,,,,
+23,lutris,lutris.gui.widgets,lutris.gui,60f90f0c58 (2017-05-18),cd0c18ffeb (2019-01-07),692,11,599.02,0,0,none,lutris/gui/widgets/download_progress.py: from lutris.gui.dialogs import ErrorDialog  [in_function+try_except],"lutris/gui/widgets/download_progress.py: from lutris.gui.dialogs import ErrorDialog  [in_function+try_except]
+lutris/gui/widgets/services.py: from lutris.gui.notifications import send_notification  [top_level]",https://github.com/lutris/lutris/commit/60f90f0c58acc3a17365132c541864e284c011e4,https://github.com/lutris/lutris/commit/cd0c18ffeb69e6ca2be13d4a87ee9921dee2512e,,,,,,
+24,netbox,dcim.graphql,users.graphql,c95098c4f0 (2025-05-01),e73db97d46 (2026-01-06),455,8,250.19,0,1,none,"netbox/dcim/graphql/filters.py: from users.graphql.filters import UserFilter  [type_checking]
 netbox/dcim/graphql/types.py: from users.graphql.types import UserType  [type_checking]","netbox/dcim/graphql/filters.py: from users.graphql.filters import UserFilter  [type_checking]
 netbox/dcim/graphql/types.py: from users.graphql.mixins import OwnerMixin  [top_level]
-netbox/dcim/graphql/types.py: from users.graphql.types import UserType  [type_checking]",https://github.com/netbox-community/netbox/commit/c95098c4f02ed9199d184fd79e50ff5bcf917513,https://github.com/netbox-community/netbox/commit/e73db97d467f484ce10e65483937d129b38df934,,,
-3,netbox,extras,netbox.models,7bc0d34196 (2024-09-03),d8822c8bca (2025-09-02),504,33,363.91,0,0,eager,netbox/extras/apps.py: from netbox.models.features import register_models  [in_function],"netbox/extras/apps.py: from netbox.models.features import register_models  [in_function]
+netbox/dcim/graphql/types.py: from users.graphql.types import UserType  [type_checking]",https://github.com/netbox-community/netbox/commit/c95098c4f02ed9199d184fd79e50ff5bcf917513,https://github.com/netbox-community/netbox/commit/e73db97d467f484ce10e65483937d129b38df934,,,,,,
+25,netbox,utilities,core.models,91f156de33 (2024-05-06),c95098c4f0 (2025-05-01),363,26,359.89,0,0,none,netbox/utilities/permissions.py: from core.models import ObjectType  [in_function],"netbox/utilities/permissions.py: from core.models import ObjectType  [in_function]
+netbox/utilities/tables.py: from core.models import ObjectType  [top_level]",https://github.com/netbox-community/netbox/commit/91f156de33c557cda3dc3969b5dbb15228a0a776,https://github.com/netbox-community/netbox/commit/c95098c4f02ed9199d184fd79e50ff5bcf917513,,,,,,
+26,netbox,extras,netbox.models,7bc0d34196 (2024-09-03),d8822c8bca (2025-09-02),504,33,363.91,0,0,eager,netbox/extras/apps.py: from netbox.models.features import register_models  [in_function],"netbox/extras/apps.py: from netbox.models.features import register_models  [in_function]
 netbox/extras/events.py: from netbox.models.features import has_feature  [top_level]
-netbox/extras/signals.py: from netbox.models.features import has_feature  [top_level]",https://github.com/netbox-community/netbox/commit/7bc0d34196323ac992d7ec80b1caa48e6094d88d,https://github.com/netbox-community/netbox/commit/d8822c8bca10bc3d9b1556e1602d7765fc0763d6,,,
-4,netbox,extras.graphql,users.graphql,c95098c4f0 (2025-05-01),e73db97d46 (2026-01-06),455,6,250.19,0,1,none,"netbox/extras/graphql/filters.py: from users.graphql.filters import GroupFilter  [type_checking]
-netbox/extras/graphql/filters.py: from users.graphql.filters import UserFilter  [type_checking]
-netbox/extras/graphql/types.py: from users.graphql.types import GroupType  [type_checking]
-netbox/extras/graphql/types.py: from users.graphql.types import UserType  [type_checking]","netbox/extras/graphql/filters.py: from users.graphql.filters import GroupFilter  [type_checking]
-netbox/extras/graphql/filters.py: from users.graphql.filters import UserFilter  [type_checking]
-netbox/extras/graphql/types.py: from users.graphql.mixins import OwnerMixin  [top_level]
-netbox/extras/graphql/types.py: from users.graphql.types import GroupType  [type_checking]
-netbox/extras/graphql/types.py: from users.graphql.types import UserType  [type_checking]",https://github.com/netbox-community/netbox/commit/c95098c4f02ed9199d184fd79e50ff5bcf917513,https://github.com/netbox-community/netbox/commit/e73db97d467f484ce10e65483937d129b38df934,,,
-5,netbox,netbox,extras.models,f26227ecec (2021-04-16),c855570b55 (2021-05-07),3,3,21.02,0,0,none,"netbox/netbox/models.py: from extras.models import CustomField  [in_function]
-netbox/netbox/models.py: from extras.models import CustomField  [in_function]
-netbox/netbox/models.py: from extras.models import ObjectChange  [in_function]","netbox/netbox/filtersets.py: from extras.models import CustomField  [top_level]
-netbox/netbox/models.py: from extras.models import CustomField  [in_function]
-netbox/netbox/models.py: from extras.models import CustomField  [in_function]
-netbox/netbox/models.py: from extras.models import ObjectChange  [in_function]",https://github.com/netbox-community/netbox/commit/f26227ecec9a5a92333f4c9f48bdd4d371b0b2f2,https://github.com/netbox-community/netbox/commit/c855570b55a9c463b471fdf23cf3010f184c2110,,,
-6,netbox,netbox.authentication,netbox,91f156de33 (2024-05-06),48ecc712bc (2026-07-13),1397,12,797.8,1,0,none,netbox/netbox/authentication/__init__.py: from netbox import ldap_config  [in_function+try_except],netbox/netbox/authentication/__init__.py: from netbox.settings_utils import load_ldap_config  [top_level],https://github.com/netbox-community/netbox/commit/91f156de33c557cda3dc3969b5dbb15228a0a776,https://github.com/netbox-community/netbox/commit/48ecc712bc94d7cd3693441175bb8299915c1317,,,
-7,netbox,netbox.models,core.models,eac7d01977 (2023-04-27),7b90481fc9 (2023-12-29),21,6,245.85,0,0,none,"netbox/netbox/models/features.py: from core.models import AutoSyncRecord  [in_function]
-netbox/netbox/models/features.py: from core.models import DataFile  [in_function]","netbox/netbox/models/features.py: from core.models import AutoSyncRecord  [in_function]
-netbox/netbox/models/features.py: from core.models import AutoSyncRecord  [in_function]
-netbox/netbox/models/features.py: from core.models import ContentType  [top_level]
-netbox/netbox/models/features.py: from core.models import DataFile  [in_function]",https://github.com/netbox-community/netbox/commit/eac7d01977d7c23768f651904bbab50d271d10d9,https://github.com/netbox-community/netbox/commit/7b90481fc9bc7cf30da5b2027877a2d5cb63a919,,,
-8,netbox,utilities,core.models,91f156de33 (2024-05-06),c95098c4f0 (2025-05-01),363,26,359.89,0,0,none,netbox/utilities/permissions.py: from core.models import ObjectType  [in_function],"netbox/utilities/permissions.py: from core.models import ObjectType  [in_function]
-netbox/utilities/tables.py: from core.models import ObjectType  [top_level]",https://github.com/netbox-community/netbox/commit/91f156de33c557cda3dc3969b5dbb15228a0a776,https://github.com/netbox-community/netbox/commit/c95098c4f02ed9199d184fd79e50ff5bcf917513,,,
+netbox/extras/signals.py: from netbox.models.features import has_feature  [top_level]",https://github.com/netbox-community/netbox/commit/7bc0d34196323ac992d7ec80b1caa48e6094d88d,https://github.com/netbox-community/netbox/commit/d8822c8bca10bc3d9b1556e1602d7765fc0763d6,,,,,,
+27,numpy,numpy.f2py.lib.extgen,numpy.distutils,66650bdd59 (2007-08-03),d4375f2985 (2007-08-10),17,10,6.76,0,0,none,numpy/f2py/lib/extgen/extension_module.py: from numpy.distutils.exec_command import exec_command  [in_function],"numpy/f2py/lib/extgen/extension_module.py: from numpy.distutils.exec_command import exec_command  [in_function]
+numpy/f2py/lib/extgen/setup_py.py: from numpy.distutils.exec_command import exec_command  [top_level]",https://github.com/numpy/numpy/commit/66650bdd599110d55425467d5a99aba0a5c6026d,https://github.com/numpy/numpy/commit/d4375f2985a3e5f3e503960b925b4f0e3a307171,,,,,,
+28,numpy,numpy.distutils.command,numpy.distutils.fcompiler,961f7f5348 (2006-01-04),0b7800b455 (2008-02-08),2267,76,764.47,0,0,none,"numpy/distutils/command/build_clib.py: from numpy.distutils.fcompiler import new_fcompiler  [in_function]
+numpy/distutils/command/build_ext.py: from numpy.distutils.fcompiler import new_fcompiler  [in_function]
+numpy/distutils/command/config.py: from numpy.distutils.fcompiler import FCompiler  [in_function]
+numpy/distutils/command/config.py: from numpy.distutils.fcompiler import new_fcompiler  [in_function]
+numpy/distutils/command/config_compiler.py: from numpy.distutils.fcompiler import show_fcompilers  [in_function]","numpy/distutils/command/build_clib.py: from numpy.distutils.fcompiler import new_fcompiler  [in_function]
+numpy/distutils/command/build_clib.py: from numpy.distutils.fcompiler import new_fcompiler  [in_function]
+numpy/distutils/command/build_ext.py: from numpy.distutils.fcompiler import new_fcompiler  [in_function]
+numpy/distutils/command/config.py: from numpy.distutils.fcompiler import FCompiler  [in_function]
+numpy/distutils/command/config.py: from numpy.distutils.fcompiler import new_fcompiler  [in_function]
+numpy/distutils/command/config_compiler.py: from numpy.distutils.fcompiler import show_fcompilers  [in_function]
+... and 2 more",https://github.com/numpy/numpy/commit/961f7f5348dce942991e98e48a966f458bb26273,https://github.com/numpy/numpy/commit/0b7800b455b3aaf50cb83a224f283e72f1dea951,,,,,,
+29,numpy,scipy.base,scipy.corelinalg,5fa9528d94 (2005-12-25),922f7cf07f (2005-12-28),18,5,2.71,0,0,none,"scipy/base/matrix.py: from scipy.corelinalg import inv  [in_function]
+scipy/base/polynomial.py: from scipy.corelinalg import eigvals  [in_function]
+scipy/base/polynomial.py: from scipy.corelinalg import lstsq  [in_function]","scipy/base/matrix.py: from scipy.corelinalg import inv  [in_function]
+scipy/base/mlab.py: from scipy.corelinalg import eig  [top_level]
+scipy/base/mlab.py: from scipy.corelinalg import svd  [top_level]
+scipy/base/polynomial.py: from scipy.corelinalg import eigvals  [in_function]
+scipy/base/polynomial.py: from scipy.corelinalg import lstsq  [in_function]",https://github.com/numpy/numpy/commit/5fa9528d94fa8512a6ce1017b965f2701ce54e96,https://github.com/numpy/numpy/commit/922f7cf07fcce95f510222b464cdc757f40ef57f,,,,,,
+30,opendrift,opendrift.models,opendrift,65a72230cc (2016-08-11),9c03523ad9 (2017-09-08),426,210,392.7,0,0,none,opendrift/models/basemodel.py: import opendrift  [in_function],"opendrift/models/basemodel.py: import opendrift  [in_function]
+opendrift/models/basemodel.py: import opendrift  [top_level]",https://github.com/OpenDrift/opendrift/commit/65a72230cc364e2918d9fa6e9af664d63340b832,https://github.com/OpenDrift/opendrift/commit/9c03523ad91344a6f57a0dffa87fc4c2ea874ea1,,,,,,
+31,oq-engine,db,openquake.commonlib,d1c4ba52bc (2022-06-12),a19fe2a00b (2022-06-13),2,1,0.62,0,0,eager,openquake/server/db/actions.py: from openquake.commonlib import datastore  [in_function],"openquake/server/db/actions.py: from openquake.commonlib import datastore  [in_function]
+openquake/server/db/actions.py: from openquake.commonlib.dbapi import NotFound  [top_level]",https://github.com/gem/oq-engine/commit/d1c4ba52bc2a65fc05cd49194ef419d59039a611,https://github.com/gem/oq-engine/commit/a19fe2a00b3bbdd8b8a6c5a69fc54cce926f937f,,,,,,
+32,oq-engine,openquake.server,papers,2e49c06d77 (2026-09-11),f18aee4caa (2026-09-17),21,6,6.07,1,0,eager,openquake/server/api.py: from openquake.server.papers import base  [in_function],openquake/server/asgi.py: from openquake.server.papers import base  [top_level],https://github.com/gem/oq-engine/commit/2e49c06d77da1267623931db6f88dcb7f380f99b,https://github.com/gem/oq-engine/commit/f18aee4caaa35b92d9b58561371606ef8eb1e9c5,,,,,,
+33,oq-engine,openquake.commands,openquake.hmtk.plotting,a0bf19cbea (2018-07-03),97d24c5c0e (2024-03-26),7881,585,2092.94,0,0,none,openquake/commands/plot_assets.py: from openquake.hmtk.plotting.patch import PolygonPatch  [in_function],"openquake/commands/plot.py: from openquake.hmtk.plotting.patch import PolygonPatch  [top_level]
+openquake/commands/plot_assets.py: from openquake.hmtk.plotting.patch import PolygonPatch  [in_function]",https://github.com/gem/oq-engine/commit/a0bf19cbea1ac5c5eed9c3c14da898f99933e8ad,https://github.com/gem/oq-engine/commit/97d24c5c0e5f78059016951724f2206083013a68,,,,,,
+34,osf.io,osf.models,website.search,b8156948d6 (2017-04-02),d554ec22ca (2018-07-24),474,90,477.73,0,0,none,"osf/models/node.py: from website import search  [in_function]
+osf/models/node.py: from website import search  [in_function]
+osf/models/node.py: from website import search  [in_function]
+osf/models/user.py: from website.search import search  [in_function]
+osf/models/user.py: from website.search.search import update_user  [in_function]","osf/models/collection.py: from website import search  [in_function]
+osf/models/collection.py: from website.search.exceptions import SearchUnavailableError  [top_level]
+osf/models/collection.py: from website.search.search import update_collected_metadata  [in_function]
+osf/models/collection.py: from website.search.search import update_collected_metadata  [in_function]
+osf/models/institution.py: from website.search.exceptions import SearchUnavailableError  [in_function]
+osf/models/institution.py: from website.search.search import update_institution  [in_function]
+... and 6 more",https://github.com/CenterForOpenScience/osf.io/commit/b8156948d66c4d84530fa3302af47bb5c34d4b49,https://github.com/CenterForOpenScience/osf.io/commit/d554ec22cafec2b5c975985ea3fa70c2b0c97ce7,,,,,,
+35,osf.io,website.project,osf.models,3bdaa6ecd0 (2017-04-21),821e577e65 (2017-06-05),75,3,45.44,0,0,none,website/project/model.py: from osf.models.node_relation import NodeRelation  [in_function],"website/project/decorators.py: from osf.models import AbstractNode  [top_level]
+website/project/decorators.py: from osf.models import PrivateLink  [in_function]",https://github.com/CenterForOpenScience/osf.io/commit/3bdaa6ecd0f8cabe6ce65ba46328d673a46a1bee,https://github.com/CenterForOpenScience/osf.io/commit/821e577e6547ecea3a6e13238e7ca68cf5c0b0b8,,,,,,
+36,osf.io,website.files.models,website.project,440ea40bfc (2016-04-12),5f1b4d18b3 (2016-04-18),4,1,6.12,0,0,none,website/files/models/osfstorage.py: from website.project.model import NodeLog  [in_function],"website/files/models/base.py: from website.project.commentable import Commentable  [top_level]
+website/files/models/osfstorage.py: from website.project.model import NodeLog  [in_function]",https://github.com/CenterForOpenScience/osf.io/commit/440ea40bfc06a1aecd48f150a3143810c1e2d5b9,https://github.com/CenterForOpenScience/osf.io/commit/5f1b4d18b3f125a070d04e501cb6655f01ecbf86,,,,,,
+37,pip,pip._internal.index,pip._internal.req,751cbb72f5 (2021-02-19),25114e1f9e (2021-02-20),6,2,1.09,1,1,eager,src/pip/_internal/index/package_finder.py: from pip._internal.req import InstallRequirement  [type_checking],src/pip/_internal/index/package_finder.py: from pip._internal.req import InstallRequirement  [top_level],https://github.com/pypa/pip/commit/751cbb72f5f7c3f0b98e2c1ff50fb61abde41acb,https://github.com/pypa/pip/commit/25114e1f9ed4c5fa2b0407a26266080a5ff1cb2c,,,,,,
+38,pip,pip.operations,pip.vcs,54d251436c (2017-03-24),2dad78a99f (2017-06-28),73,3,96.03,0,0,none,"pip/operations/freeze.py: from pip.vcs import get_src_requirement  [in_function]
+pip/operations/freeze.py: from pip.vcs import vcs  [in_function]","pip/operations/freeze.py: from pip.vcs import get_src_requirement  [in_function]
+pip/operations/freeze.py: from pip.vcs import vcs  [in_function]
+pip/operations/prepare.py: from pip.vcs import vcs  [top_level]",https://github.com/pypa/pip/commit/54d251436cf0aac5a582534180932a0569d19d12,https://github.com/pypa/pip/commit/2dad78a99f802e9c81f592330aceb7f7470c3b78,,,,,,
+39,pip,pip._internal.network,pip._internal.vcs,751cbb72f5 (2021-02-19),25114e1f9e (2021-02-20),6,2,1.09,1,1,eager,src/pip/_internal/network/auth.py: from pip._internal.vcs.versioncontrol import AuthInfo  [type_checking],src/pip/_internal/network/auth.py: from pip._internal.vcs.versioncontrol import AuthInfo  [top_level],https://github.com/pypa/pip/commit/751cbb72f5f7c3f0b98e2c1ff50fb61abde41acb,https://github.com/pypa/pip/commit/25114e1f9ed4c5fa2b0407a26266080a5ff1cb2c,,,,,,
+40,poetry,poetry.console.commands,poetry,f32cf660f9 (2018-03-30),c01f15a657 (2019-05-29),441,76,425.19,0,0,eager,poetry/console/commands/config.py: from poetry.config import Config  [in_function],"poetry/console/commands/check.py: from poetry.poetry import Poetry  [top_level]
+poetry/console/commands/config.py: from poetry.config import Config  [in_function]
+poetry/console/commands/config.py: from poetry.locations import CACHE_DIR  [in_function]",https://github.com/python-poetry/poetry/commit/f32cf660f904d900c85140b386c7b333dab19b07,https://github.com/python-poetry/poetry/commit/c01f15a65789a761d62bffb75df3b6f8587dd10f,,,,,,
+41,poetry,poetry.plugins,poetry.utils.env,3615332674 (2023-06-03),992f64b36c (2024-10-03),446,3,488.03,1,1,none,src/poetry/plugins/plugin_manager.py: from poetry.utils.env import Env  [type_checking],src/poetry/plugins/plugin_manager.py: from poetry.utils.env import Env  [top_level],https://github.com/python-poetry/poetry/commit/3615332674f10f424791a8ae4ff68e5607975f54,https://github.com/python-poetry/poetry/commit/992f64b36c3c266ead1de69280a5c87b401d20f9,,,,,,
+42,poetry,poetry.puzzle,poetry,329b334be2 (2018-11-13),9b286303c0 (2019-09-13),105,13,304.01,1,0,none,poetry/puzzle/provider.py: from poetry.poetry import Poetry  [in_function],poetry/puzzle/provider.py: from poetry.factory import Factory  [top_level],https://github.com/python-poetry/poetry/commit/329b334be25fcd6af876372958633325ce9ca4ae,https://github.com/python-poetry/poetry/commit/9b286303c04857b56db90ae457de5d86862ea3be,,,,,,
+43,pylint,pylint,pylint.pyreverse,c2d9f10bdc (2015-02-16),1e05190ef0 (2019-10-09),2076,314,1696.41,1,0,none,pylint/__init__.py: from pylint.pyreverse.main import Run  [in_function],pylint/__init__.py: from pylint.pyreverse.main import Run  [top_level],https://github.com/pylint-dev/pylint/commit/c2d9f10bdc9ccd2f616df9b0201565e8d0d87264,https://github.com/pylint-dev/pylint/commit/1e05190ef09f6bdb3d4ce8573e2548853df30cdf,,,,,,
+44,pylint,pylint.extensions,pylint.lint,7d25842515 (2021-12-27),444e9e1a6e (2022-03-08),139,8,70.56,0,1,eager,"pylint/extensions/__init__.py: from pylint.lint import PyLinter  [type_checking]
+pylint/extensions/bad_builtin.py: from pylint.lint import PyLinter  [type_checking]
+pylint/extensions/broad_try_clause.py: from pylint.lint import PyLinter  [type_checking]
+pylint/extensions/check_docs.py: from pylint.lint import PyLinter  [type_checking]
+pylint/extensions/check_elif.py: from pylint.lint import PyLinter  [type_checking]
+pylint/extensions/code_style.py: from pylint.lint import PyLinter  [type_checking]
+... and 15 more","pylint/extensions/__init__.py: from pylint.lint import PyLinter  [type_checking]
+pylint/extensions/bad_builtin.py: from pylint.lint import PyLinter  [type_checking]
+pylint/extensions/broad_try_clause.py: from pylint.lint import PyLinter  [type_checking]
+pylint/extensions/check_elif.py: from pylint.lint import PyLinter  [type_checking]
+pylint/extensions/code_style.py: from pylint.lint import PyLinter  [type_checking]
+pylint/extensions/comparetozero.py: from pylint.lint import PyLinter  [type_checking]
+... and 15 more",https://github.com/pylint-dev/pylint/commit/7d2584251552283bf95893019e74dad0390dc65c,https://github.com/pylint-dev/pylint/commit/444e9e1a6e67dba23d050e638ae027ee44414a08,,,,,,
+45,pylint,pylint.checkers.classes,pylint.lint,7d25842515 (2021-12-27),8372180d45 (2022-08-10),1335,62,225.76,0,1,none,pylint/checkers/classes/__init__.py: from pylint.lint import PyLinter  [type_checking],"pylint/checkers/classes/__init__.py: from pylint.lint import PyLinter  [type_checking]
+pylint/checkers/classes/class_checker.py: from pylint.lint.pylinter import PyLinter  [type_checking]
+pylint/checkers/classes/special_methods_checker.py: from pylint.lint.pylinter import PyLinter  [top_level]",https://github.com/pylint-dev/pylint/commit/7d2584251552283bf95893019e74dad0390dc65c,https://github.com/pylint-dev/pylint/commit/8372180d45bfa7233fdec8b978669186d9ad2fd3,,,,,,
+46,relate,course,course.page,a41f361de3 (2014-10-23),8ee1e331c5 (2016-01-07),354,213,441.12,0,0,none,"course/analytics.py: from course.page import PageContext  [in_function]
+course/analytics.py: from course.page import PageContext  [in_function]
+course/content.py: import course.page  [in_function]
+course/flow.py: from course.page import AnswerFeedback  [in_function]
+course/flow.py: from course.page import AnswerFeedback  [in_function]
+course/flow.py: from course.page import PageContext  [in_function]
+... and 4 more","course/analytics.py: from course.page import PageContext  [in_function]
+course/analytics.py: from course.page import PageContext  [in_function]
+course/content.py: import course.page  [in_function]
+course/flow.py: from course.page import InvalidPageData  [top_level]
+course/flow.py: from course.page import PageContext  [in_function]
+course/flow.py: from course.page.base import PageBehavior  [in_function]
+... and 5 more",https://github.com/inducer/relate/commit/a41f361de3fedd086fbf6a351f53b523f38a213a,https://github.com/inducer/relate/commit/8ee1e331c58f8f9e8810a34d0392ea901e19cec5,,,,,,
+47,relate,relate.bin,course.page,b8dfc69b7d (2020-06-15),56194a2199 (2025-10-09),691,16,1941.87,0,0,none,"relate/bin/relate.py: from course.page.code_run_backend import package_exception  [in_function]
+relate/bin/relate.py: from course.page.code_run_backend import run_code  [in_function]
+relate/bin/relate.py: from course.page.code_run_backend import substitute_correct_code_into_test_code  [in_function]","relate/bin/relate.py: from course.page.base import PageBase  [top_level]
+relate/bin/relate.py: from course.page.code import PythonCodeQuestion  [top_level]
+relate/bin/relate.py: from course.page.code_run_backend import RunRequest  [top_level]
+relate/bin/relate.py: from course.page.code_run_backend import package_exception  [in_function]
+relate/bin/relate.py: from course.page.code_run_backend import run_code  [in_function]
+relate/bin/relate.py: from course.page.code_run_backend import substitute_correct_code_into_test_code  [in_function]",https://github.com/inducer/relate/commit/b8dfc69b7dd0a1e9994f105266ad75aa217200b9,https://github.com/inducer/relate/commit/56194a219965ef381a5c5b9da9aea1e349b46238,,,,,,
+48,relate,relate.bin,course,b8dfc69b7d (2020-06-15),56194a2199 (2025-10-09),691,16,1941.87,1,0,none,"relate/bin/relate.py: from course.content import YamlBlockEscapingFileSystemLoader  [in_function]
+relate/bin/relate.py: from course.content import process_yaml_for_expansion  [in_function]
+relate/bin/relate.py: from course.validation import validate_course_on_filesystem  [in_function]","relate/bin/relate.py: from course.content import YamlBlockEscapingFileSystemLoader  [in_function]
+relate/bin/relate.py: from course.content import flow_desc_ta  [top_level]
+relate/bin/relate.py: from course.content import process_yaml_for_expansion  [in_function]
+relate/bin/relate.py: from course.repo import FileSystemFakeRepo  [top_level]
+relate/bin/relate.py: from course.validation import ValidationContext  [top_level]
+relate/bin/relate.py: from course.validation import validate_course_on_filesystem  [in_function]",https://github.com/inducer/relate/commit/b8dfc69b7dd0a1e9994f105266ad75aa217200b9,https://github.com/inducer/relate/commit/56194a219965ef381a5c5b9da9aea1e349b46238,,,,,,
+49,saleor,saleor.graphql.account,saleor.app,3d9f452a84 (2020-04-24),69bc54b62a (2024-06-19),3152,127,1516.99,0,1,none,saleor/graphql/account/utils.py: from ...app.models import App  [type_checking],"saleor/graphql/account/mixins.py: from ...app.models import App  [top_level]
+saleor/graphql/account/utils.py: from ...app.models import App  [type_checking]",https://github.com/saleor/saleor/commit/3d9f452a84dedb726fbb0cff1a299ad307dc58a8,https://github.com/saleor/saleor/commit/69bc54b62ad59ac331caf1969448fd5ac42d89ab,,,,,,
+50,saleor,saleor.plugins.avatax,saleor.account,b87ba25c53 (2020-12-17),77ae96a712 (2022-09-15),1423,50,637.19,0,1,none,saleor/plugins/avatax/plugin.py: from ...account.models import Address  [type_checking],"saleor/plugins/avatax/__init__.py: from ...account.models import Address  [top_level]
+saleor/plugins/avatax/plugin.py: from ...account.models import Address  [type_checking]",https://github.com/saleor/saleor/commit/b87ba25c53dce2ba755085766ca41cff0ae0aa72,https://github.com/saleor/saleor/commit/77ae96a712555e06b4603098dd09eafc8994883c,,,,,,
+51,saleor,saleor.graphql.webhook.mutations,saleor.webhook.transport,aa814bd5f3 (2024-11-15),eaebe6b1ed (2024-12-11),39,1,25.93,1,0,none,saleor/graphql/webhook/mutations/webhook_trigger.py: from ....webhook.transport.utils import prepare_deferred_payload_data  [in_function],saleor/graphql/webhook/mutations/webhook_trigger.py: from ....webhook.transport.utils import prepare_deferred_payload_data  [top_level],https://github.com/saleor/saleor/commit/aa814bd5f35544df10e5ac258913d14e59343e4e,https://github.com/saleor/saleor/commit/eaebe6b1ed096959711da995b9f8b75cfb604c1f,,,,,,
+52,scrapy,scrapy.utils,scrapy.settings,3904f5f55a (2012-08-30),cd823018aa (2012-09-16),34,7,17.45,0,0,eager,scrapy/utils/test.py: from scrapy.settings import CrawlerSettings  [in_function],"scrapy/utils/project.py: from scrapy.settings import CrawlerSettings  [top_level]
+scrapy/utils/test.py: from scrapy.settings import CrawlerSettings  [in_function]",https://github.com/scrapy/scrapy/commit/3904f5f55a626b9f189d94e26ca9b3034442e6d9,https://github.com/scrapy/scrapy/commit/cd823018aab286a8e1fb3e0ae5e4bbf6589b02f9,,,,,,
+53,scrapy,scrapy.downloadermiddlewares,scrapy.settings,d85c39f5bc (2024-10-31),a8ffdcf851 (2026-06-11),391,27,587.91,0,1,eager,"scrapy/downloadermiddlewares/ajaxcrawl.py: from scrapy.settings import BaseSettings  [type_checking]
+scrapy/downloadermiddlewares/httpcache.py: from scrapy.settings import Settings  [type_checking]
+scrapy/downloadermiddlewares/redirect.py: from scrapy.settings import BaseSettings  [type_checking]
+scrapy/downloadermiddlewares/retry.py: from scrapy.settings import BaseSettings  [type_checking]","scrapy/downloadermiddlewares/httpauth.py: from scrapy.settings import SETTINGS_PRIORITIES  [top_level]
+scrapy/downloadermiddlewares/httpcache.py: from scrapy.settings import Settings  [type_checking]
+scrapy/downloadermiddlewares/redirect.py: from scrapy.settings import BaseSettings  [type_checking]
+scrapy/downloadermiddlewares/retry.py: from scrapy.settings import BaseSettings  [type_checking]",https://github.com/scrapy/scrapy/commit/d85c39f5bcd728915fccece86f2b2e4ef37c0e53,https://github.com/scrapy/scrapy/commit/a8ffdcf8517a8973391a14635234b6993b15a86a,,,,,,
+54,scrapy,scrapy.core,scrapy.pipelines,b423e971ae (2024-12-10),d3e15a10cf (2025-08-12),174,31,245.18,1,1,eager,scrapy/core/scraper.py: from scrapy.pipelines import ItemPipelineManager  [type_checking],scrapy/core/scraper.py: from scrapy.pipelines import ItemPipelineManager  [top_level],https://github.com/scrapy/scrapy/commit/b423e971ae0e6972348a1c1fd5f35fa983326b6f,https://github.com/scrapy/scrapy/commit/d3e15a10cfbeb84ac3bd5d71889eb74f2ce549aa,,,,,,
+55,Sefaria-Project,sefaria.system,reader,188bbc8121 (2026-01-18),c1d94e4445 (2026-02-16),48,2,29.06,0,0,eager,sefaria/system/context_processors.py: from reader.views import base_props  [in_function],"sefaria/system/context_processors.py: from reader.models import UserExperimentSettings  [top_level]
+sefaria/system/context_processors.py: from reader.models import user_has_experiments  [top_level]
+sefaria/system/context_processors.py: from reader.views import base_props  [in_function]",https://github.com/Sefaria/Sefaria-Project/commit/188bbc8121764376bf735276c2e49d140d034a5a,https://github.com/Sefaria/Sefaria-Project/commit/c1d94e4445b09e2c008be31da99ee11970a7fdd4,,,,,,
+56,Sefaria-Project,sefaria.helper.linker,sefaria.utils,067bd5027d (2025-08-05),61ef2a60ed (2026-02-12),162,6,190.9,0,0,none,sefaria/helper/linker/linker.py: from sefaria.utils.hebrew import is_mostly_hebrew  [in_function],"sefaria/helper/linker/disambiguator.py: from sefaria.utils.hebrew import strip_cantillation  [top_level]
+sefaria/helper/linker/linker.py: from sefaria.utils.hebrew import is_mostly_hebrew  [in_function]",https://github.com/Sefaria/Sefaria-Project/commit/067bd5027d100307f69960ce0f8e2cddfdf80ca7,https://github.com/Sefaria/Sefaria-Project/commit/61ef2a60ed231967d088b45f14322a0825d75f12,,,,,,
+57,Sefaria-Project,sefaria.model,sefaria.helper,5e29f2d8b2 (2017-03-13),c9bb7d562c (2025-11-18),3401,604,3171.57,0,0,none,"sefaria/model/text.py: from sefaria.helper.link import AbstractStructureAutoLinker  [in_function]
+sefaria/model/text.py: from sefaria.helper.link import AutoLinkerFactory  [in_function]","sefaria/model/text.py: from sefaria.helper.legacy_ref import LegacyRefParserError  [in_function]
+sefaria/model/text.py: from sefaria.helper.legacy_ref import legacy_ref_parser_handler  [in_function]
+sefaria/model/text.py: from sefaria.helper.link import AbstractStructureAutoLinker  [in_function]
+sefaria/model/text.py: from sefaria.helper.link import AutoLinkerFactory  [in_function]
+sefaria/model/text.py: from sefaria.helper.normalization import NormalizerFactory  [top_level]",https://github.com/Sefaria/Sefaria-Project/commit/5e29f2d8b29acc77490accfd83490dd2ce45320e,https://github.com/Sefaria/Sefaria-Project/commit/c9bb7d562ca222a8ee09c10be8781a8b2722c47a,,,,,,
+58,the-blue-alliance,helpers.firebase,helpers,47d5d8afaa (2017-02-18),389e13f959 (2017-02-21),27,3,3.93,0,0,none,helpers/firebase/firebase_pusher.py: from helpers.event_team_status_helper import EventTeamStatusHelper  [in_function],"helpers/firebase/firebase_pusher.py: from helpers.event_helper import EventHelper  [top_level]
+helpers/firebase/firebase_pusher.py: from helpers.event_team_status_helper import EventTeamStatusHelper  [in_function]",https://github.com/the-blue-alliance/the-blue-alliance/commit/47d5d8afaa0a337dfc7578f799f1b4a6e23111ff,https://github.com/the-blue-alliance/the-blue-alliance/commit/389e13f959054581956906ed5f38bad3e873fc1d,,,,,,
+59,the-blue-alliance,models.notifications,consts,203e02a043 (2020-01-07),a9a6c3060c (2020-02-02),40,7,25.85,0,0,none,"models/notifications/alliance_selection.py: from consts.notification_type import NotificationType  [in_function]
+models/notifications/awards.py: from consts.notification_type import NotificationType  [in_function]
+models/notifications/broadcast.py: from consts.notification_type import NotificationType  [in_function]
+models/notifications/district_points.py: from consts.notification_type import NotificationType  [in_function]
+models/notifications/event_level.py: from consts.notification_type import NotificationType  [in_function]
+models/notifications/event_schedule.py: from consts.notification_type import NotificationType  [in_function]
+... and 6 more","models/notifications/alliance_selection.py: from consts.notification_type import NotificationType  [in_function]
+models/notifications/awards.py: from consts.award_type import AwardType  [top_level]
+models/notifications/awards.py: from consts.notification_type import NotificationType  [in_function]
+models/notifications/broadcast.py: from consts.notification_type import NotificationType  [in_function]
+models/notifications/district_points.py: from consts.notification_type import NotificationType  [in_function]
+models/notifications/event_level.py: from consts.notification_type import NotificationType  [in_function]
+... and 5 more",https://github.com/the-blue-alliance/the-blue-alliance/commit/203e02a0439c65e69ef277f542c41bf543119ca9,https://github.com/the-blue-alliance/the-blue-alliance/commit/a9a6c3060c76b5b6dac0c1e583e7c2d370a9b277,,,,,,
+60,the-blue-alliance,backend.common.models,backend.common.queries,0d2960ea01 (2020-06-27),c8e1085a4c (2021-02-14),529,54,232.08,0,0,none,src/backend/common/models/event.py: from backend.common.queries.district_query import DistrictQuery  [in_function],"src/backend/common/models/event.py: from backend.common.queries import award_query  [in_function]
+src/backend/common/models/event.py: from backend.common.queries import match_query  [in_function]
+src/backend/common/models/event.py: from backend.common.queries import team_query  [in_function]
+src/backend/common/models/event.py: from backend.common.queries.district_query import DistrictQuery  [in_function]
+src/backend/common/models/user.py: from backend.common.queries.account_query import AccountQuery  [top_level]
+src/backend/common/models/user.py: from backend.common.queries.api_auth_access_query import ApiAuthAccessQuery  [top_level]
+... and 4 more",https://github.com/the-blue-alliance/the-blue-alliance/commit/0d2960ea01770e1cc3ca90ee84bd156856d8ee60,https://github.com/the-blue-alliance/the-blue-alliance/commit/c8e1085a4ce358bf48230263fb811b6820037d5d,,,,,,
