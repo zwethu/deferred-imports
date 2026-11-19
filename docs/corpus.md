@@ -14,7 +14,7 @@ We mine each repository at its pinned commit, so results can be repeated.
 ## Selection rules (all groups)
 
 - Python is the main language.
-- At least 9 years of history (except the AI-heavy group) and at least 2,000 first-parent commits.
+- At least 8 years of history (except the AI-heavy group) and at least 2,000 first-parent commits.
   Long history matters for RQ2, which follows deferred imports over time.
 - Still maintained: commits in the last 12 months.
 - At least 10 contributors, so no personal or toy projects
