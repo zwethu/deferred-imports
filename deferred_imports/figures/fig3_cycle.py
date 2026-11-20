@@ -1,4 +1,4 @@
-"""Fig. 2 (RQ1): one cycle that exists only through a deferred import.
+"""Fig. 3 (RQ1): one cycle that exists only through a deferred import.
 
 Takes a deferred-only pair src -> dst at the last mined commit, finds the way back
 dst -> ... -> src (eager imports first, else the full graph) and draws the cycle.
@@ -98,7 +98,7 @@ def main(argv=None) -> None:
     ap.add_argument("--src", required=True, help="path of the importing file")
     ap.add_argument("--dst", required=True, help="path of the imported file")
     ap.add_argument("--strip", default="", help="prefix to drop from the shown paths")
-    ap.add_argument("--out", type=Path, default=Path("out/figures/fig2-cycle.pdf"))
+    ap.add_argument("--out", type=Path, default=Path("out/figures/fig3-cycle.pdf"))
     a = ap.parse_args(argv)
     links = find_cycle(a.db, a.src, a.dst)
     for x, y, label in links:

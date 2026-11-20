@@ -18,7 +18,7 @@ import numpy as np
 from deferred_imports.figures import style
 
 EAGER_COLOR = "0.55"
-FULL_COLOR = "#1f4e79"          # same blue as the in-function bars in fig3_km
+FULL_COLOR = "#1f4e79"          # same blue as the in-function bars in fig5_km
 
 
 def cycle_rows(cycles_csv: Path) -> list[dict]:

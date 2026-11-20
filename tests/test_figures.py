@@ -1,8 +1,8 @@
 import csv
 
-from deferred_imports.figures.fig2_cycle import link_label
-from deferred_imports.figures.fig3_km import greenwood_band
+from deferred_imports.figures.fig3_cycle import link_label
 from deferred_imports.figures.fig4_fates import fate_rows
+from deferred_imports.figures.fig5_km import greenwood_band
 
 
 def write(path, rows):
@@ -50,7 +50,7 @@ def test_bootstrap_ci_brackets_estimate():
 
 
 def test_km_at_steps_and_band():
-    from deferred_imports.figures.fig3_km import km_at
+    from deferred_imports.figures.fig5_km import km_at
     t = [100, 200, 400, 800, 900, 2000]
     e = [1, 0, 1, 1, 0, 0]
     (s1, _lo1, _hi1), (s2, lo2, hi2) = km_at(t, e, years=(0.1, 1.5))
@@ -88,3 +88,34 @@ def test_table1_rows_and_render(tmp_path):
     assert rows[-1]["pairs"] == 50 * 24 and rows[-1]["cycle_full"] == 4 * 24
     tex = t1.render(rows)
     assert r"\label{tab:subjects}" in tex and "10.0" in tex and r"\textbf{All}" in tex
+
+
+def test_share_split_sorted_and_median(tmp_path):
+    import numpy as np
+
+    from deferred_imports.figures.fig2_share import share_rows
+    write(tmp_path / "share.csv", [
+        {"repo": "a", "pairs": 100, "pairs_deferred_only": 4, "pairs_type_only": 1},
+        {"repo": "b", "pairs": 10, "pairs_deferred_only": 3, "pairs_type_only": 3},
+        {"repo": "c", "pairs": 50, "pairs_deferred_only": 5, "pairs_type_only": 0}])
+    rows = share_rows(tmp_path / "share.csv")
+    assert [r["repo"] for r in rows] == ["b", "c", "a"]            # largest share first
+    for r in rows:                                                 # split sums to the total
+        assert r["in_function"] + r["type_only"] == r["deferred"]
+        assert abs((r["in_function"] + r["type_only"]) / r["pairs"] - r["share"]) < 1e-12
+    assert float(np.median([r["share"] for r in rows])) == 0.1
+
+
+def test_share_median_on_real_data():
+    from pathlib import Path
+
+    import numpy as np
+    import pytest
+
+    from deferred_imports.figures.fig2_share import share_rows
+    p = Path("out/figures/share.csv")
+    if not p.exists():
+        pytest.skip("run scripts/make_figures.sh first")
+    rows = share_rows(p)
+    assert len(rows) == 24
+    assert round(float(np.median([r["share"] for r in rows])) * 100, 1) == 5.7

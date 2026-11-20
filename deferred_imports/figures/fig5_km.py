@@ -1,4 +1,4 @@
-"""Fig. 3 (RQ2): how long a pair stays deferred-only, as bars at 1, 2 and 5 years.
+"""Fig. 5 (RQ2): how long a pair stays deferred-only, as bars at 1, 2 and 5 years.
 
 Kaplan-Meier estimates for in-function and type-only pairs, first episodes only, calendar
 time, 95% Greenwood (log-log) bands as error bars.
@@ -111,7 +111,7 @@ def draw_bars(groups: dict, out: Path, width: float = style.COLUMN, years=YEARS)
 def main(argv=None) -> None:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("inputs", nargs="+", type=Path, help="index/*.sqlite or an episodes CSV")
-    ap.add_argument("--out", type=Path, default=Path("out/figures/fig3-km.pdf"))
+    ap.add_argument("--out", type=Path, default=Path("out/figures/fig5-km.pdf"))
     a = ap.parse_args(argv)
     groups = km_groups(first_episodes(a.inputs))
     for name, (t, e) in groups.items():
