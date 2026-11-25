@@ -21,7 +21,10 @@ uv run python -m deferred_imports.analysis.promotion_kinds index/*.sqlite --csv 
 
 for ext in pdf png; do
   uv run python -m deferred_imports.figures.fig1_pipeline --out "$OUT/fig1-pipeline.$ext"
-  uv run python -m deferred_imports.figures.fig2_share --share "$OUT/share.csv" --out "$OUT/fig2-share.$ext"
+  uv run python -m deferred_imports.figures.fig2_share --share "$OUT/share.csv" \
+      --cycles "$OUT/cycles.csv" --out "$OUT/fig2-share.$ext"
+  uv run python -m deferred_imports.figures.fig_share_by_project --share "$OUT/share.csv" \
+      --out "$OUT/fig-share-by-project.$ext"
   uv run python -m deferred_imports.figures.fig3_cycle index/django.sqlite \
       --src django/urls/resolvers.py --dst django/conf/urls/__init__.py --strip django/ \
       --out "$OUT/fig3-cycle.$ext"

@@ -3,7 +3,7 @@
 Run all of them with scripts/make_figures.sh, or one at a time:
     uv run python -m deferred_imports.figures.fig1_pipeline --out out/figures/fig1-pipeline.pdf
     uv run python -m deferred_imports.figures.fig2_share --share out/figures/share.csv \
-        --out out/figures/fig2-share.pdf
+        --cycles out/figures/cycles.csv --out out/figures/fig2-share.pdf
     uv run python -m deferred_imports.figures.fig3_cycle index/django.sqlite \
         --src django/urls/resolvers.py --dst django/conf/urls/__init__.py --strip django/ \
         --out out/figures/fig3-cycle.pdf

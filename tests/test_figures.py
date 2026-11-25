@@ -93,7 +93,7 @@ def test_table1_rows_and_render(tmp_path):
 def test_share_split_sorted_and_median(tmp_path):
     import numpy as np
 
-    from deferred_imports.figures.fig2_share import share_rows
+    from deferred_imports.figures.fig_share_by_project import share_rows
     write(tmp_path / "share.csv", [
         {"repo": "a", "pairs": 100, "pairs_deferred_only": 4, "pairs_type_only": 1},
         {"repo": "b", "pairs": 10, "pairs_deferred_only": 3, "pairs_type_only": 3},
@@ -112,10 +112,25 @@ def test_share_median_on_real_data():
     import numpy as np
     import pytest
 
-    from deferred_imports.figures.fig2_share import share_rows
+    from deferred_imports.figures.fig_share_by_project import share_rows
     p = Path("out/figures/share.csv")
     if not p.exists():
         pytest.skip("run scripts/make_figures.sh first")
     rows = share_rows(p)
     assert len(rows) == 24
     assert round(float(np.median([r["share"] for r in rows])) * 100, 1) == 5.7
+
+
+def test_fig2_totals_on_real_data():
+    from pathlib import Path
+
+    import pytest
+
+    from deferred_imports.figures.fig2_share import totals
+    share, cycles = Path("out/figures/share.csv"), Path("out/figures/cycles.csv")
+    if not (share.exists() and cycles.exists()):
+        pytest.skip("run scripts/make_figures.sh first")
+    t = totals(share, cycles)
+    assert (t["pairs"], t["deferred"], t["eager"]) == (42288, 2375, 39913)
+    assert (t["in_function"], t["type_only"]) == (1317, 1058)
+    assert (t["closing"], t["not_closing"]) == (1299, 1076)
