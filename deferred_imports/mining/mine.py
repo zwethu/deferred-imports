@@ -1,6 +1,6 @@
 """Mine one git repository into its SQLite event log, using plain git commands.
 
-    index/<repo>.sqlite   tables in docs/schema.md; this module fills
+    index/<repo>.sqlite   tables in schema.sql; this module fills
                           run_info, commits, files, file_paths, file_changes, raw_imports, problems,
                           and edges.py the rest
 
@@ -17,7 +17,7 @@ How it works:
   5. edges.py then resolves the imports and lifts them to module edges.
 
 The miner logs facts only. Rules, windows and thresholds are computed later
-from these tables. Commit messages are not stored (PDPA, docs/schema.md).
+from these tables. Commit messages are not stored (PDPA).
 
 A stopped run continues from run_info.last_i when started again. A finished
 database is left alone; delete it to mine again.
@@ -58,12 +58,11 @@ OVERSIZED_FILES = 1000
 # Keep in sync with BUG_FIX_KEYWORDS in an earlier miner.
 FIX_RE = re.compile(r"\b(fix(e[sd])?|bug(s|fix)?|hotfix|defect|fault|crash(es)?|regression|"
                     r"patch(ed)?|repair(ed)?|resolve[sd]?)\b", re.IGNORECASE)
-# Same rule as scripts/screen_repo.sh: subject starts with "Revert " / "Revert:" / 'Revert"'.
+# A revert: the subject starts with "Revert " / "Revert:" / 'Revert"'.
 REVERT_RE = re.compile(r'^revert( |:|")', re.IGNORECASE)
 REVERTS_SHA_RE = re.compile(r"This reverts commit ([0-9a-f]{7,40})", re.IGNORECASE)
 
-# Same patterns as AGENT in scripts/screen_repo.sh and docs/corpus-criteria.md,
-# checked against "name <email>" and the message. Keep the three in sync.
+# Coding-agent patterns, checked against "name <email>" and the message.
 AGENT_PATTERNS = [
     ("copilot", r"copilot-swe-agent|Copilot <"),
     ("devin", r"devin-ai-integration"),
@@ -399,7 +398,7 @@ def blame_ignore_revs(repo: Path, rev: str) -> set[str]:
 # ---------------------------------------------------------------- file identity
 
 class FileIds:
-    """Stable file ids across renames: writes `files` and `file_paths` (docs/schema.md, B).
+    """Stable file ids across renames: writes `files` and `file_paths`.
 
     A rename keeps the id. Add and copy give a new id, and so does a file that comes back
     at a path deleted earlier."""

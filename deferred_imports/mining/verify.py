@@ -3,7 +3,7 @@
     uv run python -m deferred_imports.mining.verify <clone> index/<repo>.sqlite [--out report.json] [--checkpoints 25]
     uv run python -m deferred_imports.mining.verify <clone> index/<repo>.sqlite
 
-docs/data-check.md explains the checks and the results on the corpus.
+The README (section Validator) shows how to run it on the whole corpus.
 
 Everything is recomputed from git (`git log --first-parent`, `git diff-tree -M --raw --numstat`
 against the first parent, `git ls-tree`, the blobs) and Python's `ast`, then compared with
@@ -301,7 +301,7 @@ def run(args):
         py2_until = -1 if r is None else r
 
     def resolve(t_py, pk, dirs, importer, stmt, i):
-        """Target path of one import, following docs/schema.md section C, or None."""
+        """Target path of one import, or None."""
         if stmt.startswith("import "):
             module, name, level = stmt[7:], None, 0
         else:

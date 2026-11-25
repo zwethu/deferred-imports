@@ -1,5 +1,5 @@
 -- Event log: one SQLite file per repository, index/<repo>.sqlite.
--- Every table and column is explained in docs/schema.md.
+-- Every table and column is explained in the comments below.
 --
 -- Conventions
 --   i            commit number in first-parent order, oldest first (0, 1, 2 ...): the time axis

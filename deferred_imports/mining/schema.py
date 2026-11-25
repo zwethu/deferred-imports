@@ -1,6 +1,6 @@
 """Create or open a repository's event log, index/<repo>.sqlite.
 
-The tables are defined in schema.sql and explained in docs/schema.md.
+The tables are defined and explained in schema.sql.
 
     con = schema.connect(Path("index/netbox.sqlite"))
 """

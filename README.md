@@ -1,6 +1,16 @@
 # deferred-imports
 
-Code and data for our study of **deferred imports** in Python (JCSSE 2027).
+Code, data, hand-check results and validator for our study of **deferred imports** in
+Python (JCSSE 2027).
+
+## What is in this repository
+
+| You want | Where to look |
+|---|---|
+| **Code** that mines the repositories and computes every number and figure | [`deferred_imports/`](deferred_imports), [`scripts/`](scripts) — see [Code](#code) |
+| **Data**: the 24 repositories and pinned commits, the result tables, the mined databases | [`corpus/`](corpus), [`data/`](data), Zenodo — see [Data](#data) |
+| **Hand check**: the sampled cases and the five checkers' answers | [`handcheck/`](handcheck), [`results/`](results) — see [Hand check](#hand-check) |
+| **Validator**: an independent re-check of the mined data against git | [`deferred_imports/mining/verify.py`](deferred_imports/mining/verify.py), [`scripts/verify_all.sh`](scripts/verify_all.sh) — see [Validator](#validator) |
 
 ## What we study
 
@@ -20,68 +30,129 @@ A top-level `try: import x / except ImportError:` still runs at load time, so it
 The code still depends on the imported module, but a checker that reads only
 top-level imports does not see it. Deferred imports can hide import cycles.
 
-## Research questions
+### Research questions
 
 - **RQ1** (E1, E3): How much of a project's module dependency structure exists only
   through deferred imports, and which cycles appear only when we add them?
 - **RQ2** (E2): What happens to a deferred module pair over time: promoted to an
   eager import, removed, or kept, and for how long?
 
-## Layout
+## Code
 
 ```
 deferred_imports/
-  mining/      miner (from an earlier miner): git history -> SQLite event log, import kinds
-  analysis/    graphs.py (E1), cycles.py (E3), fate.py (E2), handcheck.py (R3 lists)
-corpus/        paper-corpus.csv (the 24 repositories), repos.csv (older screened list),
-               resolver.csv (source roots, py2 cut-offs)
+  mining/      git history -> one SQLite event log per repository (mine.py, edges.py),
+               self-check (check.py) and the independent validator (verify.py)
+  analysis/    graphs.py (E1), cycles.py (E3), fate.py (E2), bootstrap.py (confidence
+               intervals), promotion_kinds.py, handcheck.py (hand-check samples)
+  figures/     one module per figure and Table I
+scripts/
+  clone_corpus.sh    clone the 24 repositories into ../clones
+  run_experiment.sh  the whole pipeline: clone, mine, E1/E2/E3, hand-check samples
+  make_figures.sh    every figure and table in the paper, into out/figures/
+  verify_all.sh      run the validator on every mined repository
 tests/
 ```
 
-## Setup
+Setup and tests:
 
 ```bash
 uv sync
 uv run pytest
 ```
 
-## Mine one repository
+Run everything (clones go to `../clones`, mined databases to `index/`, results to `out/`):
 
 ```bash
-uv run python -m deferred_imports.mining.mine ../corpus-clones/poetry --rev <pinned_sha>
-uv run python -m deferred_imports.mining.edges index/poetry.sqlite
-uv run python -m deferred_imports.mining.check ../corpus-clones/poetry index/poetry.sqlite
+bash scripts/run_experiment.sh
+bash scripts/make_figures.sh
 ```
 
-Use the `pinned_sha` from `corpus/repos.csv`. Output goes to `index/` (ignored by git).
+Or mine one repository by hand, at the `pinned_sha` from `corpus/paper-corpus.csv`:
+
+```bash
+uv run python -m deferred_imports.mining.mine ../clones/poetry --rev <pinned_sha>
+uv run python -m deferred_imports.mining.edges index/poetry.sqlite
+uv run python -m deferred_imports.mining.check ../clones/poetry index/poetry.sqlite
+```
 
 Each import is tagged by where it sits: `top_level`, `in_function`, `type_checking`,
-`try_except` (or a mix, like `in_function+try_except`).
+`try_except` (or a mix, like `in_function+try_except`). Imports in a branch that never
+runs are tagged `type_checking` too: the body of `if TYPE_CHECKING:` / `if False:`, and
+the `elif`/`else` parts of `if not TYPE_CHECKING:`. This rule came in miner 0.4.0;
+databases from 0.3.0 must be mined again.
 
-Imports in a branch that never runs are tagged `type_checking` too: the body of
-`if TYPE_CHECKING:` / `if False:`, and the `elif`/`else` parts of `if not TYPE_CHECKING:`.
-This rule came in miner 0.4.0 (18 Nov); databases from 0.3.0 must be mined again.
+## Data
 
-## Mine the whole corpus
+| File | What it holds |
+|---|---|
+| [`corpus/paper-corpus.csv`](corpus/paper-corpus.csv) | The 24 repositories: group, URL, kind, **pinned commit** and date, size, history |
+| [`corpus/resolver.csv`](corpus/resolver.csv) | Per repository: extra source roots for import resolution, and the Python 2 cut-off date |
+| [`corpus/repos.csv`](corpus/repos.csv) | The older, larger screened list the corpus was chosen from |
+| [`docs/corpus.md`](docs/corpus.md) | How and why each repository was chosen |
+
+The results behind the paper's numbers and figures are in [`data/`](data), one file per
+experiment (file level, all 24 repositories):
+
+| File | What it holds |
+|---|---|
+| [`data/e1_share.csv`](data/e1_share.csv) | E1: per repository, eager and deferred imports and the share of file pairs linked only by deferred imports |
+| [`data/e3_cycles.csv`](data/e3_cycles.csv) | E3: per repository, import cycles with and without deferred imports, and the deferred-only pairs that close a cycle |
+| [`data/e2_fate.csv`](data/e2_fate.csv) | E2: per repository, how many deferred pairs were promoted, removed or kept |
+| [`data/e2_episodes.csv`](data/e2_episodes.csv) | E2: one row per deferred episode of a file pair, with its start, end, outcome and length |
+| [`data/verify_summary.csv`](data/verify_summary.csv) | Validator: per repository, values checked, mismatches and PASS/FAIL |
+
+`scripts/make_figures.sh` writes the same files (as `out/figures/share.csv`, `cycles.csv`,
+`fate.csv`, `episodes.csv`) from the mined databases.
+
+**Mined databases.** The 24 SQLite event logs (`index/<repo>.sqlite`, about 290 MB) are on
+Zenodo as `deferred-imports-index.tar.gz` (82 MB). DOI: to be added after review.
+SHA-256: `9fc98fcbb83d661b3a611c6c4f1e54a225c33e9b9a3de3e464eb20f2fb76829c`.
+Unpack it in the repository root to get `index/`. Authors are stored only as a salted hash,
+and commit messages are not stored. The tables are described in
+[`deferred_imports/mining/schema.sql`](deferred_imports/mining/schema.sql).
+
+Every result is computed from the history up to the pinned commit, so you can also
+rebuild the databases yourself: `scripts/run_experiment.sh` clones the repositories and
+mines them at their pinned commits.
+
+## Hand check
+
+To check that the miner finds real deferred imports, people checked a random sample of
+cases by hand on GitHub.
+
+| File | What it holds |
+|---|---|
+| [`handcheck/file-level-2026-11-19/promotions.csv`](handcheck/file-level-2026-11-19/promotions.csv) | 60 sampled promotions (E2), one row per import line (154 rows) |
+| [`handcheck/file-level-2026-11-19/cycle_edges.csv`](handcheck/file-level-2026-11-19/cycle_edges.csv) | 60 sampled deferred imports that close a cycle (E3), one row per import line (553 rows) |
+| [`results/promotions_checker1.csv`](results) … `checker5.csv` | Each checker's answers for the promotions sample |
+| [`results/cycle_edges_checker1.csv`](results) … `checker5.csv` | Each checker's answers for the cycle sample |
+
+Each row has the file, line, commit, a GitHub link that opens that exact line, and the
+import kind the miner gave it (`kind`). The checker fills in `ok (yes/no)` and, where
+needed, a `note`. What counts as
+`yes` is written at the top of
+[`deferred_imports/analysis/handcheck.py`](deferred_imports/analysis/handcheck.py).
+The samples are drawn with a fixed seed, so this command makes the same rows again:
 
 ```bash
-bash scripts/clone_corpus.sh                                    # into ../clones
-uv run python -m deferred_imports.mining.mine_corpus --jobs 4 --check
+uv run python -m deferred_imports.analysis.handcheck index/*.sqlite --out handcheck --n 60
 ```
 
-## Hand-check lists (R3)
+## Validator
+
+[`deferred_imports/mining/verify.py`](deferred_imports/mining/verify.py) checks a mined
+database against git **without using any other code from this repository**. It
+recomputes everything from plain git commands and Python's `ast` (the miner uses
+tree-sitter), rebuilds the import graph from the whole tree at checkpoints, and compares
+every value with the database. The checks are listed at the top of the file.
 
 ```bash
-uv run python -m deferred_imports.analysis.handcheck index/*.sqlite --out handcheck --n 30
+uv run python -m deferred_imports.mining.verify ../clones/poetry index/poetry.sqlite --out poetry.json
+bash scripts/verify_all.sh            # every repository; summary in out/verify/summary.csv
 ```
 
-Writes `handcheck/promotions.csv` and `handcheck/cycle_edges.csv`: random samples with package
-names, the exact import lines, commit SHAs and GitHub links, and empty columns for the checkers.
-
-## Origin
-
-The miner is copied from an earlier miner,
-without the churn, rule-induction and server code.
+On our run all 24 repositories pass with no mismatches.
 
 ## License
 

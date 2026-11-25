@@ -65,7 +65,7 @@ def test_checks_reject_bad_rows(tmp_path):
 
 
 def test_worked_example_crossing_then_repair(tmp_path):
-    """docs/schema.md: db -> orders is crossed at commit 501 and repaired at 508."""
+    """Worked example: db -> orders is crossed at commit 501 and repaired at 508."""
     con = schema.connect(tmp_path / "r.sqlite")
     for i in (0, 501, 508):
         add_commit(con, i)

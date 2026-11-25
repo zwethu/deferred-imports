@@ -1,4 +1,4 @@
-"""Resolve imports to files, and lift file edges to module edges (docs/schema.md, C and D).
+"""Resolve imports to files, and lift file edges to module edges (tables in schema.sql).
 
 Reads   file_changes, raw_imports, run_info.source_roots and run_info.py2_until
 Writes  file_edges, modules, file_modules, module_edges, module_touches, and
@@ -9,7 +9,7 @@ rebuilds these tables from scratch, so changing the resolver needs no re-mining:
 
     uv run python -m deferred_imports.mining.edges index/poetry.sqlite
 
-Resolution (mining-plan.md §3). An absolute import `a.b` is looked up as <root>/a/b.py or
+Resolution. An absolute import `a.b` is looked up as <root>/a/b.py or
 <root>/a/b/__init__.py under each source root: the top level, src/, lib/, every directory
 with a manage.py, and any listed for the repo in corpus/resolver.csv. Directories without
 __init__.py are allowed on the way (PEP 420 namespace packages, as poetry uses). Then:
@@ -46,7 +46,7 @@ from pathlib import Path
 EDGES_VERSION = "2"
 RESOLVER_CSV = Path("corpus/resolver.csv")
 
-# Same folders as EXCL in scripts/screen_repo.sh, plus docs_src (mining-plan.md §4).
+# Folders we exclude, plus docs_src.
 # A package with one of these anywhere in its path is listed in `modules` but gets no edges.
 EXCLUDE = {
     "tests": "tests", "test": "tests", "testing": "tests",
