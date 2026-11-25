@@ -31,7 +31,7 @@ top-level imports does not see it. Deferred imports can hide import cycles.
 
 ```
 deferred_imports/
-  mining/      miner (from SENSO-Lens): git history -> SQLite event log, import kinds
+  mining/      miner (from an earlier miner): git history -> SQLite event log, import kinds
   analysis/    graphs.py (E1), cycles.py (E3), fate.py (E2), handcheck.py (R3 lists)
 corpus/        paper-corpus.csv (the 24 repositories), repos.csv (older screened list),
                resolver.csv (source roots, py2 cut-offs)
@@ -80,7 +80,7 @@ names, the exact import lines, commit SHAs and GitHub links, and empty columns f
 
 ## Origin
 
-The miner is copied from the SENSO-Lens project (`senso_lens/mining`, branch `main`),
+The miner is copied from an earlier miner,
 without the churn, rule-induction and server code.
 
 ## License

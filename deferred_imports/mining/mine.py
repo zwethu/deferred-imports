@@ -55,7 +55,7 @@ OVERSIZED_FILES = 1000
 
 # ---------------------------------------------------------------- labels
 
-# Keep in sync with BUG_FIX_KEYWORDS in senso-framework/shared/mining/git_miner.py.
+# Keep in sync with BUG_FIX_KEYWORDS in an earlier miner.
 FIX_RE = re.compile(r"\b(fix(e[sd])?|bug(s|fix)?|hotfix|defect|fault|crash(es)?|regression|"
                     r"patch(ed)?|repair(ed)?|resolve[sd]?)\b", re.IGNORECASE)
 # Same rule as scripts/screen_repo.sh: subject starts with "Revert " / "Revert:" / 'Revert"'.

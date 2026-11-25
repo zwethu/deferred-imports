@@ -273,7 +273,7 @@ def run(args):
     touch_rows = grouped("SELECT i, module_id, n_files FROM module_touches")
     fp_open = grouped("SELECT from_i, path, file_id FROM file_paths")
     fp_close = grouped("SELECT to_i, path, file_id FROM file_paths WHERE to_i IS NOT NULL")
-    # churn tables come from SENSO-Lens' context/churn.py, which this repo does not include
+    # churn tables come from an earlier miner, which this repo does not include
     has_cc = bool(q("SELECT 1 FROM sqlite_master WHERE type='table' AND name='commit_churn'"))
     cc_rows = {r[0]: r[1:] for r in q("SELECT i, n_files, added, deleted, lines, is_large "
                                       "FROM commit_churn")} if has_cc else {}

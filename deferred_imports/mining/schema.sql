@@ -1,4 +1,4 @@
--- SENSO-Lens event log: one SQLite file per repository, index/<repo>.sqlite.
+-- Event log: one SQLite file per repository, index/<repo>.sqlite.
 -- Every table and column is explained in docs/schema.md.
 --
 -- Conventions
