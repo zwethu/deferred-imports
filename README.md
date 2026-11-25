@@ -112,7 +112,8 @@ experiment (file level, all 24 repositories):
 `fate.csv`, `episodes.csv`) from the mined databases.
 
 **Mined databases.** The 24 SQLite event logs (`index/<repo>.sqlite`, about 290 MB) are on
-Zenodo as `deferred-imports-index.tar.gz` (82 MB). DOI: to be added after review.
+Zenodo as `deferred-imports-index.tar.gz` (82 MB):
+[doi:10.5281/zenodo.24538361](https://doi.org/10.5281/zenodo.24538361).
 SHA-256: `9fc98fcbb83d661b3a611c6c4f1e54a225c33e9b9a3de3e464eb20f2fb76829c`.
 Unpack it in the repository root to get `index/`. Authors are stored only as a salted hash,
 and commit messages are not stored. The tables are described in
