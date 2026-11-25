@@ -19,12 +19,17 @@ uv run python -m deferred_imports.analysis.fate index/*.sqlite --level file \
     --csv "$OUT/fate.csv" --episodes "$OUT/episodes.csv"
 uv run python -m deferred_imports.analysis.promotion_kinds index/*.sqlite --csv "$OUT/kinds.csv"
 
+# Table II (RQ3): outcome of the first episodes, printed and written as LaTeX
+uv run python -m deferred_imports.figures.table2_fates "$OUT/episodes.csv" --out "$OUT/table2-fates.tex"
+
 for ext in pdf png; do
   uv run python -m deferred_imports.figures.fig1_pipeline --out "$OUT/fig1-pipeline.$ext"
   uv run python -m deferred_imports.figures.fig2_share --share "$OUT/share.csv" \
       --cycles "$OUT/cycles.csv" --out "$OUT/fig2-share.$ext"
   uv run python -m deferred_imports.figures.fig_share_by_project --share "$OUT/share.csv" \
       --out "$OUT/fig-share-by-project.$ext"
+  uv run python -m deferred_imports.figures.fig_share_box --share "$OUT/share.csv" \
+      --out "$OUT/fig-share-box.$ext"
   uv run python -m deferred_imports.figures.fig3_cycle index/django.sqlite \
       --src django/urls/resolvers.py --dst django/conf/urls/__init__.py --strip django/ \
       --out "$OUT/fig3-cycle.$ext"

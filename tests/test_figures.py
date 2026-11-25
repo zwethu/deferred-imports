@@ -33,6 +33,18 @@ def test_greenwood_band_contains_curve():
     assert all(l <= v <= h for l, v, h in zip(lo, s, hi))
 
 
+def test_group_shares_order_and_all(tmp_path):
+    from deferred_imports.figures.fig_share_box import group_shares
+    from deferred_imports.figures.table1_subjects import GROUPS
+    repos = [r for _, _, rs in GROUPS for r in rs]
+    write(tmp_path / "share.csv", [{"repo": r, "share_deferred_only": i / 100}
+                                   for i, r in enumerate(repos)])
+    groups = group_shares(tmp_path / "share.csv")
+    assert [label for label, _ in groups] == ["Well-known", "Less-known", "AI-heavy", "Overall"]
+    assert groups[0][1][1] == ("numpy", 1.0)                       # share in percent
+    assert len(groups[-1][1]) == len(repos)
+
+
 def test_link_label():
     assert link_label(["top_level", "in_function"]) == ""
     assert link_label(["type_checking"]) == "TYPE_CHECKING"

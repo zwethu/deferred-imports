@@ -68,6 +68,12 @@ bash scripts/run_experiment.sh
 bash scripts/make_figures.sh
 ```
 
+Print Table II (RQ3 outcomes) from the shared data, without mining anything:
+
+```bash
+uv run python -m deferred_imports.figures.table2_fates data/e2_episodes.csv
+```
+
 Or mine one repository by hand, at the `pinned_sha` from `corpus/paper-corpus.csv`:
 
 ```bash
