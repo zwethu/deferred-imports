@@ -3,9 +3,7 @@ message: "If you use this software or dataset, please cite it as below."
 title: "Deferred imports in Python: dataset and analysis code"
 type: software
 authors:
-  - name: "Zwe Thura Aung"
-  - name: "Thaw Zin Myo Aung"
-  - name: "Khant Wai Lin"
+  - name: "Anonymous"
 license: MIT
 version: 0.1.0
 # TODO: add the paper (preferred-citation) after acceptance.
