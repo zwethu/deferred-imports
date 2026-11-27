@@ -41,30 +41,31 @@ def summary(rows: list[dict]) -> dict:
 
 
 def draw_hidden_cycles(rows: list[dict], out: Path, width: float = style.COLUMN) -> None:
+    rows = sorted(rows, key=lambda r: (-r["largest_full"], r["repo"]))
     plt = style.plt()
     fig, ax = plt.subplots(figsize=(width, 0.13 * len(rows) + 0.7))
     y = np.arange(len(rows))[::-1]
-    eager = np.array([r["eager"] for r in rows])
-    full = np.array([r["full"] for r in rows])
+    eager = np.array([r["largest_eager"] for r in rows])
+    full = np.array([r["largest_full"] for r in rows])
     for yy, a, b in zip(y, eager, full):
         ax.plot([a, b], [yy, yy], color="0.8", lw=1.2, zorder=1)
     ax.scatter(eager, y, s=14, facecolor="white", edgecolor=EAGER_COLOR, lw=0.9, zorder=2,
-               label="Top-level imports only")
+               label="Eager-only graph")
     ax.scatter(full, y, s=14, color=FULL_COLOR, zorder=3, label="With deferred imports")
-    labels = [f"{r['repo']}*" if r["eager"] == 0 and r["full"] > 0 else r["repo"] for r in rows]
+    labels = [f"{r['repo']}*" if r["largest_eager"] == 0 and r["largest_full"] > 0 else r["repo"] for r in rows]
     ax.set_yticks(y, labels, fontsize=6.5)
     ax.tick_params(axis="y", length=0)
     ax.set_xscale("symlog", linthresh=1)
     ax.set_xlim(-0.3, max(full) * 1.6)
     ax.set_xticks([0, 1, 10, 100, 1000], ["0", "1", "10", "100", "1,000"])
     ax.set_ylim(-0.7, len(rows) - 0.3)
-    ax.set_xlabel("Files in an import cycle (log scale)")
+    ax.set_xlabel("Files in largest cyclic component (log scale)")
     ax.grid(axis="x", color="0.9", lw=0.5)
     ax.set_axisbelow(True)
     ax.legend(frameon=False, loc="lower center", bbox_to_anchor=(0.4, 1.0), ncol=2,
               handletextpad=0.3, columnspacing=1)
     ax.spines[["top", "right", "left"]].set_visible(False)
-    ax.text(0, -0.04, "* no cycle without deferred imports", transform=ax.transAxes,
+    ax.text(0, -0.17, "* no cycle without deferred imports", transform=ax.transAxes,
             fontsize=6, va="top", ha="left", color="0.3")
     style.save(fig, out)
 

@@ -63,10 +63,10 @@ def draw(groups, out: Path, width: float = style.COLUMN) -> None:
                    edgecolors="white", linewidths=0.3, zorder=3)
     overall = median(data[-1])
     ax.axhline(overall, color="black", ls="--", lw=0.6, zorder=1)
-    label_x = (positions[-2] + positions[-1]) / 2
-    ax.text(label_x, overall + 0.3, f"Overall median\n({overall:.1f}%)",
-            va="bottom", ha="center", fontsize=6.5)
-    ax.set_xlim(0.4, positions[-1] + 0.5)
+    # label right of the last box, clear of the boxes and dots
+    ax.text(positions[-1] + 0.32, overall + 0.3, f"Overall\nmedian ({overall:.1f}%)",
+            va="bottom", ha="left", fontsize=6.5)
+    ax.set_xlim(0.4, positions[-1] + 1.15)
     ax.set_xticks(positions)
     ax.set_xticklabels([f"{label}\n(n = {len(g)})" for label, g in groups])
     ax.set_ylabel("Deferred-only pairs (%)")

@@ -35,6 +35,8 @@ for ext in pdf png; do
       --out "$OUT/fig3-cycle.$ext"
   uv run python -m deferred_imports.figures.fig_hidden_cycles --cycles "$OUT/cycles.csv" \
       --out "$OUT/fig-hidden-cycles.$ext"
+  uv run python -m deferred_imports.figures.fig_cycle_donuts --cycles "$OUT/cycles.csv" \
+      --out "$OUT/fig-cycle-donuts.$ext"
   uv run python -m deferred_imports.figures.fig5_km "$OUT/episodes.csv" --out "$OUT/fig5-km.$ext"
   uv run python -m deferred_imports.figures.fig4_fates --fate "$OUT/fate.csv" \
       --kinds "$OUT/kinds.csv" --out "$OUT/fig4-fates.$ext"

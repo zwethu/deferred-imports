@@ -32,10 +32,15 @@ top-level imports does not see it. Deferred imports can hide import cycles.
 
 ### Research questions
 
-- **RQ1** (E1, E3): How much of a project's module dependency structure exists only
-  through deferred imports, and which cycles appear only when we add them?
-- **RQ2** (E2): What happens to a deferred module pair over time: promoted to an
-  eager import, removed, or kept, and for how long?
+- **RQ1 (Prevalence):** What share of each project's file-to-file dependencies exists
+  only through deferred imports?
+- **RQ2 (Cycles):** Which projects show cycles only in the full import graph? How
+  does the largest strongly connected component change when deferred imports are added?
+- **RQ3 (Evolution):** How long does a dependency stay deferred-only after it first
+  enters that state? What shares gain an eager import, disappear, or remain deferred-only
+  at the pinned commit?
+
+RQ1 and RQ2 use the pinned commit. RQ3 follows dependencies through the project history.
 
 ## Code
 
@@ -43,12 +48,12 @@ top-level imports does not see it. Deferred imports can hide import cycles.
 deferred_imports/
   mining/      git history -> one SQLite event log per repository (mine.py, edges.py),
                self-check (check.py) and the independent validator (verify.py)
-  analysis/    graphs.py (E1), cycles.py (E3), fate.py (E2), bootstrap.py (confidence
+  analysis/    graphs.py (RQ1), cycles.py (RQ2), fate.py (RQ3), bootstrap.py (confidence
                intervals), promotion_kinds.py, handcheck.py (hand-check samples)
   figures/     one module per figure and Table I
 scripts/
   clone_corpus.sh    clone the 24 repositories into ../clones
-  run_experiment.sh  the whole pipeline: clone, mine, E1/E2/E3, hand-check samples
+  run_experiment.sh  the whole pipeline: clone, mine, analyze, generate hand-check samples
   make_figures.sh    every figure and table in the paper, into out/figures/
   verify_all.sh      run the validator on every mined repository
 tests/
@@ -97,15 +102,14 @@ databases from 0.3.0 must be mined again.
 | [`corpus/repos.csv`](corpus/repos.csv) | The older, larger screened list the corpus was chosen from |
 | [`docs/corpus.md`](docs/corpus.md) | How and why each repository was chosen |
 
-The results behind the paper's numbers and figures are in [`data/`](data), one file per
-experiment (file level, all 24 repositories):
+The results behind the paper's numbers and figures are in [`data/`](data), at the file level for all 24 repositories:
 
 | File | What it holds |
 |---|---|
-| [`data/e1_share.csv`](data/e1_share.csv) | E1: per repository, eager and deferred imports and the share of file pairs linked only by deferred imports |
-| [`data/e3_cycles.csv`](data/e3_cycles.csv) | E3: per repository, import cycles with and without deferred imports, and the deferred-only pairs that close a cycle |
-| [`data/e2_fate.csv`](data/e2_fate.csv) | E2: per repository, how many deferred pairs were promoted, removed or kept |
-| [`data/e2_episodes.csv`](data/e2_episodes.csv) | E2: one row per deferred episode of a file pair, with its start, end, outcome and length |
+| [`data/e1_share.csv`](data/e1_share.csv) | RQ1: per repository, eager and deferred imports and the share of file pairs linked only by deferred imports |
+| [`data/e3_cycles.csv`](data/e3_cycles.csv) | RQ2: per repository, import cycles with and without deferred imports, and the deferred-only pairs that participate in a cycle |
+| [`data/e2_fate.csv`](data/e2_fate.csv) | RQ3: per repository, how many deferred pairs were gained an eager import, disappeared, or remained deferred-only |
+| [`data/e2_episodes.csv`](data/e2_episodes.csv) | RQ3: one row per deferred episode of a file pair, with its start, end, outcome and length |
 | [`data/verify_summary.csv`](data/verify_summary.csv) | Validator: per repository, values checked, mismatches and PASS/FAIL |
 
 `scripts/make_figures.sh` writes the same files (as `out/figures/share.csv`, `cycles.csv`,
@@ -130,8 +134,8 @@ cases by hand on GitHub.
 
 | File | What it holds |
 |---|---|
-| [`handcheck/file-level-2026-11-19/promotions.csv`](handcheck/file-level-2026-11-19/promotions.csv) | 60 sampled promotions (E2), one row per import line (154 rows) |
-| [`handcheck/file-level-2026-11-19/cycle_edges.csv`](handcheck/file-level-2026-11-19/cycle_edges.csv) | 60 sampled deferred imports that close a cycle (E3), one row per import line (553 rows) |
+| [`handcheck/file-level-2026-11-19/promotions.csv`](handcheck/file-level-2026-11-19/promotions.csv) | 60 sampled promotions (RQ3), one row per import line (154 rows) |
+| [`handcheck/file-level-2026-11-19/cycle_edges.csv`](handcheck/file-level-2026-11-19/cycle_edges.csv) | 60 sampled deferred imports that close a cycle (RQ2), one row per import line (553 rows) |
 | [`results/promotions_checker1.csv`](results) … `checker5.csv` | Each checker's answers for the promotions sample |
 | [`results/cycle_edges_checker1.csv`](results) … `checker5.csv` | Each checker's answers for the cycle sample |
 

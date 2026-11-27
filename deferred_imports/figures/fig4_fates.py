@@ -1,8 +1,7 @@
 """Fig. 4 (RQ2): fate of each project's deferred-only pairs, one 100% stacked bar each.
 
-Five parts: promoted (deferred import gone); promoted, but the same deferred import is left
-behind as dead code; promoted, but another deferred import from that module stays; removed;
-still deferred-only. Sorted by share promoted; "All" at the bottom.
+Three parts: promoted, removed, and still deferred-only. Sorted by share promoted;
+"All" at the bottom. The command-line summary includes the promotion subtypes.
 Inputs: CSVs from `analysis.fate --csv` and `analysis.promotion_kinds --csv`.
 """
 
@@ -16,11 +15,17 @@ import numpy as np
 
 from deferred_imports.figures import style
 
-FATE_PARTS = [("promoted_clean", "Promoted", "0.12"),
-              ("promoted_dead", "Promoted, same deferred import left (dead)", "0.35"),
-              ("promoted_other", "Promoted, other deferred import of the module left", "0.55"),
-              ("removed", "Removed", "0.76"),
-              ("kept", "Still deferred-only", "0.94")]
+PROMOTION_PARTS = ("promoted_clean", "promoted_dead", "promoted_other")
+FATE_PARTS = (*PROMOTION_PARTS, "removed", "kept")
+PLOT_PARTS = [
+    (PROMOTION_PARTS, "Promoted"),
+    (("removed",), "Removed"),
+    (("kept",), "Still deferred-only"),
+]
+PALETTES = {
+    "grayscale": ("0.12", "0.76", "0.94"),
+    "color": ("#185ABC", "#E5B956", "#F3F4F6"),
+}
 
 
 def fate_rows(fate_csv: Path, kinds_csv: Path) -> list[dict]:
@@ -36,23 +41,24 @@ def fate_rows(fate_csv: Path, kinds_csv: Path) -> list[dict]:
             rows.append({"repo": r["repo"], "promoted_clean": prom - dead - other,
                          "promoted_dead": dead, "promoted_other": other,
                          "removed": int(r["removed"]), "kept": int(r["kept"])})
-    total = {k: sum(r[k] for r in rows) for k, _, _ in FATE_PARTS}
+    total = {k: sum(r[k] for r in rows) for k in FATE_PARTS}
     for r in rows + [total]:
-        r["n"] = sum(r[k] for k, _, _ in FATE_PARTS)
-    rows.sort(key=lambda r: -(r["promoted_clean"] + r["promoted_dead"] + r["promoted_other"])
+        r["n"] = sum(r[k] for k in FATE_PARTS)
+    rows.sort(key=lambda r: -sum(r[k] for k in PROMOTION_PARTS)
               / (r["n"] or 1))
     return rows + [{"repo": "All", **total}]
 
 
-def draw_fates(rows: list[dict], out: Path, width: float = style.COLUMN) -> None:
+def draw_fates(rows: list[dict], out: Path, width: float = style.COLUMN, *,
+               palette: str = "grayscale") -> None:
     plt = style.plt()
     h = 0.13 * len(rows) + 0.6
     fig, ax = plt.subplots(figsize=(width, h))
     y = np.arange(len(rows))[::-1]
     left = np.zeros(len(rows))
-    for key, label, grey in FATE_PARTS:
-        share = np.array([r[key] / r["n"] if r["n"] else 0 for r in rows])
-        ax.barh(y, share, left=left, color=grey, edgecolor="black", lw=0.3, height=0.75,
+    for (keys, label), fill in zip(PLOT_PARTS, PALETTES[palette], strict=True):
+        share = np.array([sum(r[k] for k in keys) / r["n"] if r["n"] else 0 for r in rows])
+        ax.barh(y, share, left=left, color=fill, edgecolor="black", lw=0.3, height=0.75,
                 label=label)
         left += share
     ax.set_yticks(y, [f"{r['repo']} ({r['n']:,})" for r in rows], fontsize=6.5)
@@ -72,11 +78,12 @@ def main(argv=None) -> None:
     ap.add_argument("--fate", type=Path, required=True, help="CSV from fate --csv")
     ap.add_argument("--kinds", type=Path, required=True, help="CSV from promotion_kinds --csv")
     ap.add_argument("--out", type=Path, default=Path("out/figures/fig4-fates.pdf"))
+    ap.add_argument("--palette", choices=PALETTES, default="grayscale")
     a = ap.parse_args(argv)
     rows = fate_rows(a.fate, a.kinds)
     for r in rows:
-        print(r["repo"], r["n"], *(f"{k}={r[k]} ({r[k] / r['n']:.1%})" for k, _, _ in FATE_PARTS))
-    draw_fates(rows, a.out)
+        print(r["repo"], r["n"], *(f"{k}={r[k]} ({r[k] / r['n']:.1%})" for k in FATE_PARTS))
+    draw_fates(rows, a.out, palette=a.palette)
 
 
 if __name__ == "__main__":
